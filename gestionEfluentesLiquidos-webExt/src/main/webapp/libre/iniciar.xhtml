@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/indexTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">    
+           <f:metadata>  
+                <f:event listener="#{mbSesion.iniciar}" type="preRenderView"></f:event>  
+           </f:metadata> 
+            <br/>
+            <h:form>
+                <b:modal id="recupPass" title="Recuperación de contraseña" styleClass="modalRecupContraseña"
+                         closable="false" backdrop="false">
+                    <p>Se enviarán las nuevas credenciales de acceso al sistema a la cuenta de correo electrónico agendada a su nombre.
+                    Por favor, en unos minutos, combruebe los datos recibidos e inicie sesión nuevamente. ¡Muchas gracias!</p>
+                    <p:commandButton styleClass="btn btn-default" 
+                                     actionListener="#{mbSesion.recuperarContrasenia}"
+                                     icon="ui-icon-play"
+                                     value="Enviar solicitud" update="algo"
+                                     style="width:100%" />
+                    <p:outputLabel rendered="#{mbSesion.recupEnviado}" id="algo" value="algo"/>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" look="primary" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:modal>
+            </h:form>    
+            <p:growl id="mensajes" life="4000" />
+            <h:form id="loginForm">
+                <b:well>
+                    <h3>Iniciar Sesión</h3>
+                </b:well>
+                <b:row>
+                    <b:column span="8">
+                        <b:panel title="Instrucciones" collapsible="false" look="info" >
+                            #{bundle.panelInicioDesc_1}
+                            <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" >aquí</a>
+                            #{bundle.panelInicioDesc_2}
+                            <a onclick="$('.modalRecupContraseña').modal();return false; ajax:mbSesion.recuperarContraseña();" class="btn btn-primary btn-xs ">Recuperar contraseña</a> 
+                        </b:panel>
+                    </b:column>
+                    <b:column span="4">
+                        <b:panel title="Inicio de sesión" look="info" collapsible="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p:outputLabel for="cude" value="#{bundle.lebelRegCUDE}: " style="margin-bottom: 10px; color: gray"/>
+                                    <b:inputText id="cude" 
+                                                 placeholder="CUDE" 
+                                                 value="#{mbSesion.cude}" 
+                                                 required="true" 
+                                                 requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" 
+                                                 title="Ingrese el CUIT del Establecimiento" >
+                                        <f:facet name="prepend">
+                                            <b:icon name="user" />
+                                        </f:facet>
+                                    </b:inputText>
+                                </b:column> 
+                            </b:row>
+
+                            <b:row>
+                                <b:column span="12">
+                                    <p:outputLabel value="Contraseña: " for="clave" style="margin-bottom: 10px; color: gray"/>
+                                    <b:inputText placeholder="Contraseña" 
+                                                 required="true" 
+                                                 requiredMessage="Debe ingresar la contraseña."
+                                                 id="clave" 
+                                                 value="#{mbSesion.contrasenia}">
+                                        <f:facet name="prepend">
+                                            <b:iconAwesome name="key" />
+                                        </f:facet>
+                                    </b:inputText>
+                                </b:column>
+                            </b:row>
+                            <br/>
+                            <b:row>
+                                <b:column span="6" >
+                                    <p:commandButton styleClass="btn btn-default" 
+                                                     actionListener="#{mbSesion.login}"
+                                                     icon="ui-icon-play"
+                                                     value="Ingresar" update="loginForm, mensajes"
+                                                     style="width:100%" />
+                                </b:column>
+                                <b:column span="6">
+                                    <p:commandButton styleClass="btn btn-default"
+                                                     icon="ui-icon-refresh"
+                                                     value="Limpiar" update="mensajes"
+                                                     actionListener="#{mbSesion.recuperarContrasenia}" process="@this"
+                                                     style="width:100%" />
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+
+            </h:form>             
+        </ui:define> 
+    </ui:composition>
+</html>
+

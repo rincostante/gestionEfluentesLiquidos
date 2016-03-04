@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/indexTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">
+           <f:metadata>  
+                <f:event listener="#{mbRegistro.iniciar}" type="preRenderView"></f:event>  
+           </f:metadata> 
+            <p:growl id="mensajes" life="2000" />
+            <br/>
+            <b:well>
+                <h3>Registrarse</h3>
+            </b:well>
+            <h:form id="form">
+                <b:modal id="amodal" title="Código Unico de Establecimiento (CUDE)" styleClass="modalCude"
+                         closable="false" backdrop="false">
+                    <p>#{bundle.modalCude}</p>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:modal>
+                <b:modal id="amodal2" title="Codigo de recibo" styleClass="modalRecibo"
+                         closable="false" backdrop="false">
+                    <p>#{bundle.modalRecibo}</p>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:modal>
+                <b:modal id="amodal3" title="Firmante" styleClass="modalFirmante"
+                         closable="false" backdrop="false">
+                    <p>#{bundle.modalFirmante}</p>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                        <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:modal>
+
+                <b:row>
+                    <b:column span="6">
+                        <b:panel look="info" collapsible="false" title="#{bundle.panelRegDescripcion}">
+                            Para solicitar una cuenta en el sistema, el usuario
+                            deberá ingresar el 
+                            <a onclick="$('.modalCude').modal();return false;" >CUDE</a> (1), 
+                            el <a onclick="$('.modalRecibo').modal();return false;" >código de recibo</a> (2)
+                            de la última declaración jurada vigente, el CUIT de la 
+                            Razón social vinculada al Establecimiento (3), el CUIT del 
+                            <a onclick="$('.modalFirmante').modal();return false;" >firmante</a> (4)
+                            de la última declaración jurada y una dirección de 
+                            correo electrónico válida (5) a la cual pueda acceder donde se le 
+                            serán enviadas las credenciales de acceso al sistema.
+                        </b:panel>
+                    </b:column>
+                    <b:column span="6">
+                        <b:panel look="info" collapsible="false" id="solicitarCude" title="#{bundle.panelRegFormulario}">
+                            <h:panelGrid columns="3">
+                                
+                                <p:outputLabel for="cude" value="#{bundle.lebelRegCUDE}: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="cude" value="#{mbRegistro.solicitud.cude}" 
+                                             placeholder="CUDE" 
+                                             required="true" 
+                                             requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" 
+                                             title="Ingrese el CUIT del Establecimiento" >
+                                    <f:facet name="prepend">
+                                        <h:outputText value="9-9-9" />
+                                    </f:facet>
+                                </b:inputText>
+                                
+                                <p:outputLabel for="recibo" value="#{bundle.lebelRegCodRecibo}: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="recibo" value="#{mbRegistro.solicitud.codigoRecibo}" 
+                                             placeholder="Código de recibo"
+                                             required="true" 
+                                             requiredMessage="El campo #{bundle.lebelRegCodRecibo} es obligatorio" 
+                                             title="Ingrese el Código de recibo de la última Declaración Jurada vigente" >
+                                    <f:facet name="prepend">
+                                        <h:outputText value="aa/99" />
+                                    </f:facet>
+                                </b:inputText>
+                                
+                                <p:outputLabel for="cuitEst" value="#{bundle.lebelRegCuitEst}: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="cuitEst" value="#{mbRegistro.solicitud.cuitEstablecimiento}"
+                                             placeholder="CUIT Establecimiento"
+                                             converter="#{Integer}"
+                                             required="true" 
+                                             validatorMessage="El campo #{bundle.lebelRegCuitEst} debe tener 11 dígitos"
+                                             requiredMessage="El campo #{bundle.lebelRegCuitEst} es obligatorio" 
+                                             title="Ingrese el CUIT del Establecimiento" >
+                                    <f:facet name="prepend">
+                                        <h:outputText value="sin (-)" />
+                                    </f:facet>
+                                    <f:validateLength maximum="11" minimum="11" />
+                                </b:inputText>
+                                
+                                <p:outputLabel for="cuitFir" value="#{bundle.lebelRegCuitFir}: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="cuitFir" value="#{mbRegistro.solicitud.cuitFirmante}"
+                                             placeholder="CUIT Firmante"
+                                             converter="#{Integer}"
+                                             validatorMessage="El campo #{bundle.lebelRegCuitFir} debe tener 11 dígitos"
+                                             required="true" 
+                                             requiredMessage="El campo #{bundle.lebelRegCuitFir} es obligatorio" 
+                                             title="Ingrese el CUIT del Firmante" >
+                                    <f:facet name="prepend">
+                                        <h:outputText value="sin (-)" />
+                                    </f:facet>
+                                    <f:validateLength maximum="11" minimum="11" />
+                                </b:inputText>
+                                
+                                <p:outputLabel for="correo" value="#{bundle.lebelRegCorreoElectronico}: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="correo" value="#{mbRegistro.solicitud.correoElectronico}"
+                                             placeholder="Correo electrónico"
+                                             required="true" 
+                                             validatorMessage="El formato del campo #{bundle.lebelRegCorreoElectronico} es incorrecto"
+                                             requiredMessage="El campo #{bundle.lebelRegCorreoElectronico} es obligatorio" 
+                                             title="Ingrese su cuenta de correo electrónico" >
+                                    <f:facet name="prepend">
+                                        <h:outputText value="@" />
+                                    </f:facet>
+                                    <f:validateRegex for="correo" pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                                </b:inputText>
+                                
+                                <f:facet name="footer">
+                                    <p:commandButton id="loginButton" actionListener="#{mbRegistro.solicitar}" 
+                                                      styleClass="btn btn-default"
+                                                      icon="ui-icon-play"
+                                                      value="Validar" 
+                                                      update="mensajes,form" />
+                                     <p:commandButton styleClass="btn btn-default" icon="ui-icon-cancel" value="Limpiar" style="margin: 5px" >
+                                         <p:ajax update="solicitarCude" resetValues="true" />
+                                     </p:commandButton>
+                                 </f:facet>
+                            </h:panelGrid>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                <b:row rendered="#{mbRegistro.resultado and mbRegistro.mostrarResult}">
+                    <b:column span="12">
+                        <b:panel look="success" title="Resultados de la solicitud" collapsible="false">
+                            <h:panelGrid columns="3" cellpadding="1" rendered="#{mbRegistro.resultado}">
+                                <p>#{bundle.panelRegValidoMessage}</p>
+                            </h:panelGrid>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                <b:row rendered="#{not mbRegistro.resultado and mbRegistro.mostrarResult}">
+                    <b:column span="12">
+                        <b:panel look="warning" title="Resultados de la solicitud" collapsible="false">
+                            <h:panelGrid columns="3" cellpadding="1" rendered="#{not mbRegistro.resultado}">
+                                <p style="color: darkred">#{bundle.panelRegIvalidoMessage_1}</p>
+                                <p style="color: darkred">#{mbRegistro.mensajeError}</p>
+                                <p style="color: darkred">#{bundle.panelRegIvalidoMessage_2}</p>
+                            </h:panelGrid>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+            </h:form>                 
+        </ui:define> 
+    </ui:composition>
+</html>
+

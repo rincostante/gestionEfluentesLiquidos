@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title"/></title>
+    </h:head>
+    <h:body style="background-color: #f5f5ed">
+        <b:container style="background-color: #e0e4de; border-radius: 0px 0px 10px 10px;
+                        -moz-border-radius: 0px 0px 10px 10px;
+                        -webkit-border-radius: 0px 0px 10px 10px;
+                        border: 0px solid #000000">
+            <b:row >
+                <b:column>
+                    <h1 style="float: left">[Logo]</h1>
+                    <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="339" height="67" style="float: right" />
+                </b:column>
+            </b:row>
+        </b:container>
+        <br/>
+        <b:navBar static="true" brand="Inicio" brandHref="http://localhost:8080/gestionEfluentesLiquidos-webExt" inverse="true" >
+            <b:navbarLinks >
+                <b:dropMenu value="Consultas generales">
+                    <b:navLink value="Guía de trámite" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml"></b:navLink>
+                    <b:navLink value="Normativa" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml"></b:navLink>
+                    <b:navLink value="Preguntas frecuentes" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml"></b:navLink>
+                </b:dropMenu>
+                
+                <b:navLink value="Obteber CUDE" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml"></b:navLink>
+                <b:navLink value="Contacto" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml"></b:navLink>
+                <b:navLink value="Registrarse" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml"></b:navLink>
+                <b:navLink value="Iniciar Sesión" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/iniciar.xhtml"></b:navLink>
+            </b:navbarLinks>
+        </b:navBar>
+        <b:container style="background-color: #e0e4de; border-radius: 10px 10px 10px 10px;
+                        -moz-border-radius: 10px 10px 10px 10px;
+                        -webkit-border-radius: 10px 10px 10px 10px;
+                        border: 0px solid #000000">
+            <ui:insert name="content">
+                <span>Página en construcción</span>
+            </ui:insert>
+        </b:container>
+        <br/>
+        <b:container style="width: 100%; background-color: #333333; min-height: 100px">
+            <b:container>
+                <br/>
+                <b:row>
+                    <b:column span="3">
+                        <span style="color: #f5f5ed" >Menú principal</span><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Inicio</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Declaraciones Juradas</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Establecimientos</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml" >Obtener Cude</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml" >Guía de trámite</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml" >Normativa</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml" >Preguntas frecuentes</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml" >Contacto</a><br/>
+                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" >Registrarse</a><br/>
+                    </b:column>
+                    <b:column style="color: cadetblue" span="7">
+                        <span >[Datos DPyRA]</span>
+                    </b:column>
+                    <b:column span="2">
+                        <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="136" height="27" />
+                    </b:column>
+                </b:row>
+                <br/>
+            </b:container>
+        </b:container>
+    </h:body>
+</html>

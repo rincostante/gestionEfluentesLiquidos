@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/indexTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">    
+            <b:modal id="principal" title="Control de Efluentes Líquidos" styleClass="modalPrincipal"
+                     closable="false" backdrop="false">
+                <p>#{bundle.modalPrincipal}</p>
+                <f:facet name="footer">
+                    <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                </f:facet>
+            </b:modal>
+            <b:modal id="amodal" title="Código Unico de Establecimiento (CUDE)" styleClass="modalCude"
+                     closable="false" backdrop="false">
+                <p>#{bundle.modalCude}</p>
+                <f:facet name="footer">
+                    <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                </f:facet>
+            </b:modal>
+            <b:modal id="amodal2" title="Codigo de recibo" styleClass="modalRecibo"
+                     closable="false" backdrop="false">
+                <p>#{bundle.modalRecibo}</p>
+                <f:facet name="footer">
+                    <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                </f:facet>
+            </b:modal>
+            <b:modal id="amodal3" title="Firmante" styleClass="modalFirmante"
+                     closable="false" backdrop="false">
+                <p>#{bundle.modalFirmante}</p>
+                <f:facet name="footer">
+                    <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                </f:facet>
+            </b:modal>
+            <b:modal id="decJurada" title="Declaración Jurada" styleClass="modalDecJurada"
+                     closable="false" backdrop="false">
+                <p>#{bundle.modalDecJurada}</p>
+                <f:facet name="footer">
+                    <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+                </f:facet>
+            </b:modal>
+            <br/>
+            <b:jumbotron>
+                <h1>Control de Efluentes Líquidos</h1>
+                <p>#{bundle.principal}</p>
+                <p><a onclick="$('.modalPrincipal').modal();return false;" class="btn btn-primary btn-lg">Ver más</a></p>
+            </b:jumbotron>
+
+            <b:row>
+                <b:column span="12">
+                  <h1>Dirección de Prevención y Recomposición Ambiental (DPyRA)</h1>
+                  <h5>#{bundle.dpyra}</h5>
+                      <a href="http://www.ambiente.gov.ar/?idseccion=18" class="btn btn-primary btn-xs">Ver más</a> 
+                </b:column>
+            </b:row>  
+            <br/>
+            <b:row>
+                <b:column span="4">
+                  <h1>Consultas generales</h1>
+                      Todo visitante del sitio, podrá consultar libremente la
+                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml" >Normativa</a>
+                      vigente que reglamenta los procesos de control del vertido de efluentes líquidos.
+                      Acceder a una <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml" >Guía de trámite</a>
+                      que muestra, paso a paso los procedimientos a seguir para la realización de todos los trámites que el sitio permite.
+                      Ver un listado de <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml" >Preguntas frecuentes</a>
+                      que podrán orientarlo brindando las respuestas a la mayoría de inquietudes relativas al uso del sistema.
+                      Y, finalmente, acceder a un formulario de <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml" >Contacto</a> 
+                      para ponerse en contacto con nosostros.
+                </b:column>
+                <b:column span="4">
+                  <h1>Obtener CUDE</h1>
+                      El <a onclick="$('.modalCude').modal();return false;" >CUDE</a>
+                      del Establecimiento podrá ser solicitado libremente,
+                      siendo necesarios como requisito previo, el CUIT de la Razón Social
+                      vinculada y el CUIT del <a onclick="$('.modalFirmante').modal();return false;" >firmante</a>
+                      de la última Declaración Jurada vigente.
+                      Una vez validados estos datos, el sistema devolverá el CUDE correspondiente. 
+                      En caso de no validación, el usuario deberá acudir a las oficinas de la DPyRA 
+                      para aclarar la situación.
+                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml" class="btn btn-primary btn-xs ">Obtener CUDE</a> 
+                </b:column>
+                <b:column span="4">
+                  <h1>Solicitar acceso</h1>
+                      Las operaciones vinculadas al registro de Declaraciones Juradas, y actualización de información y consultas
+                      de los Establecimientos empadronados, solo podrán realizarlas usuarios registrados en el sistema.
+                      Para obtener una cuenta de usuario, el representante del Establecimiento deberá tener el
+                      <a onclick="$('.modalCude').modal();return false;" >CUDE</a> actualizado,
+                      el <a onclick="$('.modalRecibo').modal();return false;" >código de recibo</a> de la última Declaración Jurada vigente,
+                      y el CUIT correspondiente <a onclick="$('.modalFirmante').modal();return false;" >firmante</a> de la última Declaración Jurada vigente.
+                      Con esos datos podrá solicitar una cuenta de acceso al sistema.
+                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" class="btn btn-primary btn-xs ">Solicitar cuenta</a> 
+                </b:column>
+            </b:row>    
+            <br/>
+            <b:row>
+                <b:column span="6">
+                    <b:panel look="info" title="Declaraciones Juradas" collapsible="false">
+                      <p>#{bundle.declaraciones}</p>
+                      <a onclick="$('.modalDecJurada').modal();return false;" class="btn btn-primary btn-xs">Ver más</a> 
+                    </b:panel>
+                </b:column>
+                <b:column span="6">
+                    <b:panel look="info" title="Establecimientos" collapsible="false">
+                        <p>#{bundle.establecimientos_1}</p>
+                        <p>#{bundle.establecimientos_2}</p>
+                        <p>#{bundle.establecimientos_3}</p>
+                    </b:panel>
+                </b:column>
+            </b:row>
+        </ui:define> 
+    </ui:composition>
+</html>
+
