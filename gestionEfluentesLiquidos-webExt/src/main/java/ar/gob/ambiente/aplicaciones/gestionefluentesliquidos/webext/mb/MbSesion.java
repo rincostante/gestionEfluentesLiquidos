@@ -21,7 +21,10 @@ import javax.faces.convert.FacesConverter;
 public class MbSesion implements Serializable{
 
     private String cude;
+    private String recCude;
     private String contrasenia;
+    private String newContrasenia;
+    private String newContrasenia_2;
     private boolean logeado = false; 
     private UsuarioExterno usuario;  
     private Sesion sesion;
@@ -37,11 +40,37 @@ public class MbSesion implements Serializable{
         cude = "";
         contrasenia = "";
         sesion = new Sesion();
+        newContrasenia = "";
+        newContrasenia_2 = "";
     }    
     
     /**********************
      * Métodos de acceso **
      **********************/
+    public String getNewContrasenia() {
+        return newContrasenia;
+    }
+
+    public void setNewContrasenia(String newContrasenia) {
+        this.newContrasenia = newContrasenia;
+    }
+
+    public String getNewContrasenia_2() {
+        return newContrasenia_2;
+    }
+
+    public void setNewContrasenia_2(String newContrasenia_2) {
+        this.newContrasenia_2 = newContrasenia_2;
+    }
+
+    public String getRecCude() {
+        return recCude;
+    }
+
+    public void setRecCude(String recCude) {
+        this.recCude = recCude;
+    }
+
     public boolean isRecupEnviado() {
         return recupEnviado;
     }
@@ -98,13 +127,42 @@ public class MbSesion implements Serializable{
     /***********************
      * Métodos operativos **
      ***********************/
-    public void login(){
+    public String login(){
+        //RequestContext context = RequestContext.getCurrentInstance();
         JsfUtil.addSuccessMessage("Bienvenid@");
+            //if(usLogeado.isPrimeraVez()){
+                //context.addCallbackParam("view", ResourceBundle.getBundle("/Bundle").getString("RutaInicioPrimeraVez"));
+            //}else{
+                //context.addCallbackParam("view", ResourceBundle.getBundle("/Bundle").getString("RutaAplicacion"));
+            //}
+        
+        return "sesionPrimera";
     }
     
     public void recuperarContrasenia(){
-        JsfUtil.addErrorMessage("Su nueva contraseña ha sido enviada a su cuenta de correo electrónico.");
-        recupEnviado = true;
+        if(cude.equals("")){
+            JsfUtil.addErrorMessage("Para recibir una nueva contraseña debe completar el campo CUDE.");
+        }else{
+            JsfUtil.addSuccessMessage("Su nueva contraseña ha sido enviada a su cuenta de correo electrónico.");
+        }
+    }
+    
+    public void enviarSolicitud(){
+        if(recupEnviado){
+            JsfUtil.addErrorMessage("Su solicitud ya fue enviada, por favor, cierre el formulario.");
+        }else{
+            recupEnviado = true;
+            JsfUtil.addSuccessMessage("Su solicitud fue enviada con exito. Por favor consulte su cuenta de correo electrónico, por favor cierre el formulario.");
+        }
+    }
+    
+    public String actualizarContrasenia(){
+        if(newContrasenia.equals(newContrasenia_2)){
+            return "sesionContinua";
+        }else{
+            JsfUtil.addErrorMessage("La nueva contraseña no coincide con su confrimación.");
+            return null;
+        }
     }
     
 

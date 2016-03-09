@@ -24,4 +24,14 @@
         <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb.MbSesion</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>sesionPrimera</from-outcome>
+            <to-view-id>/sesion/iniciadoPrimeraVez.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>sesionContinua</from-outcome>
+            <to-view-id>/sesion/iniciado.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

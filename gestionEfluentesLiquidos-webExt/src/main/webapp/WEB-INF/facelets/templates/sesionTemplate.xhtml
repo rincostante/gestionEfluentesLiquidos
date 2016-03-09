@@ -22,37 +22,41 @@
             </b:row>
         </b:container>
         <br/>
-        <b:navBar static="true" brand="Inicio" brandHref="http://localhost:8080/gestionEfluentesLiquidos-webExt" inverse="true" >
+        <b:navBar static="true" brand="Inicio" brandHref="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" inverse="true" >
             <b:navbarLinks >
                 <b:dropMenu value="Declaraciones Juradas">
-                    <b:navLink value="Registrar" href="#"></b:navLink>
-                    <b:navLink value="Imprimir DJ" href="#"></b:navLink>
-                    <b:navLink value="Imprimir recibo" href="#"></b:navLink>
-                    <b:navLink value="Consultar" href="#"></b:navLink>
+                    <b:navLink value="Registrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registrar.xhtml"></b:navLink>
+                    <b:navLink value="Imprimir DJ" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
+                    <b:navLink value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
+                    <b:navLink value="Consultar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}consultar.xhtml"></b:navLink>
                 </b:dropMenu>
                 
                 <b:dropMenu value="Establecimientos">
-                    <b:navLink value="Actualizar datos" href="#"></b:navLink>
-                    <b:navLink value="Consultar" href="#"></b:navLink>
+                    <b:navLink value="Actualizar datos" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
+                    <b:navLink value="Consultar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}.consutlas.xhtml"></b:navLink>
                 </b:dropMenu>
                 
                 <b:dropMenu value="Consultas generales">
-                    <b:navLink value="Guía de trámite" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml"></b:navLink>
-                    <b:navLink value="Normativa" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml"></b:navLink>
-                    <b:navLink value="Preguntas frecuentes" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml"></b:navLink>
+                    <b:navLink value="Guía de trámite" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramite}principal.xhtml"></b:navLink>
+                    <b:navLink value="Normativa" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativa}principal.xhtml"></b:navLink>
+                    <b:navLink value="Preguntas frecuentes" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaq}faq.xhtml"></b:navLink>
                 </b:dropMenu>
                 
-                <b:navLink value="Obteber CUDE" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml"></b:navLink>
-                <b:navLink value="Contacto" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml"></b:navLink>
-                <b:navLink value="Registrarse" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml"></b:navLink>
-                <b:navLink value="Cerrar Sesión" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml"></b:navLink>
+                <b:navLink value="Contacto" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
+
+                <b:dropMenu value="Sesión">
+                    <b:navLink value="Cerrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
+                    <b:navLink value="Cambiar contraseña" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
+                </b:dropMenu>
             </b:navbarLinks>
         </b:navBar>
-        <b:container style="background-color: #e0e4de; min-height: 800px; border-radius: 10px 10px 10px 10px;
+        <b:container style="background-color: #e0e4de; border-radius: 10px 10px 10px 10px;
                         -moz-border-radius: 10px 10px 10px 10px;
                         -webkit-border-radius: 10px 10px 10px 10px;
                         border: 0px solid #000000">
+            <br/>
             <b:well>
+                <h1>Control de Efluentes Líquidos</h1>
                 <h3>CUDE: 065-698745-3002</h3>
                 <p>BUENOS AYRES REFRESCOS S.A.T. CUIT: 30501018453</p>
                 <p>Depósito de baterías en tránsito</p>
@@ -70,15 +74,14 @@
                 <b:row>
                     <b:column span="3">
                         <span style="color: #f5f5ed" >Menú principal</span><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Inicio</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Declaraciones Juradas</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Establecimientos</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml" >Obtener Cude</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml" >Guía de trámite</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml" >Normativa</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml" >Preguntas frecuentes</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml" >Contacto</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" >Registrarse</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Inicio</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Declaraciones Juradas</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Establecimientos</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramite}principal.xhtml" >Guía de trámite</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativa}principal.xhtml" >Normativa</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaq}faq.xhtml" >Preguntas frecuentes</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml" >Contacto</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Sesión</a><br/>
                     </b:column>
                     <b:column style="color: cadetblue" span="7">
                         <span >[Datos DPyRA]</span>

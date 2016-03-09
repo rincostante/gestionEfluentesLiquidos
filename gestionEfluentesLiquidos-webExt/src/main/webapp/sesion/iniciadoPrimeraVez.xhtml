@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/primeraTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">
+            <br/>
+            <p:growl id="mensajes" life="4000" />
+            <h:form>
+                <b:row>
+                    <b:column span="8">
+                        <b:panel collapsible="flase" look="warning" title="Inicio de sesión por primera vez">
+
+                            <h3>CUDE: 065-698745-3002</h3>
+                            <p>BUENOS AYRES REFRESCOS S.A.T. CUIT: 30501018453</p>
+                            <p>Depósito de baterías en tránsito</p>
+                            <p>Av. ROQUE SAENZ PEÑA 1129</p>
+                            <p>CABA</p>
+                            <b:row style="border-bottom: 1px dashed #e99002;"></b:row>
+                            <br/>
+                            <p>Usted ha iniciado sesión en el sistema por primera vez, por favor, actualice su contraseña para seguir operando el sistema.</p>
+                            
+                        </b:panel> 
+                    </b:column>
+                    <b:column span="4">
+                        <b:panel id="pnNuevaContrasenia" collapsible="flase" look="warning" title="Nueva contraseña">
+                            <b:row>
+                                <b:column span="12">
+                                    <p:outputLabel for="pass" value="Contraseña: " style="margin-bottom: 10px; color: gray"/>
+                                    <b:inputText id="pass" 
+                                                 type="password"
+                                                 placeholder="Contraseña recibida" 
+                                                 value="#{mbSesion.contrasenia}" 
+                                                 required="true" 
+                                                 requiredMessage="Debe ingresar la contraseña recibida" >
+                                        <f:facet name="prepend">
+                                            <b:iconAwesome name="key" />
+                                        </f:facet>
+                                    </b:inputText>
+                                </b:column> 
+                            </b:row>
+                            
+                            <b:row>
+                                <b:column span="12">
+                                    <p:outputLabel value="Nueva Contraseña: " for="pass_1" style="margin-bottom: 10px; color: gray"/>
+                                    <b:inputText type="password" placeholder="Contraseña nueva" 
+                                                 required="true" 
+                                                 requiredMessage="Debe ingresar la nueva contraseña"
+                                                 id="pass_1" 
+                                                 value="#{mbSesion.newContrasenia}">
+                                        <f:facet name="prepend">
+                                            <b:iconAwesome name="key" />
+                                        </f:facet>
+                                    </b:inputText>
+                                </b:column>
+                            </b:row>
+                            
+                            <b:row>
+                                <b:column span="12">
+                                    <p:outputLabel value="Nueva Contraseña: " for="pass_2" style="margin-bottom: 10px; color: gray"/>
+                                    <b:inputText type="password" placeholder="Repita la nueva contraseña" 
+                                                 required="true" 
+                                                 requiredMessage="Debe repetir la nueva contraseña"
+                                                 id="pass_2" 
+                                                 value="#{mbSesion.newContrasenia_2}">
+                                        <f:facet name="prepend">
+                                            <b:iconAwesome name="key" />
+                                        </f:facet>
+                                    </b:inputText>
+                                </b:column>
+                            </b:row>
+
+                            <b:row style="margin-top: 5px">
+                                <b:column span="6" >
+                                    <p:commandButton styleClass="btn btn-default" 
+                                                     action="#{mbSesion.actualizarContrasenia}"
+                                                     icon="ui-icon-play"
+                                                     value="Actualizar" update="pnNuevaContrasenia, mensajes"
+                                                     style="width:100%" />
+                                </b:column>
+                                <b:column span="6">
+                                    <p:commandButton styleClass="btn btn-default"
+                                                     icon="ui-icon-refresh"
+                                                     value="Limpiar"
+                                                     style="width:100%" >
+                                        <p:ajax resetValues="true" update="pnNuevaContrasenia"/>
+                                    </p:commandButton>
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+    
+            </h:form>                
+        </ui:define> 
+    </ui:composition>
+</html>

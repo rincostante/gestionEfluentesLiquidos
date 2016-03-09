@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/sesionTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">    
+            <h:form>
+
+                <b:row>
+                    <b:column span="3">
+                        <h1>Registrar DDJJ</h1>
+                        <p>#{bundle.usRegRegistrardj}
+                            <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registrar.xhtml" class="btn btn-primary btn-xs ">Registrar Declaración</a></p>
+                    </b:column>
+                    <b:column span="3">
+                        <h1>Imprimir documentos</h1>
+                        <p>#{bundle.usRagImprimir_1}
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml" class="btn btn-primary btn-xs ">Imprimir Declaraciones</a></p>
+                        <p>#{bundle.usRagImprimir_2}
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml" class="btn btn-primary btn-xs ">Imprimir último recibo</a></p>
+                    </b:column>
+                    <b:column span="3">
+                        <h1>Actualizar datos</h1>
+                        <p>#{bundle.usRegActualizar}
+                            <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml" class="btn btn-primary btn-xs ">Actualizar datos del Estsablecimiento</a></p>
+                    </b:column>
+                    <b:column span="3">
+                        <h1>Consultar Información</h1>
+                        <p>#{bundle.usRegConsultar_1}
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}consultas.xhtml" class="btn btn-primary btn-xs ">Consultar datos Establecimiento</a>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}consultas.xhtml" class="btn btn-primary btn-xs ">Consultar DDJJ</a></p>
+                        <p>#{bundle.usRegConsultar_2}
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramite}principal.xhtml" class="btn btn-primary btn-xs ">Guía de trámite</a>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativa}principal.xhtml" class="btn btn-primary btn-xs ">Normativa</a>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaq}faq.xhtml" class="btn btn-primary btn-xs ">Preguntas frecuentes</a></p>
+                    </b:column>
+                </b:row>
+                     
+            </h:form>                
+        </ui:define> 
+    </ui:composition>
+</html>
+

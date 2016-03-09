@@ -14,23 +14,74 @@
            <f:metadata>  
                 <f:event listener="#{mbSesion.iniciar}" type="preRenderView"></f:event>  
            </f:metadata> 
-            <br/>
-            <h:form>
-                <b:modal id="recupPass" title="Recuperación de contraseña" styleClass="modalRecupContraseña"
-                         closable="false" backdrop="false">
-                    <p>Se enviarán las nuevas credenciales de acceso al sistema a la cuenta de correo electrónico agendada a su nombre.
-                    Por favor, en unos minutos, combruebe los datos recibidos e inicie sesión nuevamente. ¡Muchas gracias!</p>
-                    <p:commandButton styleClass="btn btn-default" 
-                                     actionListener="#{mbSesion.recuperarContrasenia}"
-                                     icon="ui-icon-play"
-                                     value="Enviar solicitud" update="algo"
-                                     style="width:100%" />
-                    <p:outputLabel rendered="#{mbSesion.recupEnviado}" id="algo" value="algo"/>
-                    <f:facet name="footer">
-                        <b:button value="Cerrar" look="primary" dismiss="modal" onclick="return false;"/>
-                    </f:facet>
-                </b:modal>
-            </h:form>    
+            <br/>  
+            
+            <b:modal id="modRec" styleClass="modalRecuperar"
+                     closable="false" backdrop="false">
+                <p:growl id="recMsg" life="4000" />
+                <h:form id="frmRecuperar" >
+                    <b:panel id="pnRecuperar" title="Solicitar nueva contraseña" look="info" collapsible="false" >
+                        <b:row>
+                            <b:column span="8">
+                                <p:outputLabel for="recCude" value="CUDE: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="recCude" 
+                                             placeholder="CUDE del Establecimiento" 
+                                             value="#{mbSesion.recCude}" 
+                                             required="true" 
+                                             requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" >
+                                    <f:facet name="prepend">
+                                        <b:icon name="user" />
+                                    </f:facet>
+                                </b:inputText>
+                            </b:column>
+                            <b:column span="4">
+                                <br/>
+                                <p:message for="recCude"/>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="8">
+                                <p:outputLabel for="recMail" value="e-mail: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="recMail" 
+                                             placeholder="E-mail del usuario" 
+                                             value="#{mbSesion.recCude}" 
+                                             required="true" 
+                                             requiredMessage="El campo e-mail es obligatorio" >
+                                    <f:facet name="prepend">
+                                        <b:icon name="user" />
+                                    </f:facet>
+                                </b:inputText>
+                            </b:column>
+                            <b:column span="4">
+                                <br/>
+                                <p:message for="recMail"/>
+                            </b:column>
+                        </b:row>
+                        <b:row style="margin-top: 5px">
+                            <b:column span="6" >
+                                <p:commandButton id="btnEnviar" styleClass="btn btn-default" process="pnRecuperar" 
+                                                 actionListener="#{mbSesion.enviarSolicitud}"
+                                                 icon="ui-icon-play"
+                                                 value="Enviar" update="pnRecuperar,recMsg"
+                                                 style="width:100%" />
+                            </b:column>
+                            <b:column span="6">
+                                <p:commandButton styleClass="btn btn-default"
+                                                 icon="ui-icon-refresh"
+                                                 value="Limpiar"
+                                                 style="width:100%" >
+                                    <p:ajax resetValues="true" update="pnRecuperar"/>
+                                </p:commandButton>
+                            </b:column>
+                            <p:message for="btnEnviar"/>
+                        </b:row>
+                        <f:facet name="footer">
+                            <b:button look="primary" value="Cerrar" dismiss="modal" onclick="return false;"/>
+                        </f:facet>
+                    </b:panel>
+                </h:form>        
+            </b:modal>
+            
             <p:growl id="mensajes" life="4000" />
             <h:form id="loginForm">
                 <b:well>
@@ -41,12 +92,11 @@
                         <b:panel title="Instrucciones" collapsible="false" look="info" >
                             #{bundle.panelInicioDesc_1}
                             <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" >aquí</a>
-                            #{bundle.panelInicioDesc_2}
-                            <a onclick="$('.modalRecupContraseña').modal();return false; ajax:mbSesion.recuperarContraseña();" class="btn btn-primary btn-xs ">Recuperar contraseña</a> 
+                            #{bundle.panelInicioDesc_2} 
                         </b:panel>
                     </b:column>
                     <b:column span="4">
-                        <b:panel title="Inicio de sesión" look="info" collapsible="false">
+                        <b:panel id="inicioSesion" title="Inicio de sesión" look="info" collapsible="false">
                             <b:row>
                                 <b:column span="12">
                                     <p:outputLabel for="cude" value="#{bundle.lebelRegCUDE}: " style="margin-bottom: 10px; color: gray"/>
@@ -54,19 +104,18 @@
                                                  placeholder="CUDE" 
                                                  value="#{mbSesion.cude}" 
                                                  required="true" 
-                                                 requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" 
-                                                 title="Ingrese el CUIT del Establecimiento" >
+                                                 requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" >
                                         <f:facet name="prepend">
                                             <b:icon name="user" />
                                         </f:facet>
                                     </b:inputText>
                                 </b:column> 
                             </b:row>
-
+                            
                             <b:row>
                                 <b:column span="12">
                                     <p:outputLabel value="Contraseña: " for="clave" style="margin-bottom: 10px; color: gray"/>
-                                    <b:inputText placeholder="Contraseña" 
+                                    <b:inputText type="password" placeholder="Contraseña" 
                                                  required="true" 
                                                  requiredMessage="Debe ingresar la contraseña."
                                                  id="clave" 
@@ -77,11 +126,11 @@
                                     </b:inputText>
                                 </b:column>
                             </b:row>
-                            <br/>
-                            <b:row>
+
+                            <b:row style="margin-top: 5px">
                                 <b:column span="6" >
                                     <p:commandButton styleClass="btn btn-default" 
-                                                     actionListener="#{mbSesion.login}"
+                                                     action="#{mbSesion.login}"
                                                      icon="ui-icon-play"
                                                      value="Ingresar" update="loginForm, mensajes"
                                                      style="width:100%" />
@@ -89,8 +138,19 @@
                                 <b:column span="6">
                                     <p:commandButton styleClass="btn btn-default"
                                                      icon="ui-icon-refresh"
-                                                     value="Limpiar" update="mensajes"
-                                                     actionListener="#{mbSesion.recuperarContrasenia}" process="@this"
+                                                     value="Limpiar"
+                                                     style="width:100%" >
+                                        <p:ajax resetValues="true" update="inicioSesion"/>
+                                    </p:commandButton>
+                                </b:column>
+                            </b:row>
+                            
+                            <b:row style="margin-top: 5px">
+                                <b:column span="12" >
+                                    <p:commandButton styleClass="btn btn-default"
+                                                     icon=" ui-icon-key"
+                                                     value="Recuperar contraseña" update="mensajes"
+                                                     onclick="$('.modalRecuperar').modal();return false;"
                                                      style="width:100%" />
                                 </b:column>
                             </b:row>
