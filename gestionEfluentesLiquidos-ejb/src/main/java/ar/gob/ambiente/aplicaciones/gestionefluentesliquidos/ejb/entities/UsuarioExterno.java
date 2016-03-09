@@ -44,7 +44,7 @@ public class UsuarioExterno implements Serializable {
     @Column (nullable=false, length=50, unique=true)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
-    private String calve;
+    private String clave;
     
     /**
      * Este campo solo está en true cuando el usuario es registrado o
@@ -145,12 +145,12 @@ public class UsuarioExterno implements Serializable {
         this.cude = cude;
     }
 
-    public String getCalve() {
-        return calve;
+    public String getClave() {
+        return clave;
     }
 
-    public void setCalve(String calve) {
-        this.calve = calve;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public boolean isPrimeraVez() {
