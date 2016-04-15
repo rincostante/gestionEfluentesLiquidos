@@ -61,7 +61,7 @@
                         </b:panel>
                     </b:column>
                     <b:column span="6">
-                        <b:panel look="info" collapsible="false" id="solicitarCude" title="#{bundle.panelRegFormulario}">
+                        <b:panel look="info" collapsible="false" id="solicitarUsuario" title="#{bundle.panelRegFormulario}">
                             <h:panelGrid columns="3">
                                 
                                 <p:outputLabel for="cude" value="#{bundle.lebelRegCUDE}: " style="margin-bottom: 10px; color: gray"/>
@@ -126,18 +126,15 @@
                                     </f:facet>
                                     <f:validateRegex for="correo" pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
                                 </b:inputText>
-                                
-                                <f:facet name="footer">
-                                    <p:commandButton id="loginButton" actionListener="#{mbRegistro.solicitar}" 
-                                                      styleClass="btn btn-default"
-                                                      icon="ui-icon-play"
-                                                      value="Validar" 
-                                                      update="mensajes,form" />
-                                     <p:commandButton styleClass="btn btn-default" icon="ui-icon-cancel" value="Limpiar" style="margin: 5px" >
-                                         <p:ajax update="solicitarCude" resetValues="true" />
-                                     </p:commandButton>
-                                 </f:facet>
                             </h:panelGrid>
+                            <b:row style="margin-top: 5px">
+                                <b:column span="6" >
+                                    <b:commandButton style="margin-right: 5px; width: 100%" id="loginButton" look="primary" ajax="true" value="#{mbRegistro.cmbValidar}" action="#{mbRegistro.solicitar}" update="mensajes,form" />
+                                </b:column>
+                                <b:column span="6">
+                                    <b:button look="warning" value="#{mbRegistro.cmbLimpiar}" style="width: 100%" onclick="reset()" />
+                                </b:column>
+                            </b:row>
                         </b:panel>
                     </b:column>
                 </b:row>
@@ -164,5 +161,10 @@
             </h:form>                 
         </ui:define> 
     </ui:composition>
+    <script type="text/javascript">
+        function reset() {
+            document.getElementById("form").reset();
+        }
+    </script>     
 </html>
 

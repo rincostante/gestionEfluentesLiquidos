@@ -6,12 +6,34 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.srv;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Actividad;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Aforo;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Curso;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Firmante;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Operador;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Partido;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Rol;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.TipoAbasto;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.TipoCaudal;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Unidad;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Usuario;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.UsuarioExterno;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.ActividadFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.AforoFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.CursoFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.DeclaracionJuradaFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.EstablecimientoFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.FirmanteFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.OperadorFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.RolFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.UsuarioExternoFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.UsuarioFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.PartidoFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.TipoAbastoFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.TipoCaudalFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.UnidadFacade;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -27,12 +49,32 @@ public class BackendSrv {
     
     @EJB
     private UsuarioFacade usuarioFacade;
-    
     @EJB
     private RolFacade rolFacade;
-    
     @EJB
     private UsuarioExternoFacade usExtFacade;
+    @EJB
+    private PartidoFacade partidoFacade;    
+    @EJB
+    private FirmanteFacade firmanteFacade;    
+    @EJB
+    private EstablecimientoFacade estFacade;
+    @EJB
+    private CursoFacade cursoFacade;
+    @EJB
+    private UnidadFacade unidadFacade;
+    @EJB
+    private OperadorFacade operadorFacade;
+    @EJB
+    private AforoFacade aforoFacade;
+    @EJB
+    private TipoAbastoFacade tipoAbastoFacade;
+    @EJB
+    private TipoCaudalFacade tipoCaudalFacade;
+    @EJB
+    private ActividadFacade actividadFacade;
+    @EJB
+    private DeclaracionJuradaFacade decFacade;
 
     /******************************
      * Métodos para los Usuarios **
@@ -134,6 +176,17 @@ public class BackendSrv {
      */
     public UsuarioExterno getUsuarioExt(String cude){
         return usExtFacade.getUsuario(cude);
+    }
+    
+    /**
+     * Método para validar un usuario externo, si valida, devuelve el usuario,
+     * si no, devuleve nulo
+     * @param cude
+     * @param clave
+     * @return 
+     */
+    public UsuarioExterno validarUsuarioExt(String cude, String clave){
+        return usExtFacade.validar(cude, clave);
     }
     
     /**
@@ -241,4 +294,450 @@ public class BackendSrv {
     public List<Rol> getRolAll(){
         return rolFacade.findAll();
     }
+    
+    
+    /***************************
+     ** Métodos para Partidos **
+     ***************************/
+           
+    /**
+     * Método para validar si existe un partido con el nombre recibido
+     * @param nombre
+     * @return 
+     */
+    public boolean partidoNoExiste(String nombre){
+        return partidoFacade.noExiste(nombre);
+    }
+     
+    /**
+     * Método para insertar un nuevo partido. Se implementa para poder exponerlo como servicio.
+     * @param par 
+     */
+    public void createPartido(Partido par){
+        partidoFacade.create(par);
+    }
+    
+    /**
+     * Método para editar un Partido existente. Se implementa para poder exponerlo como servicio.
+     * @param par 
+     */
+    public void editPartido(Partido par){
+        partidoFacade.edit(par);
+    }
+          
+    /**
+     * Método para obtener un partido según un id. Se implementa para poder exponerlo como servicio.
+     * @param id
+     * @return 
+     */
+    public Partido getPartidoByID(Long id){
+        return partidoFacade.find(id);
+    }  
+    
+    /**
+     * Método para obtener todos los Partidos. Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Partido> getPartidosAll(){
+        return partidoFacade.findAll();
+    }     
+    
+ 
+    /****************************
+     ** Métodos para Firmantes **
+     ****************************/
+
+    
+    /**
+     * Método para validar si existe un firmante con el Registro Unico de personas físicas recibida
+     * @param idRupFis
+     * @return 
+     */
+    public boolean rupFisNoExiste(Long idRupFis){
+        return firmanteFacade.noExiste(idRupFis);
+    }
+    
+    /**
+     * Método para obtener las Declaraciones  Juradas activas
+     * @return 
+     */
+    public List<Firmante> getActivos(){
+        return firmanteFacade.getActivos();
+    }
+    
+    /**
+     * Método para obtener un firmante según un id. Se implementa para poder exponerlo como servicio.
+     * @param id
+     * @return 
+     */
+    public Firmante getFirmanteByID(Long id){
+        return firmanteFacade.find(id);
+    }
+    
+    /**
+     * Método para insertar un nuevo firmante. Se implementa para poder exponerlo como servicio.
+     * @param fir 
+     */
+    public void createFirmante(Firmante fir){
+        firmanteFacade.create(fir);
+    }
+    
+    /**
+     * Método para editar un firmante existente. Se implementa para poder exponerlo como servicio.
+     * @param fir 
+     */
+    public void editFirmante(Firmante fir){
+        firmanteFacade.edit(fir);
+    }
+    
+    /**
+     * Método para obtener todos los Firmantes. Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Firmante> getFirmantesAll(){
+        return firmanteFacade.findAll();
+    }     
+    
+    
+    /***************************************
+     * Métodos para los Usuarios Externos **
+     ***************************************/
+    
+    /**
+     * Método para insertar establecimientos
+     * @param est 
+     */
+    public void createEstablecimiento(Establecimiento est){
+        estFacade.create(est);
+    }
+    
+    /**
+     * Método para editar un establecimiento existente
+     * @param est 
+     */
+    public void editEstablecimiento(Establecimiento est){
+        estFacade.edit(est);
+    }
+    
+    /**
+     * Método para obtener un Establecimiento a partir del CUDE desintegrado en sus partes componentes
+     * @param idPartido
+     * @param numEst
+     * @param crs
+     * @return 
+     */
+    public Establecimiento getEstablecimientoByCude(Long idPartido, Long numEst, int crs){
+        return estFacade.getByCude(idPartido, numEst, crs);
+    }
+    
+    
+    /************************************
+     * Métodos para los Cursos de agua **
+     ************************************/    
+    
+    /**
+     * Método para insertar Cursos de agua
+     * @param curso 
+     */
+    public void createCurso(Curso curso){
+        cursoFacade.create(curso);
+    }
+    
+    /**
+     * Método para editar un Cursos de agua existentes
+     * @param curso 
+     */
+    public void editCurso(Curso curso){
+        cursoFacade.edit(curso);
+    }
+    
+    /**
+     * Método para obtener un Curso según su id
+     * @param id
+     * @return 
+     */
+    public Curso getCursoByID(Long id){
+        return cursoFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todos los Cursos de agua. Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Curso> getCursosAll(){
+        return cursoFacade.findAll();
+    } 
+    
+    
+    /*************************************************************
+     * Métodos para las Unidades de Materias primas y Productos **
+     *************************************************************/
+    
+    /**
+     * Método para insertar Unidades de mediad de Materias primas y Productos
+     * @param unidad
+     */
+    public void createUnidad(Unidad unidad){
+        unidadFacade.create(unidad);
+    }
+    
+    /**
+     * Método para editar una Unidad de mediad de Materias primas y Productos existentes
+     * @param unidad 
+     */
+    public void editUnidad(Unidad unidad){
+        unidadFacade.edit(unidad);
+    }
+    
+    /**
+     * Método para obtener una Unidad de mediad de Materias primas y Productos según su id
+     * @param id
+     * @return 
+     */
+    public Unidad getUnidadByID(Long id){
+        return unidadFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todos las Unidades de mediad de Materias primas y Producto. 
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Unidad> getUnidadesAll(){
+        return unidadFacade.findAll();
+    } 
+    
+    
+    /********************************************
+     * Métodos para los Operadores de residuos **
+     ********************************************/
+    
+    /**
+     * Método para insertar Operadores de residuos
+     * @param operador
+     */
+    public void createOperador(Operador operador){
+        operadorFacade.create(operador);
+    }
+    
+    /**
+     * Método para editar un Operador de residuos
+     * @param operador 
+     */
+    public void editOperador(Operador operador){
+        operadorFacade.edit(operador);
+    }
+    
+    /**
+     * Método para obtener un Operador de residuos según su id
+     * @param id
+     * @return 
+     */
+    public Operador getOperadorByID(Long id){
+        return operadorFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todos los Operadores de residuos
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Operador> getOperadoresAll(){
+        return operadorFacade.findAll();
+    }   
+    
+    
+    /**************************************
+     * Métodos para los métodos de Aforo **
+     **************************************/
+    
+    /**
+     * Método para insertar métodos de Aforo
+     * @param aforo
+     */
+    public void createAforo(Aforo aforo){
+        aforoFacade.create(aforo);
+    }
+    
+    /**
+     * Método para editar un método de Aforo
+     * @param aforo 
+     */
+    public void editAforo(Aforo aforo){
+        aforoFacade.edit(aforo);
+    }
+    
+    /**
+     * Método para obtener un método de Aforo según su id
+     * @param id
+     * @return 
+     */
+    public Aforo getAforoByID(Long id){
+        return aforoFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todos los métodos de Aforo
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Aforo> getAforosAll(){
+        return aforoFacade.findAll();
+    }    
+    
+    
+    /*************************************
+     * Métodos para los Tipos de Abasto **
+     *************************************/
+    
+    /**
+     * Método para insertar Tipos de Abasto
+     * @param tipoAbasto
+     */
+    public void createTipoAbasto(TipoAbasto tipoAbasto){
+        tipoAbastoFacade.create(tipoAbasto);
+    }
+    
+    /**
+     * Método para editar un Tipo de Abasto
+     * @param tipoAbasto 
+     */
+    public void editTipoAbasto(TipoAbasto tipoAbasto){
+        tipoAbastoFacade.edit(tipoAbasto);
+    }
+    
+    /**
+     * Método para obtener un Tipo de Abasto según su id
+     * @param id
+     * @return 
+     */
+    public TipoAbasto getTipoAbastoByID(Long id){
+        return tipoAbastoFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todos los Tipos de Abasto
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<TipoAbasto> getTipoAbastoAll(){
+        return tipoAbastoFacade.findAll();
+    }  
+    
+    
+    /*************************************
+     * Métodos para los Tipos de Caudal **
+     *************************************/
+    
+    /**
+     * Método para insertar Tipos de Caudal
+     * @param tipoCaudal
+     */
+    public void createTipoCaudal(TipoCaudal tipoCaudal){
+        tipoCaudalFacade.create(tipoCaudal);
+    }
+    
+    /**
+     * Método para editar un Tipo de Caudal
+     * @param tipoCaudal 
+     */
+    public void editTipoCaudal(TipoCaudal tipoCaudal){
+        tipoCaudalFacade.edit(tipoCaudal);
+    }
+    
+    /**
+     * Método para obtener un Tipo de Caudal según su id
+     * @param id
+     * @return 
+     */
+    public TipoCaudal getTipoCaudalByID(Long id){
+        return tipoCaudalFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todos los Tipos de Caudal
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<TipoCaudal> getTipoCaudalAll(){
+        return tipoCaudalFacade.findAll();
+    }       
+    
+    
+    /*********************************
+     * Métodos para las Actividades **
+     *********************************/
+    
+    /**
+     * Método para insertar una Actividad
+     * @param actividad
+     */
+    public void createActividad(Actividad actividad){
+        actividadFacade.create(actividad);
+    }
+    
+    /**
+     * Método para editar una Actividad
+     * @param actividad 
+     */
+    public void editActividad(Actividad actividad){
+        actividadFacade.edit(actividad);
+    }
+    
+    /**
+     * Método para obtener una Actividad según su id
+     * @param id
+     * @return 
+     */
+    public Actividad getActividadByID(Long id){
+        return actividadFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todas las Actividades
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<Actividad> getActividadAll(){
+        return actividadFacade.findAll();
+    }       
+    
+    
+    /*******************************************
+     * Métodos para las Declaraciones Juradas **
+     *******************************************/
+    
+    /**
+     * Método para insertar una DeclaracionJurada
+     * @param decJurada
+     */
+    public void createDeclaracion(DeclaracionJurada decJurada){
+        decFacade.create(decJurada);
+    }
+    
+    /**
+     * Método para editar una DeclaracionJurada
+     * @param decJurada 
+     */
+    public void editDeclaracion(DeclaracionJurada decJurada){
+        decFacade.edit(decJurada);
+    }
+    
+    /**
+     * Método para obtener una DeclaracionJurada según su id
+     * @param id
+     * @return 
+     */
+    public DeclaracionJurada getDeclaracionByID(Long id){
+        return decFacade.find(id);
+    }    
+    
+    /**
+     * Método para obtener todas las Declaraciones Juradas
+     * Se implementa para poder exponerlo como servicio.
+     * @return 
+     */
+    public List<DeclaracionJurada> getDeclaracionAll(){
+        return decFacade.findAll();
+    }      
 }

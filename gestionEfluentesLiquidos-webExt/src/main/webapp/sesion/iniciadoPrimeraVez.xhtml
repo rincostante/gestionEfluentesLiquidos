@@ -18,14 +18,15 @@
                     <b:column span="8">
                         <b:panel collapsible="flase" look="warning" title="Inicio de sesión por primera vez">
 
-                            <h3>CUDE: 065-698745-3002</h3>
-                            <p>BUENOS AYRES REFRESCOS S.A.T. CUIT: 30501018453</p>
-                            <p>Depósito de baterías en tránsito</p>
-                            <p>Av. ROQUE SAENZ PEÑA 1129</p>
-                            <p>CABA</p>
+                            <h3>#{mbSesion.usuario.cude}</h3>
+                            <p>#{mbSesion.usuario.razonSocial}</p>
+                            <p>#{mbSesion.usuario.strCuit}</p>
+                            <p>#{mbSesion.usuario.tipoEst}</p>
+                            <p>#{mbSesion.usuario.domCalle} #{mbSesion.usuario.numero}</p>
+                            <p>#{mbSesion.usuario.localidad}</p>
                             <b:row style="border-bottom: 1px dashed #e99002;"></b:row>
                             <br/>
-                            <p>Usted ha iniciado sesión en el sistema por primera vez, por favor, actualice su contraseña para seguir operando el sistema.</p>
+                            <p>#{bundle.nuevaContrasenia}</p>
                             
                         </b:panel> 
                     </b:column>

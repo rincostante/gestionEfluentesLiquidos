@@ -56,7 +56,7 @@
         <dependency>
             <groupId>net.bootsfaces</groupId>
             <artifactId>bootsfaces</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1</version>
             <scope>compile</scope>
         </dependency>
        <dependency>
@@ -201,13 +201,28 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>localhost_8080/CuitAfipWs/CuitAfipWs.wsdl</wsdlFile>
+                                <wsdlFile>vmdeswebjava.medioambiente.gov.ar_8080/CuitAfipWs/CuitAfipWs.wsdl</wsdlFile>
                             </wsdlFiles>
                             <packageName>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt</packageName>
                             <wsdlLocation>http://localhost:8080/CuitAfipWs/CuitAfipWs?WSDL</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/CuitAfipWs.stale</staleFile>
                         </configuration>
                         <id>wsimport-generate-CuitAfipWs</id>
+                        <phase>generate-sources</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>localhost_8080/PersonasWebService/PersonasWebService.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <packageName>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt</packageName>
+                            <wsdlLocation>http://localhost:8080/PersonasWebService/PersonasWebService?WSDL</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/PersonasWebService.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-PersonasWebService</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>

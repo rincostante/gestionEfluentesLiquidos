@@ -4,12 +4,15 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript" ></script>
         <title><ui:insert name="title"/></title>
     </h:head>
     <h:body style="background-color: #f5f5ed">
+        <h:outputStylesheet library="css" name="sesion.css"  />
         <b:container style="background-color: #e0e4de; border-radius: 0px 0px 10px 10px;
                         -moz-border-radius: 0px 0px 10px 10px;
                         -webkit-border-radius: 0px 0px 10px 10px;
@@ -21,47 +24,88 @@
                 </b:column>
             </b:row>
         </b:container>
+        
         <br/>
-        <b:navBar static="true" brand="Inicio" brandHref="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" inverse="true" >
-            <b:navbarLinks >
-                <b:dropMenu value="Declaraciones Juradas">
-                    <b:navLink value="Registrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registrar.xhtml"></b:navLink>
-                    <b:navLink value="Imprimir DJ" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
-                    <b:navLink value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
-                    <b:navLink value="Consultar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}consultar.xhtml"></b:navLink>
-                </b:dropMenu>
-                
-                <b:dropMenu value="Establecimientos">
-                    <b:navLink value="Actualizar datos" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
-                    <b:navLink value="Consultar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}.consutlas.xhtml"></b:navLink>
-                </b:dropMenu>
-                
-                <b:dropMenu value="Consultas generales">
-                    <b:navLink value="Guía de trámite" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramite}principal.xhtml"></b:navLink>
-                    <b:navLink value="Normativa" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativa}principal.xhtml"></b:navLink>
-                    <b:navLink value="Preguntas frecuentes" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaq}faq.xhtml"></b:navLink>
-                </b:dropMenu>
-                
-                <b:navLink value="Contacto" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
+        
+        <b:modal id="dlgVerMar" title="Datos del Establecimiento" styleClass="modalVerMas"
+                 closable="true" >
 
-                <b:dropMenu value="Sesión">
-                    <b:navLink value="Cerrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
-                    <b:navLink value="Cambiar contraseña" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
-                </b:dropMenu>
-            </b:navbarLinks>
-        </b:navBar>
+            <b:row>
+                <b:panel title="Inmueble" look="info" collapsible="false" >
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:outputLabel for="partInm" value="Partida inmobiliaria: " style="margin-bottom: 10px; color: gray; font-weight: normal; font-size: 14px" />
+                        <p:outputLabel id="partInm" style="margin-bottom: 10px; color: gray; font-weight: normal; font-size: 14px" value="#{mbSesion.establecimiento.inmueble.partInmob}" />
+                        <p:outputLabel for="nom" value="Nomenclatura: " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="nom" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.nomCatastral}" />
+                        <p:outputLabel for="latitud" value="Latitud: " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="latitud" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.latitud}" />
+                        <p:outputLabel for="longitud" value="Longitud: " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="longitud" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.longitud}" />
+                        <p:outputLabel for="persFab" value="Cant. Personal planta: " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="persFab" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.personalFabrica}" />
+                        <p:outputLabel for="persOfic" value="Cant. Personal oficina: " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="persOfic" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.personalOficina}" />
+                        <p:outputLabel for="supCubierta" value="Sup. cubierta (m2): " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="supCubierta" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.supCubierta}" />
+                        <p:outputLabel for="supLibre" value="Sup. libre (m2): " style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" />
+                        <p:outputLabel id="supLibre" style="margin-bottom: 10px; color: gray; font-weight: normal;font-size: 14px" value="#{mbSesion.establecimiento.inmueble.supLibre}" />
+                    </h:panelGrid>
+                </b:panel>
+            </b:row>
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>     
+        
+        <h:form id="frmNav">
+            <b:navBar static="true" brand="Inicio" brandHref="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" inverse="true" >
+                <b:navbarLinks >
+                    <b:dropMenu value="Declaraciones Juradas">
+                        <b:navLink value="Registrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registrar.xhtml"></b:navLink>
+                        <b:navLink value="Imprimir DJ" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
+                        <b:navLink value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
+                        <b:navLink value="Consultar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}consultar.xhtml"></b:navLink>
+                    </b:dropMenu>
+                    
+                    <b:navLink value="Ubicación" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
+
+                    <b:dropMenu value="Consultas generales">
+                        <b:navLink value="Guía de trámite" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramite}principal.xhtml"></b:navLink>
+                        <b:navLink value="Normativa" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativa}principal.xhtml"></b:navLink>
+                        <b:navLink value="Preguntas frecuentes" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaq}faq.xhtml"></b:navLink>
+                    </b:dropMenu>
+
+                    <b:navLink value="Contacto" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml"></b:navLink>
+
+                    <b:dropMenu value="Sesión">
+                        <b:navCommandLink action="#{mbSesion.logout()}" value="Cerrar" />
+
+                        <b:navLink value="Cambiar contraseña" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}iniciar.xhtml"></b:navLink>
+                    </b:dropMenu>
+                </b:navbarLinks>
+            </b:navBar>
+        </h:form>
+
         <b:container style="background-color: #e0e4de; border-radius: 10px 10px 10px 10px;
                         -moz-border-radius: 10px 10px 10px 10px;
                         -webkit-border-radius: 10px 10px 10px 10px;
                         border: 0px solid #000000">
             <br/>
+
             <b:well>
                 <h1>Control de Efluentes Líquidos</h1>
-                <h3>CUDE: 065-698745-3002</h3>
-                <p>BUENOS AYRES REFRESCOS S.A.T. CUIT: 30501018453</p>
-                <p>Depósito de baterías en tránsito</p>
-                <p>Av. ROQUE SAENZ PEÑA 1129</p>
-                <p>CABA</p>
+                <b:panel title="Datos generales del Establecimiento" look="info" collapsible="true" >
+                    <h3>#{mbSesion.usuario.cude}</h3>
+                    <p>#{mbSesion.usuario.razonSocial}</p>
+                    <p>#{mbSesion.usuario.strCuit}</p>
+                    <p>#{mbSesion.usuario.tipoEst}</p>
+                    <p>#{mbSesion.usuario.domCalle} #{mbSesion.usuario.numero}</p>
+                    <p>#{mbSesion.usuario.localidad}</p>
+                </b:panel>
+
+                <b:button look="primary" onclick="$('.modalVerMas').modal();return false;" value="Ver más" style="margin-left: 5px" />
+                <b:button look="primary" value="Ver historial actividades" style="margin-left: 5px" />
+                <b:button look="primary" value="Ver historial firmantes" style="margin-left: 5px"  />
             </b:well>
             <ui:insert name="content">
                 <span>Página en construcción</span>
@@ -83,16 +127,34 @@
                         <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizContacto}form.xhtml" >Contacto</a><br/>
                         <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Sesión</a><br/>
                     </b:column>
-                    <b:column style="color: cadetblue" span="7">
-                        <span >[Datos DPyRA]</span>
+                    <b:column style="color: cadetblue" span="6">
+                        <span style="color: #f5f5ed" >Contacto</span><br/>
+                        Dirección de Prevención y Recomposición Ambiental (DPyRA)<br/>
+                        Subsecretaría de Fiscalización y Control Ambiental y Prevención de la Contaminación<br/>
+                        Secretaría de Control y Monitoreo Ambiental<br/>
+                        Ministerio de Ambiente y Desarrollo Sustentable<br/>
+                        Presidencia de la Nación<br/>
+                        AU Ezeiza - Cañuelas, Tramo Jorge Newbery km. 1,620<br/>
+                        1804 Ezeiza - Provincia de Buenos Aires<br/>
+                        Teléfono: (54) (11) 4480-4500, int.2497<br/>
+                        Correo electrónico: <a href="mailto:dpyra@ambiente.gob.ar">dpyra@ambiente.gob.ar </a>
                     </b:column>
-                    <b:column span="2">
-                        <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="136" height="27" />
+                    <b:column span="3">
+                        <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="271" height="53" />
                     </b:column>
                 </b:row>
                 <br/>
             </b:container>
         </b:container>
     </h:body>
+    <script type="text/javascript">
+        //<![CDATA[
+        function logout(xhr, status, args){
+            setTimeout(function(){
+                window.location = '/gestionEfluentesLiquidos-webExt/faces/libre/iniciar.xhtml';
+            }, 500);
+        }
+        //]]>
+    </script>      
 </html>
 

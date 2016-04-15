@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Inserciones manuales</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:panelGrid columns="2" >
+                <h:commandButton value="insertar partido" action="#{mbInsert.createPartido()}"/>
+                <h:commandButton value="insertar firmante" action="#{mbInsert.createFirmante()}"/>
+                <h:commandButton value="insertar establecimiento" action="#{mbInsert.createEstablecimiento()}"/>
+                <h:commandButton value="insertar Curso" action="#{mbInsert.createCurso()}"/>
+                <h:commandButton value="insertar Unidad" action="#{mbInsert.createUnidad()}"/>
+                <h:commandButton value="insertar Operador" action="#{mbInsert.createOperador()}"/>
+                <h:commandButton value="insertar Aforo" action="#{mbInsert.createAforo()}"/>
+                <h:commandButton value="insertar TipoAbasto" action="#{mbInsert.createTipoAbasto()}"/>
+                <h:commandButton value="insertar TipoCaudal" action="#{mbInsert.createTipoCaudal()}"/>
+                <h:commandButton value="insertar Declaración" action="#{mbInsert.createDeclaracion()}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

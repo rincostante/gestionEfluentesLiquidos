@@ -3,11 +3,11 @@
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
         <Node id="libre/iniciar.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="libre/normativa/principal.xhtml" x="150" y="600" zoom="true"/>
         <Node id="libre/registro/form.xhtml" x="400" y="150" zoom="true"/>
         <Node id="libre/cude/form.xhtml" x="150" y="300" zoom="true"/>
-        <Node id="libre/normativa/principal.xhtml" x="150" y="600" zoom="true"/>
-        <Node id="index.xhtml" x="650" y="150" zoom="true"/>
         <Node id="libre/tramites/principal.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="index.xhtml" x="650" y="150" zoom="true"/>
         <Node id="libre/faq/faq.xhtml" x="400" y="300" zoom="true"/>
         <Node id="sesion/iniciado.xhtml" x="150" y="150" zoom="true"/>
         <Node id="sesion/iniciadoPrimeraVez.xhtml" x="400" y="450" zoom="true"/>

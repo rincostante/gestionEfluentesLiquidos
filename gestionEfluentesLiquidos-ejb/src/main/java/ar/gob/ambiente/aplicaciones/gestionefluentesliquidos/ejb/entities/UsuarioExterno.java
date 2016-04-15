@@ -41,10 +41,19 @@ public class UsuarioExterno implements Serializable {
     /**
      * Contraseña que deberá cambiarse al iniciar sesión por primera vez
      */
-    @Column (nullable=false, length=50, unique=true)
-    @NotNull(message = "{entidades.fieldNotNullError}")
-    @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
+    @Column (nullable=false, length=100, unique=true)
+    @NotNull(message = "El campo clave no puede ser nulo")
+    @Size(message = "el campo clave no puede tener más de 100 caracteres", min = 1, max = 100)
     private String clave;
+    
+    /**
+     * Correo electrónico del usuario que operará en representación del Establecimiento.
+     * Este campo es ingresado por el usuario al momento de solicitar la cuenta de acceso.
+     */
+    @Column (nullable=false, length=50)
+    @NotNull(message = "El campo email no puede ser nulo")
+    @Size(message = "El campo email no puede tener más de 50 caracteres", min = 1, max = 50)
+    private String email;
     
     /**
      * Este campo solo está en true cuando el usuario es registrado o
@@ -128,6 +137,14 @@ public class UsuarioExterno implements Serializable {
      */
     @Transient
     String strCuit;    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public AdminEntidad getAdmin() {
         return admin;
@@ -226,7 +243,7 @@ public class UsuarioExterno implements Serializable {
     }
 
     public String getStrCuit() {
-        return String.valueOf(cuit).substring(0, 1) + "-" + String.valueOf(cuit).substring(2, 9) + "-" + String.valueOf(cuit).charAt(10);
+        return String.valueOf(cuit).substring(0, 2) + "-" + String.valueOf(cuit).substring(2, 9) + "-" + String.valueOf(cuit).charAt(10);
     }
 
     public void setStrCuit(String strCuit) {

@@ -30,7 +30,7 @@
                                              required="true" 
                                              requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" >
                                     <f:facet name="prepend">
-                                        <b:icon name="user" />
+                                        <b:iconAwesome name="user" />
                                     </f:facet>
                                 </b:inputText>
                             </b:column>
@@ -39,44 +39,19 @@
                                 <p:message for="recCude"/>
                             </b:column>
                         </b:row>
-                        <b:row>
-                            <b:column span="8">
-                                <p:outputLabel for="recMail" value="e-mail: " style="margin-bottom: 10px; color: gray"/>
-                                <b:inputText id="recMail" 
-                                             placeholder="E-mail del usuario" 
-                                             value="#{mbSesion.recCude}" 
-                                             required="true" 
-                                             requiredMessage="El campo e-mail es obligatorio" >
-                                    <f:facet name="prepend">
-                                        <b:icon name="user" />
-                                    </f:facet>
-                                </b:inputText>
-                            </b:column>
-                            <b:column span="4">
-                                <br/>
-                                <p:message for="recMail"/>
-                            </b:column>
-                        </b:row>
                         <b:row style="margin-top: 5px">
                             <b:column span="6" >
-                                <p:commandButton id="btnEnviar" styleClass="btn btn-default" process="pnRecuperar" 
-                                                 actionListener="#{mbSesion.enviarSolicitud}"
-                                                 icon="ui-icon-play"
-                                                 value="Enviar" update="pnRecuperar,recMsg"
-                                                 style="width:100%" />
+                                <b:commandButton id="btnEnviar" style="margin-right: 5px; width: 100%"
+                                                 look="primary" ajax="true" value="#{mbSesion.cmbEnviar}" 
+                                                     action="#{mbSesion.enviarSolicitud}" update="pnRecuperar,recMsg" />
                             </b:column>
                             <b:column span="6">
-                                <p:commandButton styleClass="btn btn-default"
-                                                 icon="ui-icon-refresh"
-                                                 value="Limpiar"
-                                                 style="width:100%" >
-                                    <p:ajax resetValues="true" update="pnRecuperar"/>
-                                </p:commandButton>
+                                <b:button look="warning" value="#{mbSesion.cmbLimpiar}" style="width: 100%" onclick="resetRecuperar()" />
                             </b:column>
                             <p:message for="btnEnviar"/>
                         </b:row>
                         <f:facet name="footer">
-                            <b:button look="primary" value="Cerrar" dismiss="modal" onclick="return false;"/>
+                            <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
                         </f:facet>
                     </b:panel>
                 </h:form>        
@@ -106,7 +81,7 @@
                                                  required="true" 
                                                  requiredMessage="El campo #{bundle.lebelRegCUDE} es obligatorio" >
                                         <f:facet name="prepend">
-                                            <b:icon name="user" />
+                                            <b:iconAwesome name="user" />
                                         </f:facet>
                                     </b:inputText>
                                 </b:column> 
@@ -129,27 +104,19 @@
 
                             <b:row style="margin-top: 5px">
                                 <b:column span="6" >
-                                    <p:commandButton styleClass="btn btn-default" 
-                                                     action="#{mbSesion.login}"
-                                                     icon="ui-icon-play"
-                                                     value="Ingresar" update="loginForm, mensajes"
-                                                     style="width:100%" />
+                                    <b:commandButton style="margin-right: 5px; width: 100%" 
+                                                     look="primary" ajax="true" value="#{mbSesion.cmbValidar}" 
+                                                     action="#{mbSesion.login}" update="mensajes,loginForm" />
                                 </b:column>
                                 <b:column span="6">
-                                    <p:commandButton styleClass="btn btn-default"
-                                                     icon="ui-icon-refresh"
-                                                     value="Limpiar"
-                                                     style="width:100%" >
-                                        <p:ajax resetValues="true" update="inicioSesion"/>
-                                    </p:commandButton>
+                                    <b:button look="warning" value="#{mbSesion.cmbLimpiar}" style="width: 100%" onclick="resetLogin()" />
                                 </b:column>
                             </b:row>
                             
                             <b:row style="margin-top: 5px">
                                 <b:column span="12" >
-                                    <p:commandButton styleClass="btn btn-default"
-                                                     icon=" ui-icon-key"
-                                                     value="Recuperar contraseña" update="mensajes"
+                                    <b:commandButton value="#{mbSesion.cmbRecuperar}"
+                                                     update="mensajes"
                                                      onclick="$('.modalRecuperar').modal();return false;"
                                                      style="width:100%" />
                                 </b:column>
@@ -161,5 +128,14 @@
             </h:form>             
         </ui:define> 
     </ui:composition>
+    <script type="text/javascript">
+        function resetRecuperar() {
+            document.getElementById("frmRecuperar").reset();
+        }
+        
+        function resetLogin() {
+            document.getElementById("loginForm").reset();
+        }        
+    </script>   
 </html>
 

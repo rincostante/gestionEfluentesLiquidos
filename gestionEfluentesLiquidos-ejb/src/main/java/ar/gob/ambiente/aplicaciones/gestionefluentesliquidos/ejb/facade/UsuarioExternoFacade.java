@@ -77,7 +77,24 @@ public class UsuarioExternoFacade extends AbstractFacade<UsuarioExterno> {
         }else{
             return null;
         }
-    }         
+    } 
+    
+    public UsuarioExterno validar(String cude, String clave){
+        List<UsuarioExterno> lUs;
+        em = getEntityManager();
+        String queryString = "SELECT us FROM UsuarioExterno us "
+                + "WHERE us.cude = :cude "
+                + "AND us.clave = :clave";
+        Query q = em.createQuery(queryString)
+                .setParameter("cude", cude)
+                .setParameter("clave", clave);
+        lUs = q.getResultList();
+        if(lUs.isEmpty()){
+            return null;
+        }else{
+            return lUs.get(0);
+        }
+    }
     
     /**
      * Método a implementar según las características de la aplicación

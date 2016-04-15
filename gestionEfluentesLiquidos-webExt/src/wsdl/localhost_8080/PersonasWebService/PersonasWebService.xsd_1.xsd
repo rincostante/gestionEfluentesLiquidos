@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.3 (tags/2.3-7528; 2013-04-29T19:34:10+0000) JAXWS-RI/2.2.8 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://ws.gestionpersonas.servicios.ambiente.gob.ar/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.gestionpersonas.servicios.ambiente.gob.ar/">
+
+<xs:element name="buscarEstablecimientoPorId" type="tns:buscarEstablecimientoPorId"/>
+
+<xs:element name="buscarEstablecimientoPorIdResponse" type="tns:buscarEstablecimientoPorIdResponse"/>
+
+<xs:element name="buscarEstablecimientoPorRazonSocial" type="tns:buscarEstablecimientoPorRazonSocial"/>
+
+<xs:element name="buscarEstablecimientoPorRazonSocialResponse" type="tns:buscarEstablecimientoPorRazonSocialResponse"/>
+
+<xs:element name="buscarEstablecimientosPorCUIT" type="tns:buscarEstablecimientosPorCUIT"/>
+
+<xs:element name="buscarEstablecimientosPorCUITResponse" type="tns:buscarEstablecimientosPorCUITResponse"/>
+
+<xs:element name="buscarEstablecimientosPorExp" type="tns:buscarEstablecimientosPorExp"/>
+
+<xs:element name="buscarEstablecimientosPorExpResponse" type="tns:buscarEstablecimientosPorExpResponse"/>
+
+<xs:element name="buscarPerFisicaPorId" type="tns:buscarPerFisicaPorId"/>
+
+<xs:element name="buscarPerFisicaPorIdResponse" type="tns:buscarPerFisicaPorIdResponse"/>
+
+<xs:element name="buscarPerFisicasPorCuit" type="tns:buscarPerFisicasPorCuit"/>
+
+<xs:element name="buscarPerFisicasPorCuitResponse" type="tns:buscarPerFisicasPorCuitResponse"/>
+
+<xs:element name="buscarPerFisicasPorExp" type="tns:buscarPerFisicasPorExp"/>
+
+<xs:element name="buscarPerFisicasPorExpResponse" type="tns:buscarPerFisicasPorExpResponse"/>
+
+<xs:element name="buscarPerFisicasPorNombre" type="tns:buscarPerFisicasPorNombre"/>
+
+<xs:element name="buscarPerFisicasPorNombreResponse" type="tns:buscarPerFisicasPorNombreResponse"/>
+
+<xs:element name="buscarPerJuridicaPorId" type="tns:buscarPerJuridicaPorId"/>
+
+<xs:element name="buscarPerJuridicaPorIdResponse" type="tns:buscarPerJuridicaPorIdResponse"/>
+
+<xs:element name="buscarPerJuridicasPorCuit" type="tns:buscarPerJuridicasPorCuit"/>
+
+<xs:element name="buscarPerJuridicasPorCuitResponse" type="tns:buscarPerJuridicasPorCuitResponse"/>
+
+<xs:element name="buscarPerJuridicasPorRazonSocial" type="tns:buscarPerJuridicasPorRazonSocial"/>
+
+<xs:element name="buscarPerJuridicasPorRazonSocialResponse" type="tns:buscarPerJuridicasPorRazonSocialResponse"/>
+
+<xs:element name="verEstablecimientos" type="tns:verEstablecimientos"/>
+
+<xs:element name="verEstablecimientosHabilitados" type="tns:verEstablecimientosHabilitados"/>
+
+<xs:element name="verEstablecimientosHabilitadosResponse" type="tns:verEstablecimientosHabilitadosResponse"/>
+
+<xs:element name="verEstablecimientosResponse" type="tns:verEstablecimientosResponse"/>
+
+<xs:element name="verPerFisicas" type="tns:verPerFisicas"/>
+
+<xs:element name="verPerFisicasHabilitadas" type="tns:verPerFisicasHabilitadas"/>
+
+<xs:element name="verPerFisicasHabilitadasResponse" type="tns:verPerFisicasHabilitadasResponse"/>
+
+<xs:element name="verPerFisicasResponse" type="tns:verPerFisicasResponse"/>
+
+<xs:element name="verPerJuridicas" type="tns:verPerJuridicas"/>
+
+<xs:element name="verPerJuridicasHabilitadas" type="tns:verPerJuridicasHabilitadas"/>
+
+<xs:element name="verPerJuridicasHabilitadasResponse" type="tns:verPerJuridicasHabilitadasResponse"/>
+
+<xs:element name="verPerJuridicasResponse" type="tns:verPerJuridicasResponse"/>
+
+<xs:complexType name="buscarPerFisicasPorCuit">
+<xs:sequence>
+<xs:element name="cuitPerFis" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicasPorCuitResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perFisica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="perFisica">
+<xs:sequence>
+<xs:element name="admin" type="tns:adminEntidad" minOccurs="0"/>
+<xs:element name="cel" type="xs:string" minOccurs="0"/>
+<xs:element name="correoElectronico" type="xs:string" minOccurs="0"/>
+<xs:element name="cuitCuil" type="xs:long"/>
+<xs:element name="cuitValidado" type="xs:boolean"/>
+<xs:element name="domicilio" type="tns:domicilio" minOccurs="0"/>
+<xs:element name="estado" type="tns:estado" minOccurs="0"/>
+<xs:element name="expediente" type="tns:expediente" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombreCompleto" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="adminEntidad">
+<xs:sequence>
+<xs:element name="fechaAlta" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaBaja" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaModif" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="habilitado" type="xs:boolean"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="strFechaAlta" type="xs:string" minOccurs="0"/>
+<xs:element name="strFechaBaja" type="xs:string" minOccurs="0"/>
+<xs:element name="strFechaModif" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="domicilio">
+<xs:sequence>
+<xs:element name="calle" type="xs:string" minOccurs="0"/>
+<xs:element name="departamento" type="xs:string" minOccurs="0"/>
+<xs:element name="dpto" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idLocalidad" type="xs:long" minOccurs="0"/>
+<xs:element name="localidad" type="xs:string" minOccurs="0"/>
+<xs:element name="numero" type="xs:string" minOccurs="0"/>
+<xs:element name="piso" type="xs:string" minOccurs="0"/>
+<xs:element name="provincia" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="estado">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="expediente">
+<xs:sequence>
+<xs:element name="anio" type="xs:int"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="numero" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verPerFisicas">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="verPerFisicasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perFisica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientoPorId">
+<xs:sequence>
+<xs:element name="idEstablecimiento" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientoPorIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:establecimiento" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="establecimiento">
+<xs:sequence>
+<xs:element name="alertaDomicilio" type="xs:boolean"/>
+<xs:element name="correoElectronico" type="xs:string" minOccurs="0"/>
+<xs:element name="domicilio" type="tns:domicilio" minOccurs="0"/>
+<xs:element name="estado" type="tns:estado" minOccurs="0"/>
+<xs:element name="expediente" type="tns:expediente" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="perFisica" type="tns:perFisica" minOccurs="0"/>
+<xs:element name="perJuridica" type="tns:perJuridica" minOccurs="0"/>
+<xs:element name="telefono" type="xs:string" minOccurs="0"/>
+<xs:element name="tipo" type="tns:tipoEstablecimiento" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="perJuridica">
+<xs:sequence>
+<xs:element name="admin" type="tns:adminEntidad" minOccurs="0"/>
+<xs:element name="cuit" type="xs:long"/>
+<xs:element name="estado" type="tns:estado" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idAplicacion" type="xs:long" minOccurs="0"/>
+<xs:element name="razonSocial" type="xs:string" minOccurs="0"/>
+<xs:element name="tipoPersonaJuridica" type="tns:tipoPersonaJuridica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="tipoPersonaJuridica">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="sigla" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="tipoEstablecimiento">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicaPorId">
+<xs:sequence>
+<xs:element name="idPerFis" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicaPorIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perFisica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verPerJuridicas">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="verPerJuridicasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perJuridica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verPerJuridicasHabilitadas">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="verPerJuridicasHabilitadasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perJuridica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientoPorRazonSocial">
+<xs:sequence>
+<xs:element name="razonSocialEst" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientoPorRazonSocialResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:establecimiento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerJuridicaPorId">
+<xs:sequence>
+<xs:element name="idPerJur" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerJuridicaPorIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perJuridica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerJuridicasPorCuit">
+<xs:sequence>
+<xs:element name="cuitPerJur" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerJuridicasPorCuitResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perJuridica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verEstablecimientosHabilitados">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="verEstablecimientosHabilitadosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:establecimiento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientosPorCUIT">
+<xs:sequence>
+<xs:element name="cuitEst" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientosPorCUITResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:establecimiento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicasPorNombre">
+<xs:sequence>
+<xs:element name="nombrePerFis" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicasPorNombreResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perFisica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicasPorExp">
+<xs:sequence>
+<xs:element name="numExpPerFis" type="xs:int"/>
+<xs:element name="anioExpPerFis" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerFisicasPorExpResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perFisica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerJuridicasPorRazonSocial">
+<xs:sequence>
+<xs:element name="razonSocialPerJur" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPerJuridicasPorRazonSocialResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perJuridica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verEstablecimientos">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="verEstablecimientosResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:establecimiento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientosPorExp">
+<xs:sequence>
+<xs:element name="numExpEst" type="xs:int"/>
+<xs:element name="anioExpEst" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarEstablecimientosPorExpResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:establecimiento" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="verPerFisicasHabilitadas">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="verPerFisicasHabilitadasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:perFisica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

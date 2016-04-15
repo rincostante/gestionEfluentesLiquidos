@@ -1,12 +1,139 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/sesionTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">    
+            <f:metadata>  
+                 <f:event listener="#{mbEstablecimiento.iniciar}" type="preRenderView"></f:event>  
+            </f:metadata> 
+            <p:growl id="messages" showDetail="false" />
+            <b:modal id="dlgSelected" styleClass="modalPrincipal"
+                     closable="true" >
+                <h:form id="frmDlg" prependId="false">
+                    <b:panel id="pnActualizar" title="Guardar ubicación geográfica" look="info" collapsible="false" >
+                        <b:row>
+                            <b:column span="12">
+                                <p style="color: gray">Usted ha seleccionado una ubicación para el Establecimiento. 
+                                    Si lo desea, puede agregar un Título a la selección.
+                                    Haga clic en el botón que corresponda para guardarla o cancelar la selección.</p>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="8">
+                                <h:panelGrid columns="3" cellpadding="5">
+                                    <p:outputLabel for="lat" value="Latitud: " style="margin-bottom: 10px; color: gray" />
+                                    <b:inputText id="lat" value="#{mbEstablecimiento.latSelected}" />
+
+                                    <p:outputLabel for="lng" value="Longitud: " style="margin-bottom: 10px; color: gray" />
+                                    <b:inputText id="lng" value="#{mbEstablecimiento.lngSelected}" />
+
+                                    <p:outputLabel for="title" value="Título: " style="margin-bottom: 10px; color: gray" />
+                                    <b:inputText  id="title" value="#{mbEstablecimiento.titulo}" />
+                                </h:panelGrid>
+                            </b:column>
+                            <b:column span="4">
+                                <p:message for="lat"/>
+                                <p:message for="lng"/>
+                            </b:column>
+                        </b:row>
+                        <b:row style="margin-top: 5px">
+                            <b:column span="6" >
+                                <b:commandButton style="margin-right: 5px; width: 100%" id="guardarUbic" look="primary" ajax="true" value="#{mbEstablecimiento.cmbGuardar}" action="#{mbEstablecimiento.addMarker}" update="frmDlg,frmMap,messages" oncomplete="markerAddComplete()" />
+                            </b:column>
+                            <p:message for="guardarUbic"/>
+                            <b:column span="6">
+                                <b:button look="warning" value="#{mbEstablecimiento.cmbCancelar}" style="width: 100%" onclick="return cancel()" />
+                            </b:column>
+                        </b:row>    
+                        <f:facet name="footer">
+                            <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                        </f:facet>
+                    </b:panel>
+                </h:form>
+
+            </b:modal>
+            
+            <h:form id="frmMap" prependId="false">
+                <b:panel rendered="#{not mbEstablecimiento.actualizado}" collapsible="false" look="info" title="Seleccione la ubicación del Establecimiento">
+                    <b:row>
+                        <b:column span="4" >
+                            <b:inputText id="address" placeholder="Ingrese aquí la ubicación a buscar" />
+                        </b:column>
+                        <b:column span="1" >
+                            <b:button onclick="geocode()" look="primary" value="Buscar" />
+                        </b:column>
+                        <b:column span="7" >
+                            <p style="color: gray">#{bundle.instruccionesSeleccion}</p>
+                        </b:column>
+                    </b:row>
+                    <p:gmap id="geoGmap" widgetVar="geoMap" center="#{mbEstablecimiento.centerGeoMap}" zoom="12" type="ROADMAP" 
+                            style="width:100%;height:400px" model="#{mbEstablecimiento.geoModel}" 
+                            onPointClick="handlePointClick(event);" >
+                        <p:ajax event="geocode" listener="#{mbEstablecimiento.onGeocode}" update="@this" />
+                    </p:gmap>
+                </b:panel>
+                
+                <b:panel rendered="#{mbEstablecimiento.actualizado}" collapsible="false" look="info" title="Ubicación geográfica">
+                    <p:gmap id="actualizadoGmap" center="#{mbEstablecimiento.centerGeoMap}" zoom="12" type="ROADMAP" 
+                            style="width:100%;height:400px" model="#{mbEstablecimiento.actualizadoModel}" >
+                    </p:gmap>
+                </b:panel>
+            </h:form>                
+        </ui:define> 
+    </ui:composition>
+    
+    <script type="text/javascript">
+        var currentMarker = null;
+        var marcas = 0;
+        function geocode() {
+            PF('geoMap').geocode(document.getElementById('input_address').value);
+        }
+
+        function handlePointClick(event) {
+            if(marcas === 0){
+                if(currentMarker === null) {
+                    document.getElementById('input_lat').value = event.latLng.lat();
+                    document.getElementById('input_lng').value = event.latLng.lng();
+
+                    currentMarker = new google.maps.Marker({
+                        position:new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
+                    });     
+                    PF('geoMap').addOverlay(currentMarker);
+                }
+                $('.modalPrincipal').modal();
+            }
+
+            return false;
+        }
+        
+        function markerAddComplete() {
+            var title = document.getElementById('input_title');
+            currentMarker.setTitle(title.value);
+            title.value = "";
+
+            currentMarker = null;
+            $('.modalPrincipal').modal('hide');
+            
+            marcas = 1;
+        }   
+        
+        function cancel() {
+            $('.modalPrincipal').modal('hide');
+            currentMarker.setMap(null);
+            currentMarker = null;
+
+            return false;
+        }
+    </script>    
+    
 </html>
+
 

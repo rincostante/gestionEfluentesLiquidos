@@ -11,5 +11,7 @@
     <module>gestionEfluentesLiquidos-webInt</module>
     <module>gestionEfluentesLiquidos-webExt</module>
     <module>gestionEfluentesLiquidos-ejb</module>
+    <module>puebaCorreo</module>
+    <module>pruebaAccesoEjb</module>
   </modules>
 </project>

@@ -123,7 +123,7 @@ public class LoginFilter implements Filter {
 
             //El usuario no está logueado
             if (mbSesion == null || !mbSesion.isLogeado()) {
-              res.sendRedirect(req.getContextPath() + "/faces/login.xhtml");
+              res.sendRedirect(req.getContextPath() + "/faces/libre/iniciar.xhtml");
               return;
             }
 
@@ -172,12 +172,32 @@ public class LoginFilter implements Filter {
      * que se obtengan de un archivo de configuración o algo que no requiera
      * compilación.
      */
-      if (urlStr.endsWith("login.xhtml"))
+      if (urlStr.endsWith("iniciar.xhtml"))
         return true;
-      if (urlStr.endsWith("editDatos.xhtml"))
+      if (urlStr.endsWith("index.xhtml"))
         return true;
+      if (urlStr.endsWith("-webext/"))
+        return true;
+      if (urlStr.endsWith("insertar.xhtml"))
+        return true;
+      if (urlStr.endsWith("contacto/form.xhtml"))
+        return true;
+      if (urlStr.endsWith("cude/form.xhtml"))
+        return true;      
+      if (urlStr.endsWith("faq/faq.xhtml"))
+        return true;
+      if (urlStr.endsWith("normativa/principal.xhtml"))
+        return true;
+      if (urlStr.endsWith("registro/form.xhtml"))
+        return true;
+      if (urlStr.endsWith("tramites/principal.xhtml"))
+        return true;
+      
+      
       if (urlStr.endsWith(".png"))
         return true;    
+      if (urlStr.endsWith(".gif"))
+        return true;  
       if (urlStr.endsWith(".ico"))
         return true;       
       if (urlStr.indexOf("/javax.faces.resource/") != -1)

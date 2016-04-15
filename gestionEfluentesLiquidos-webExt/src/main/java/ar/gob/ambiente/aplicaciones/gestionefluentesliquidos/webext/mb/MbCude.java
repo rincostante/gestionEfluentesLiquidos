@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb;
 
@@ -11,7 +7,6 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.util.JsfUtil
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -27,6 +22,10 @@ public class MbCude implements Serializable{
     private ConsultaCude consulta;
     private String cude;
     
+    // botonos
+    private String cmbValidar;
+    private String cmbLimpiar;
+    
     /**********************
      * Métodos de inicio **
      **********************/
@@ -34,23 +33,6 @@ public class MbCude implements Serializable{
     public MbCude() {
 
     }
-    
-    
-    @PostConstruct
-    public void init(){
-        String s;
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-        .getExternalContext().getSession(true);
-        Enumeration enume = session.getAttributeNames();
-        while(enume.hasMoreElements()){
-            s = (String)enume.nextElement();
-            if(s.substring(0, 2).equals("mb")){
-                if(!s.equals("mbCude")){
-                    session.removeAttribute(s);
-                }
-            }
-        }
-    }    
 
     public void iniciar(){
         if(validado){
@@ -63,11 +45,14 @@ public class MbCude implements Serializable{
             while(enume.hasMoreElements()){
                 s = (String)enume.nextElement();
                 if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbCude")){
+                    if(!s.equals("mbCude") && !s.equals("mbSesion")){
                         session.removeAttribute(s);
                     }
                 }
             }
+            cmbValidar = "Validar";
+            cmbLimpiar = "Limpiar";
+            
             resultado = false;
             mostrarResult = false;
             consulta = new ConsultaCude();
@@ -77,6 +62,23 @@ public class MbCude implements Serializable{
     /**********************
      * Métodos de acceso **
      **********************/
+    
+    public String getCmbValidar() {
+        return cmbValidar;
+    }
+
+    public void setCmbValidar(String cmbValidar) {
+        this.cmbValidar = cmbValidar;
+    }
+
+    public String getCmbLimpiar() {
+        return cmbLimpiar;
+    }
+
+    public void setCmbLimpiar(String cmbLimpiar) {
+        this.cmbLimpiar = cmbLimpiar;
+    }
+
     
     public boolean isMostrarResult() {
         return mostrarResult;
