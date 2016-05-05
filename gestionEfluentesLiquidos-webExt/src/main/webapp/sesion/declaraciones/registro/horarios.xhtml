@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaFrm" title="Registro de DJ - Horario - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
+                Ayuda registro y edición de Horario de trabajo
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaGestHorario" title="Registro de DJ - Horario" styleClass="modalAyudaGestHorario"
+            closable="true" >
+                Ayuda para la gestión general del Horario de trabajo del Establecimiento
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+     
+        <h:form id="frHorarios" prependId="false">
+            <b:panel title="Horarios" look="info" collapsible="false">
+                <b:label tooltip="Utilice este formulario para ingresar los horarios de cada día laborable de la semana." 
+                         text="Ingreso de Horarios diarios nuevos o edición de existentes" severity="info"/>
+                <b:panel id="pnForm" look="info">
+                    <b:row>
+                        <b:column span="6">
+                            <b:selectOneMenu label="Día" id="cmbDia" value="#{mbDeclaraciones.dia.codDia}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.mapDiaSemana.entrySet()}" var="diaSemana" 
+                                               itemLabel="#{diaSemana.value}" itemValue="#{diaSemana.key}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                        <b:column span="1">
+                            <b:inputText label="Hora" value="#{mbDeclaraciones.dia.horasInicDesc}" >
+                                <f:validateLongRange minimum="0" maximum="23" />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="1">
+                            <b:inputText label="Min" value="#{mbDeclaraciones.dia.minInicDesc}" >
+                                <f:validateLongRange minimum="0" maximum="59" />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="1">
+                            <b:inputText label="Hora" value="#{mbDeclaraciones.dia.horasFinDesc}" >
+                                <f:validateLongRange minimum="0" maximum="23" />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="1">
+                            <b:inputText label="Min" value="#{mbDeclaraciones.dia.minFinDesc}" >
+                                <f:validateLongRange minimum="0" maximum="59" />
+                            </b:inputText>
+                        </b:column>
+                    </b:row>
+
+                    <br></br>
+                    <b:row>
+                        <b:column span="12" >
+                            <b:button title="Breve explicación del proceso de registro de un Día del horario laboral" onclick="$('.modalAyudaFrm').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                            <b:commandButton title="Agregar el Día nuevo o guardar la actualización de uno existente" 
+                                             action="#{mbDeclaraciones.addDia()}" size="xs" look="primary" 
+                                             value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frHorarios,messages" />
+                            <b:commandButton title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                             size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                             action="#{mbDeclaraciones.limpiarDia()}" update="pnForm" />
+                            <b:commandButton title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
+                                             action="#{mbDeclaraciones.cancelarDiaSel()}" update="pnForm" />
+                        </b:column>
+                    </b:row>
+                </b:panel>
+                
+                <b:label tooltip="Podrá seleccionar un Día del listado para su eliminación o edición." 
+                         text="Listado de Días ingresados" severity="info"/>
+                <b:panel id="pnTable" look="info">
+                    <b:row>
+                        <b:column span="12" >
+                            <b:dataTable id="dtDias" value="#{mbDeclaraciones.lstDias}" var="dia" 
+                                         styleClass="table table-striped table-bordered" style="font-size: 12px" >
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Nombre" />
+                                    </f:facet>
+                                    <h:outputText value="#{dia.nombre}" />
+                                </h:column>
+
+
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Acciones" />
+                                    </f:facet>
+                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                     action="#{mbDeclaraciones.editDia()}" >
+                                        <f:setPropertyActionListener value="#{dia}" target="#{mbDeclaraciones.dia}" /> 
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                     action="#{mbDeclaraciones.removeDia()}" update="frHorarios" >
+                                        <f:setPropertyActionListener value="#{dia}" target="#{mbDeclaraciones.dia}" />  
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                </h:column>
+                            </b:dataTable>
+                        </b:column>
+                    </b:row>
+                </b:panel>
+                <b:row>
+                    <b:column span="12" >
+                        <b:button title="Breve explicación del proceso de configuración de los Dias que componen el Horario laboral del Establecimiento" 
+                                  onclick="$('.modalAyudaGestHorario').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosHorarios}" 
+                                         title="Guardar Dias que componen el Horario laboral de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.createHorario()}" 
+                                         look="primary" value="#{mbDeclaraciones.pzGuardar}" ajax="true" update="messages,frHorarios" process="@this" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosHorarios}" 
+                                         title="Limpiar Dias que componen el Horario laboral de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.limpiarHorario()}" process="@this"  
+                                         look="danger" value="#{mbDeclaraciones.pzLimpiar}" ajax="true" update="frHorarios" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosHorarios}" 
+                                         title="Actualizar los Dias que componen el Horario laboral de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.editHorario()}" look="primary" process="@this"
+                                         value="#{mbDeclaraciones.pzActualizar}" ajax="true" update="messages" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosHorarios}" 
+                                         title="Eliminar los Dias que componen el Horario laboral de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.deleteHorario()}" look="danger" process="@this" 
+                                         value="#{mbDeclaraciones.pzEliminar}" ajax="true" update="frHorarios" />
+                    </b:column>
+                </b:row>
+            </b:panel>
+        </h:form>
+    </h:body>
+</html>
+

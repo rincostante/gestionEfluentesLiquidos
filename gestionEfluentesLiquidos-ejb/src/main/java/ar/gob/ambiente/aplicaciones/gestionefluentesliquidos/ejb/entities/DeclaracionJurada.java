@@ -49,7 +49,13 @@ public class DeclaracionJurada implements Serializable {
      */
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @NotNull(message = "El campo vuelco no puede ser nulo") 
-    private Vuelco vuelco;       
+    private Vuelco vuelco;     
+    
+    /**
+     * Campo que guarda el horario del Establecimiento
+     */
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private Horario horario;    
     
     /**
      * Campo que muestra la distribución de las superficies edilicias del Establecimiento
@@ -89,6 +95,12 @@ public class DeclaracionJurada implements Serializable {
     private Firmante firmante;
     
     /**
+     * Campo que guarda el Abastecimiento asociado
+     */
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private Abastecimiento abastecimiento;     
+    
+    /**
      * Guarda el conjunto de datos administrativos.
      * Se persiste en casacada
      */
@@ -124,6 +136,23 @@ public class DeclaracionJurada implements Serializable {
     /**********************
      * Métodos de acceso **
      **********************/
+    
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
+    
+    public Abastecimiento getAbastecimiento() {
+        return abastecimiento;
+    }
+
+    public void setAbastecimiento(Abastecimiento abastecimiento) {
+        this.abastecimiento = abastecimiento;
+    }
     
     public Vuelco getVuelco() {
         return vuelco;

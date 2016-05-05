@@ -3,9 +3,6 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.persistence.Column;
@@ -15,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  * Clase que encapsula las cantidades de m2 de superficie ocupada por el Establecimiento.

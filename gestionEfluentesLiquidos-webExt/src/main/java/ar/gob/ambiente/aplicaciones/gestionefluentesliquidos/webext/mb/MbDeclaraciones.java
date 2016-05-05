@@ -2,19 +2,28 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Abastecimiento;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Abasto;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Actividad;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.ActividadDec;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.AdminEntidad;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Aforo;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.CantPersonalDec;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Curso;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Descarga;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Dia;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DocDec;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.FechaDec;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Firmante;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Horario;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Pozo;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.SuperficieDec;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.TipoAbasto;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.TipoCaudal;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Tratamiento;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Turno;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Usuario;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.UsuarioExterno;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Vuelco;
@@ -25,6 +34,7 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt.CuitAf
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt.ExpedienteDrp;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
@@ -93,17 +103,48 @@ public class MbDeclaraciones implements Serializable{
     
     // Descargas
     private Descarga descarga;
-    private Descarga descargaSelected;
+    private Descarga descSwap;
     private Tratamiento tratamiento;
     private Tratamiento tratamientoSelected;
+    private Tratamiento tratSwap;
     private List<Descarga> lstDescargas; 
+    private List<Curso> lstDestinos;
     private Map<Integer, String> mapTipoTratamiento;
     private Map<Integer, String> mapTipoDescarga;
     private List<Aforo> lstAforos;
     
+    // Abastecimiento
+    private Abastecimiento abastecimiento;
+    private Abasto abasto;
+    private Abasto abastoSwap;
+    private List<Abasto> lstAbasto;
+    private Map<Integer, String> mapOrigenes;
+    private Map<Integer, String> mapCircuitos;
+    private Map<Integer, String> mapFuentes;
+    private List<TipoAbasto> lstTiposAbasto;
+    private List<TipoCaudal> lstTiposCaudal;
+    
+    // Pozos
+    private Pozo pozo;
+    private Pozo pozoSwap;
+    private List<Pozo> lstPozos;
+    private Map<Integer, String> mapTipoBomba;
+    
+    // Horarios
+    private Horario horario;
+    private Dia dia;
+    private Dia diaSwap;
+    private List<Dia> lstDias;
+    private Turno turno;
+    private Turno turnoSwap;
+    private List<Turno> lstTurnos;
+    private Map<Integer, String> mapDiaSemana;    
+    
     // values de los commandbuton
     private String gralRegistrar;
     private String gralLimpiar;
+    private String gralGuardar;
+    private String gralCancelarSel;
     private String mdAgregarAct;
     private String mdAgregarFecha;
     private String mdAgregarPersonal;
@@ -127,6 +168,28 @@ public class MbDeclaraciones implements Serializable{
     private String vlcAgregar;
     private String vlcTratamientos;
     private String vlcGuardarTrat;
+    private String dscGuardarDesc;
+    private String dscActualizarDesc;
+    private String dscLimpiarDesc;
+    private String dscEliminar;
+    private String pzGuardar;
+    private String pzActualizar;
+    private String pzLimpiar;
+    private String pzEliminar;
+    private String abastGuardar;
+    private String abastActualizar;
+    private String abastLimpiar;
+    private String abastEliminar;
+    private String horarioGuardarDias;
+    private String horarioActualizarDias;
+    private String horarioLimpiarDias;
+    private String horarioEliminarDias;    
+    private String horarioGuardarTurnos;
+    private String horarioLimpiarTurnos;
+    
+    // iconos
+    private String pulgarComp;
+    private String pulgarOn;
     
     // flags check vuelco
     private boolean activeAlcalino;
@@ -135,17 +198,22 @@ public class MbDeclaraciones implements Serializable{
     private UsuarioExterno usLogueado;
     private Establecimiento est;
     private boolean edita;
+    private boolean removido;
     private int ordenList;
     
     // flags para los tabs
     private boolean datosComReg;
     private boolean datosVuelco;
     private boolean datosDescargas;
-    private boolean datosAbasto;
+    private boolean datosPozos;
+    private boolean datosAbastos;
     private boolean datosProd;
+    private boolean datosHorarios;
     
     // indicador de tab de inicio
     private int activeIndex;
+    
+    private String page="registro/datosgrales.xhtml";
 
     @EJB
     private BackendSrv backendSrv;
@@ -158,8 +226,11 @@ public class MbDeclaraciones implements Serializable{
      */
     @PostConstruct
     public void init(){
+        // botones
         gralRegistrar = "Registrar Declaración";
         gralLimpiar = "Limpiar todo";
+        gralGuardar = "Guardar";
+        gralCancelarSel = "Cancelar selección";
         mdAgregarAct = "Agregar Actividad";
         mdActualizar = "Actualizar";
         mdLimpiarForm = "Limpiar formulario";
@@ -176,36 +247,80 @@ public class MbDeclaraciones implements Serializable{
         compLimpiar = "Limpiar todos los Datos Complementarios";
         compActualizar = "Actualizar los Datos Complementarios";
         compEliminar = "Eliminar los Datos Complementarios";
-        vlcGuardar = "Guardar Vuelcos";
-        vlcLimpiar = "Limpiar Vuelcos";
-        vlcActualizar  = "Actualizar vuelco";
-        vlcEliminar = "Eliminar Vuelcos";
-        vlcAgregar = "Agregar Nueva";
+        vlcGuardar = "Guardar Vuelco";
+        vlcLimpiar = "Limpiar Vuelco";
+        vlcEliminar = "Eliminar el Vuelco registrado";
+        vlcActualizar  = "Actualizar Vuelco";
         vlcTratamientos = "Trat. liq.";
         vlcGuardarTrat = "Guardar Tratatamiento";
+        dscGuardarDesc = "Guardar Descargas";
+        dscLimpiarDesc = "Limpiar Descargas";
+        dscActualizarDesc = "Actualizar Descargas registradas";
+        dscEliminar = "Eliminar las Descargas registradas";
+        pzGuardar = "Guardar Pozos";
+        pzLimpiar = "Limpiar Pozos";
+        pzActualizar = "Actualizar los Pozos registrados";
+        pzEliminar = "Eliminar los Pozos registrados";
+        abastGuardar = "Guardar Abastos";
+        abastActualizar = "Actualizar los Abastos registrados";
+        abastLimpiar = "Limpiar Abastos";
+        abastEliminar = "Eliminar los Abastos registrados";
+        
+        horarioGuardarDias = "Guardar Días";
+        horarioActualizarDias = "Actualizar los Días registrador";
+        horarioLimpiarDias = "Limpiar Días";
+        horarioEliminarDias = "Eliminar los Días registrados";    
+        horarioGuardarTurnos = "Guardar Turnos";
+        horarioLimpiarTurnos = "Limpiar Turnos";
+        
         activeAlcalino = false;
+        
+        pulgarComp = "glyphicon-thumbs-down";
                 
+        // flags
         edita = false;
+        removido = false;
         datosComReg = false;
         datosVuelco = false;
         datosDescargas = false;
-        datosAbasto = false;
+        datosPozos = false;
+        datosAbastos = false;
         datosProd = false;
-        
         presentoDoc = false;
-        docDec = new DocDec();
+        activeIndex = 0;
 
+        // hashmaps
         mapTipoFecha = FechaDec.getMP_TIPO_FECHAS();
         mapTipoPersonal = CantPersonalDec.getMP_TIPO_PERS();
         mapTipoSuperficie = SuperficieDec.getMP_TIPO_SUP();
         mapTipoVisado = DocDec.getMP_VISADOS();
         mapTipoTratamiento = Tratamiento.getMP_NOMBRES();
         mapTipoDescarga = Descarga.getMP_TIPODESC();
+        mapTipoBomba = Pozo.getMP_TIPO_BOMBA();
+        mapOrigenes = Abasto.getMP_ORIGEN();
+        mapCircuitos = Abasto.getMP_CIRCUITO();
+        mapFuentes = Abasto.getMP_FUENTE();
+        mapDiaSemana = Dia.getMP_DIAS();
         
-        activeIndex = 0;
-        
+        // entidades y listados de formularios
+        docDec = new DocDec();
         vuelco = new Vuelco();
+        descarga = new Descarga();   
+        abastecimiento = new Abastecimiento();
+        pozo = new Pozo();
+        abasto = new Abasto();
+        lstPozos = new ArrayList<>();
+        lstAbasto = new ArrayList<>();
         lstDescargas = new ArrayList<>(); 
+        lstAforos = backendSrv.getAforosAll();
+        lstDestinos = backendSrv.getCursosAll();
+        lstTiposAbasto = backendSrv.getTipoAbastoAll();
+        lstTiposCaudal = backendSrv.getTipoCaudalAll();
+        horario = new Horario();
+        dia = new Dia();
+        lstDias = new ArrayList<>();
+        turno = new Turno();
+        lstTurnos = new ArrayList<>();
 
         // obtengo el usuario
         ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
@@ -240,6 +355,358 @@ public class MbDeclaraciones implements Serializable{
     /**********************
      * Métodos de acceso **
      **********************/
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
+    public Dia getDia() {
+        return dia;
+    }
+
+    public void setDia(Dia dia) {
+        this.dia = dia;
+    }
+
+    public List<Dia> getLstDias() {
+        return lstDias;
+    }
+
+    public void setLstDias(List<Dia> lstDias) {
+        this.lstDias = lstDias;
+    }
+
+    public List<Turno> getLstTurnos() {
+        return lstTurnos;
+    }
+
+    public void setLstTurnos(List<Turno> lstTurnos) {
+        this.lstTurnos = lstTurnos;
+    }
+
+    public Map<Integer, String> getMapDiaSemana() {
+        return mapDiaSemana;
+    }
+
+    public void setMapDiaSemana(Map<Integer, String> mapDiaSemana) {
+        this.mapDiaSemana = mapDiaSemana;
+    }
+
+    public String getHorarioGuardarDias() {
+        return horarioGuardarDias;
+    }
+
+    public void setHorarioGuardarDias(String horarioGuardarDias) {
+        this.horarioGuardarDias = horarioGuardarDias;
+    }
+
+    public String getHorarioActualizarDias() {
+        return horarioActualizarDias;
+    }
+
+    public void setHorarioActualizarDias(String horarioActualizarDias) {
+        this.horarioActualizarDias = horarioActualizarDias;
+    }
+
+    public String getHorarioLimpiarDias() {
+        return horarioLimpiarDias;
+    }
+
+    public void setHorarioLimpiarDias(String horarioLimpiarDias) {
+        this.horarioLimpiarDias = horarioLimpiarDias;
+    }
+
+    public String getHorarioEliminarDias() {
+        return horarioEliminarDias;
+    }
+
+    public void setHorarioEliminarDias(String horarioEliminarDias) {
+        this.horarioEliminarDias = horarioEliminarDias;
+    }
+
+    public String getHorarioGuardarTurnos() {
+        return horarioGuardarTurnos;
+    }
+
+    public void setHorarioGuardarTurnos(String horarioGuardarTurnos) {
+        this.horarioGuardarTurnos = horarioGuardarTurnos;
+    }
+
+    public String getHorarioLimpiarTurnos() {
+        return horarioLimpiarTurnos;
+    }
+
+    public void setHorarioLimpiarTurnos(String horarioLimpiarTurnos) {
+        this.horarioLimpiarTurnos = horarioLimpiarTurnos;
+    }
+
+    public boolean isDatosHorarios() {
+        return datosHorarios;
+    }
+
+    public void setDatosHorarios(boolean datosHorarios) {
+        this.datosHorarios = datosHorarios;
+    }
+
+    public Abasto getAbasto() {
+        return abasto;
+    }
+
+    public void setAbasto(Abasto abasto) {
+        this.abasto = abasto;
+    }
+
+    public List<Abasto> getLstAbasto() {
+        return lstAbasto;
+    }
+
+    public void setLstAbasto(List<Abasto> lstAbasto) {
+        this.lstAbasto = lstAbasto;
+    }
+
+    public Map<Integer, String> getMapOrigenes() {
+        return mapOrigenes;
+    }
+
+    public void setMapOrigenes(Map<Integer, String> mapOrigenes) {
+        this.mapOrigenes = mapOrigenes;
+    }
+
+    public Map<Integer, String> getMapCircuitos() {
+        return mapCircuitos;
+    }
+
+    public void setMapCircuitos(Map<Integer, String> mapCircuitos) {
+        this.mapCircuitos = mapCircuitos;
+    }
+
+    public Map<Integer, String> getMapFuentes() {
+        return mapFuentes;
+    }
+
+    public void setMapFuentes(Map<Integer, String> mapFuentes) {
+        this.mapFuentes = mapFuentes;
+    }
+
+    public List<TipoAbasto> getLstTiposAbasto() {
+        return lstTiposAbasto;
+    }
+
+    public void setLstTiposAbasto(List<TipoAbasto> lstTiposAbasto) {
+        this.lstTiposAbasto = lstTiposAbasto;
+    }
+
+    public List<TipoCaudal> getLstTiposCaudal() {
+        return lstTiposCaudal;
+    }
+
+    public void setLstTiposCaudal(List<TipoCaudal> lstTiposCaudal) {
+        this.lstTiposCaudal = lstTiposCaudal;
+    }
+
+    public String getAbastGuardar() {
+        return abastGuardar;
+    }
+
+    public void setAbastGuardar(String abastGuardar) {
+        this.abastGuardar = abastGuardar;
+    }
+
+    public String getAbastActualizar() {
+        return abastActualizar;
+    }
+
+    public void setAbastActualizar(String abastActualizar) {
+        this.abastActualizar = abastActualizar;
+    }
+
+    public String getAbastLimpiar() {
+        return abastLimpiar;
+    }
+
+    public void setAbastLimpiar(String abastLimpiar) {
+        this.abastLimpiar = abastLimpiar;
+    }
+
+    public String getAbastEliminar() {
+        return abastEliminar;
+    }
+
+    public void setAbastEliminar(String abastEliminar) {
+        this.abastEliminar = abastEliminar;
+    }
+
+    public String getDscActualizarDesc() {
+        return dscActualizarDesc;
+    }
+
+    public void setDscActualizarDesc(String dscActualizarDesc) {
+        this.dscActualizarDesc = dscActualizarDesc;
+    }
+
+    public String getPzActualizar() {
+        return pzActualizar;
+    }
+
+    public void setPzActualizar(String pzActualizar) {
+        this.pzActualizar = pzActualizar;
+    }
+
+    public String getPzEliminar() {
+        return pzEliminar;
+    }
+
+    public void setPzEliminar(String pzEliminar) {
+        this.pzEliminar = pzEliminar;
+    }
+
+    public String getPzGuardar() {
+        return pzGuardar;
+    }
+
+    public void setPzGuardar(String pzGuardar) {
+        this.pzGuardar = pzGuardar;
+    }
+
+    public String getPzLimpiar() {
+        return pzLimpiar;
+    }
+
+    public void setPzLimpiar(String pzLimpiar) {
+        this.pzLimpiar = pzLimpiar;
+    }
+
+    public boolean isDatosPozos() {
+        return datosPozos;
+    }
+
+    public void setDatosPozos(boolean datosPozos) {
+        this.datosPozos = datosPozos;
+    }
+
+    public Abastecimiento getAbastecimiento() {
+        return abastecimiento;
+    }
+
+    public void setAbastecimiento(Abastecimiento abastecimiento) {
+        this.abastecimiento = abastecimiento;
+    }
+
+    public Map<Integer, String> getMapTipoBomba() {
+        return mapTipoBomba;
+    }
+
+    public void setMapTipoBomba(Map<Integer, String> mapTipoBomba) {
+        this.mapTipoBomba = mapTipoBomba;
+    }
+
+    public Pozo getPozo() {
+        return pozo;
+    }
+
+    public void setPozo(Pozo pozo) {
+        this.pozo = pozo;
+    }
+
+    public Pozo getPozoSwap() {
+        return pozoSwap;
+    }
+
+    public void setPozoSwap(Pozo pozoSwap) {
+        this.pozoSwap = pozoSwap;
+    }
+
+    public List<Pozo> getLstPozos() {
+        return lstPozos;
+    }
+
+    public void setLstPozos(List<Pozo> lstPozos) {
+        this.lstPozos = lstPozos;
+    }
+
+    public String getDscEliminar() {
+        return dscEliminar;
+    }
+
+    public void setDscEliminar(String dscEliminar) {
+        this.dscEliminar = dscEliminar;
+    }
+
+    public String getDscLimpiarDesc() {
+        return dscLimpiarDesc;
+    }
+
+    public void setDscLimpiarDesc(String dscLimpiarDesc) {
+        this.dscLimpiarDesc = dscLimpiarDesc;
+    }
+
+    public String getGralCancelarSel() {
+        return gralCancelarSel;
+    }
+
+    public void setGralCancelarSel(String gralCancelarSel) {
+        this.gralCancelarSel = gralCancelarSel;
+    }
+
+    public String getPulgarComp() {
+        return pulgarComp;
+    }
+
+    public void setPulgarComp(String pulgarComp) {
+        this.pulgarComp = pulgarComp;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+    public Descarga getDescSwap() {
+        return descSwap;
+    }
+
+    public void setDescSwap(Descarga descSwap) {
+        this.descSwap = descSwap;
+    }
+
+    public boolean isEdita() {
+        return edita;
+    }
+
+    public void setEdita(boolean edita) {
+        this.edita = edita;
+    }
+
+    public List<Curso> getLstDestinos() {
+        return lstDestinos;
+    }
+
+    public String getGralGuardar() {
+        return gralGuardar;
+    }
+
+    public void setGralGuardar(String gralGuardar) {
+        this.gralGuardar = gralGuardar;
+    }
+
+    public void setLstDestinos(List<Curso> lstDestinos) {
+        this.lstDestinos = lstDestinos;
+    }
+
+    public String getDscGuardarDesc() {
+        return dscGuardarDesc;
+    }
+
+    public void setDscGuardarDesc(String dscGuardarDesc) {
+        this.dscGuardarDesc = dscGuardarDesc;
+    }
+
     public String getVlcGuardarTrat() {
         return vlcGuardarTrat;
     }
@@ -318,14 +785,6 @@ public class MbDeclaraciones implements Serializable{
 
     public void setDescarga(Descarga descarga) {
         this.descarga = descarga;
-    }
-
-    public Descarga getDescargaSelected() {
-        return descargaSelected;
-    }
-
-    public void setDescargaSelected(Descarga descargaSelected) {
-        this.descargaSelected = descargaSelected;
     }
 
     public List<Descarga> getLstDescargas() {
@@ -456,12 +915,12 @@ public class MbDeclaraciones implements Serializable{
         this.activeIndex = activeIndex;
     }
 
-    public boolean isDatosAbasto() {
-        return datosAbasto;
+    public boolean isDatosAbastos() {
+        return datosAbastos;
     }
 
-    public void setDatosAbasto(boolean datosAbasto) {
-        this.datosAbasto = datosAbasto;
+    public void setDatosAbastos(boolean datosAbastos) {
+        this.datosAbastos = datosAbastos;
     }
 
     public boolean isDatosProd() {
@@ -975,18 +1434,20 @@ public class MbDeclaraciones implements Serializable{
      */
     public void editTratamiento(){
         int i = 0;
-        if(tratamientoSelected != null){
+        if(tratamientoSelected != null && edita == false){
+            tratSwap = new Tratamiento();
             for(Tratamiento trat : descarga.getTratamientos()){
                 if(trat.getClaveNombre() == tratamientoSelected.getClaveNombre() && trat.getValor() == tratamientoSelected.getValor()){
                     ordenList = i;
+                    tratSwap.setClaveNombre(trat.getClaveNombre());
+                    tratSwap.setValor(trat.getValor());
                 }
                 i += 1;
             }
             tratamiento = tratamientoSelected;
+            tratamientoSelected =  new Tratamiento();
+            edita = true; 
         }
-        tratamientoSelected = null;
-
-        edita = true; 
     }
     
     /**
@@ -1044,22 +1505,113 @@ public class MbDeclaraciones implements Serializable{
     }
     
     /**
+     * Método para remover una Descarga del Vuelco
+     */
+    public void removeDescarga(){
+        int i = 0, r = -1;
+        if(!removido){
+            if(!lstDescargas.isEmpty()){
+                for(Descarga desc : lstDescargas){ 
+                    if(desc.getClaveTipo() == descarga.getClaveTipo() && desc.getNumOrden() == descarga.getNumOrden()){
+                        r = i;
+                    }
+                    i += 1; 
+                }            
+            }
+            if(r > -1) lstDescargas.remove(r);
+            removido = true;
+        }else{
+            removido = false;
+        }    
+        descarga = new Descarga();
+    }       
+    
+    /**
      * Método para remover un tratamiento del listado de la descarga
      */
     public void removeTratamiento(){
         int i = 0, r = -1;
-        if(!descarga.getTratamientos().isEmpty()){
-            for(Tratamiento trat : descarga.getTratamientos()){ 
-                if(trat.getClaveNombre() == tratamientoSelected.getClaveNombre() && trat.getValor() == tratamientoSelected.getValor()){
-                    r = i;
-                }
-                i += 1; 
-            }            
-        }
-        if(r > -1) descarga.getTratamientos().remove(r);
-        tratamientoSelected = null;
-        tratamiento = null;
+        if(!removido){
+            if(!descarga.getTratamientos().isEmpty()){
+                for(Tratamiento trat : descarga.getTratamientos()){ 
+                    if(trat.getClaveNombre() == tratamientoSelected.getClaveNombre() && trat.getValor() == tratamientoSelected.getValor()){
+                        r = i;
+                    }
+                    i += 1; 
+                }            
+            }
+            if(r > -1) descarga.getTratamientos().remove(r);
+            tratamientoSelected = new Tratamiento();
+            tratamiento = new Tratamiento();
+            removido = true;
+        }        
+    }  
+    
+    /**
+     * Método para remover un Pozo del Abasetecimiento de agua
+     */
+    public void removePozo(){
+        int i = 0, r = -1;
+        if(!removido){
+            if(!lstPozos.isEmpty()){
+                for(Pozo pz : lstPozos){ 
+                    if(pz.getNumero() == pozo.getNumero()){
+                        r = i;
+                    }
+                    i += 1; 
+                }            
+            }
+            if(r > -1) lstPozos.remove(r);
+            removido = true;
+        }else{
+            removido = false;
+        } 
+        pozo = new Pozo();
+    }
+    
+    /**
+     * Método para remover un Pozo del Abasetecimiento de agua
+     */
+    public void removeAbasto(){
+        int i = 0, r = -1;
+        if(!removido){
+            if(!lstAbasto.isEmpty()){
+                for(Abasto ab : lstAbasto){ 
+                    if(ab.getTipoAbasto().equals(abasto.getTipoAbasto())){
+                        r = i;
+                    }
+                    i += 1; 
+                }            
+            }
+            if(r > -1) lstAbasto.remove(r);
+            removido = true;
+        }else{
+            removido = false;
+        } 
+        abasto = new Abasto();
     }    
+    
+    /**
+     * Método para remover un Pozo del Abasetecimiento de agua
+     */
+    public void removeDia(){
+        int i = 0, r = -1;
+        if(!removido){
+            if(!lstDias.isEmpty()){
+                for(Dia d : lstDias){ 
+                    if(d.getNombre().equals(dia.getNombre())){
+                        r = i;
+                    }
+                    i += 1; 
+                }            
+            }
+            if(r > -1) lstDias.remove(r);
+            removido = true;
+        }else{
+            removido = false;
+        } 
+        dia = new Dia();
+    }        
     
     /**
      * Método para eliminar todas las fechas creadas
@@ -1116,29 +1668,32 @@ public class MbDeclaraciones implements Serializable{
      */
     public void addDescargas(){
         if(!edita){
-            if(descarga != null){
-                if(descarga.getNumOrden() > 0 && descarga.getTipo() != null){    
-                    if(!validarDescarga()){
-                        JsfUtil.addErrorMessage("No se pudieron validar los datos de la Descarga que intenta registrar.");
-                    }else{
-                        lstDescargas.add(descarga);
-                        JsfUtil.addSuccessMessage("La Descarga se guardó con exito. Puede agregar otra o cerrar el formulario.");
-                    }
+            if(descarga.getNumOrden() > 0 && descarga.getTipo() != null){    
+                if(!validarDescarga()){
+                    JsfUtil.addErrorMessage("No se pudieron validar los datos de la Descarga que intenta registrar.");
+                }else{
+                    lstDescargas.add(descarga);
+                    JsfUtil.addSuccessMessage("La Descarga se guardó con exito. Puede agregar otra o cerrar el formulario.");
                 }
-
-                descarga = new Descarga();
-                
                 if(activeIndex == 1) activeIndex = 2;
             }else{
                 JsfUtil.addErrorMessage("Debe consignar una Descarga para poder agregarla a la Declaración Jurada.");
             }
         }else{
-            lstDescargas.remove(ordenList);
-            lstDescargas.add(descarga);
-            descarga = null;
+            // valido la descarga a editar
+            if(descarga.getNumOrden() > 0 && descarga.getTipo() != null){   
+                if(!validarDescarga()){
+                    lstDescargas.set(ordenList, descSwap);
+                }else{
+                    lstDescargas.set(ordenList, descarga);
+                    JsfUtil.addSuccessMessage("La descarga se actualizó correctamente.");
+                }
+            }
+            descarga = new Descarga();
             edita = false;
-            ordenList = 0;            
+            ordenList = 0;           
         }
+        descarga = new Descarga();
     }      
     
     /**
@@ -1150,27 +1705,110 @@ public class MbDeclaraciones implements Serializable{
             if(tratamiento != null){
                 if(tratamiento.getClaveNombre() > 0 && tratamiento.getClaveNombre() > 0){    
                     if(!validarTratamiento()){
-                        JsfUtil.addErrorMessage("Ya existe un tratamiento del mismo tipo con el mismo valor.");
+                        JsfUtil.addErrorMessage("No se pudieron validar los datos del Tratamiento.");
                     }else{
-                        descarga.getTratamientos().add(tratamiento) ;
+                        descarga.getTratamientos().add(tratamiento) ;   
                         JsfUtil.addSuccessMessage("El tratamiento se agregó a la descarga.");
                     }
                 }
-
-                tratamiento = new Tratamiento();
-                
                 if(activeIndex == 1) activeIndex = 2;
             }else{
                 JsfUtil.addErrorMessage("Debe consignar un Tratamiento para poder agregarlo a la Descarga.");
             }
         }else{
-            descarga.getTratamientos().remove(ordenList);
-            descarga.getTratamientos().add(tratamiento);
-            tratamiento = null;
+            if(!validarTratamiento()){
+                descarga.getTratamientos().set(ordenList, tratSwap);
+            }else{
+                descarga.getTratamientos().set(ordenList, tratamiento);
+                JsfUtil.addSuccessMessage("El Tratamiento se actualizó correctamente.");
+            }
+            
             edita = false;
             ordenList = 0;            
         }
+        tratamiento = new Tratamiento();
     }          
+    
+    /**
+     * Método para agregar Abastos al abastecimiento general de agua
+     */
+    public void addAbasto(){
+        if(!edita){
+            if(abasto.getTipoAbasto() != null){
+                if(!validarAbasto()){
+                    JsfUtil.addErrorMessage("No se pudieron validar los datos del Abasto.");
+                }else{
+                    lstAbasto.add(abasto);
+                    JsfUtil.addSuccessMessage("El Abasto se agregó al Abastecimiento de agua.");
+                }
+            }
+            if(activeIndex == 5) activeIndex = 6;
+        }else{
+            if(!validarAbasto()){
+                lstAbasto.set(ordenList, abastoSwap);
+            }else{
+                lstAbasto.set(ordenList, abasto);
+                JsfUtil.addSuccessMessage("El Abasto se actualizó correctamente.");
+            }
+            edita = false;
+            ordenList = 0;  
+        }
+        abasto = new Abasto();
+    }
+    
+    /**
+     * Método para agregar (actualizar) un Día al Horario laboral
+     */
+    public void addDia(){
+        if(!edita){
+            if(dia.getCodDia() > 0){
+                if(!validarDia()){
+                    JsfUtil.addErrorMessage("No se pudieron validar los datos del Día a registrar.");
+                }else{
+                    lstDias.add(dia);
+                    JsfUtil.addSuccessMessage("El Dia se agregó al Horario de trabajo.");
+                }
+            }
+            if(activeIndex == 6) activeIndex = 7;
+        }else{
+            if(!validarDia()){
+                lstDias.set(ordenList, diaSwap);
+            }else{
+                lstDias.set(ordenList, dia);
+                JsfUtil.addSuccessMessage("El Día se actualizó correctamente.");
+            }
+            edita = false;
+            ordenList = 0;  
+        }
+        dia = new Dia();
+    }    
+    
+    /**
+     * Método para agregar un Día al Abastecimiento general de agua del Establecimiento
+     */
+    public void addPozo(){
+        if(!edita){
+            if(pozo.getNumero() > 0){
+                if(!validarPozo()){
+                    JsfUtil.addErrorMessage("No se pudieron validar los datos del Pozo.");
+                }else{
+                    lstPozos.add(pozo);
+                    JsfUtil.addSuccessMessage("El Pozo se agregó al Abastecimiento de agua.");
+                }
+            }
+            if(activeIndex == 4) activeIndex = 5;
+        }else{
+            if(!validarPozo()){
+                lstPozos.set(ordenList, pozoSwap);
+            }else{
+                lstPozos.set(ordenList, pozo);
+                JsfUtil.addSuccessMessage("El Pozo se actualizó correctamente.");
+            }
+            edita = false;
+            ordenList = 0;  
+        }
+        pozo = new Pozo();
+    }
     
     /**
      * Método para agregar los datos complementarios a la Declaración.
@@ -1182,6 +1820,8 @@ public class MbDeclaraciones implements Serializable{
         if(datosComReg){
             agregarDatosComp();
             activeIndex = 2;
+            page = "registro/vuelco.xhtml";
+            pulgarComp = "glyphicon-thumbs-up";
             JsfUtil.addSuccessMessage("Los Datos Complementarios se agregaron a la Declaración Jurada que está confeccionado.");
         }else{
             JsfUtil.addErrorMessage("Los Datos Complementarios no fueron agregados a la Declaración Jurada.");
@@ -1202,6 +1842,106 @@ public class MbDeclaraciones implements Serializable{
     }
     
     /**
+     * Método para preparar la edición de una descarga
+     */
+    public void editDescarga(){
+        int i = 0;
+        if(descarga.getNumOrden() > 0 && !edita){
+            descSwap = new Descarga();
+            for(Descarga desc : lstDescargas){
+                if(desc.getNumOrden() == descarga.getNumOrden()){
+                    ordenList = i;
+                    descSwap.setAforo(descarga.getAforo());
+                    descSwap.setAnulado(descarga.isAnulado());
+                    descSwap.setCamTomaMuestra(descarga.isCamTomaMuestra());
+                    descSwap.setCaudal(descarga.getCaudal());
+                    descSwap.setClaveTipo(descarga.getClaveTipo());
+                    descSwap.setCurso(descarga.getCurso());
+                    descSwap.setMayor5km(descarga.isMayor5km());
+                    descSwap.setMotivoAnulado(descarga.getMotivoAnulado());
+                    descSwap.setNumOrden(descarga.getNumOrden());
+                    descSwap.setTratamientos(descarga.getTratamientos());
+                }
+                i += 1;
+            }
+            edita = true;
+        }
+
+    }    
+    
+    /**
+     * Método para editar un Pozo de un Abastecimiento de agua
+     */
+    public void editPozo(){
+        int i = 0;
+        if(pozo.getNumero() > 0 && !edita){
+            pozoSwap = new Pozo();
+            for(Pozo pz : lstPozos){
+                if(pz.getNumero() == pozo.getNumero()){
+                    ordenList = i;
+                    pozoSwap.setDiasFunc(pozo.getDiasFunc());
+                    pozoSwap.setEnServicio(pozo.isEnServicio());
+                    pozoSwap.setHorasFunc(pozo.getHorasFunc());
+                    pozoSwap.setPotenciaBomba(pozo.getPotenciaBomba());
+                    pozoSwap.setProfundidad(pozo.getProfundidad());
+                    pozoSwap.setRendimiento(pozo.getRendimiento());
+                    pozoSwap.setTipoBomba(pozo.getTipoBomba());
+                }
+                i += 1;
+            }
+            edita = true;
+        }
+    }
+    
+    /**
+     * Método para editar un Abasto de un Abastecimiento general de agua
+     */
+    public void editAbasto(){
+        int i = 0;
+        if(abasto.getTipoAbasto() != null && !edita){
+            abastoSwap = new Abasto();
+            for(Abasto ab : lstAbasto){
+                if(ab.getTipoAbasto().equals(abasto.getTipoAbasto()) && ab.getOrigenAbasto() == abasto.getOrigenAbasto() 
+                        && ab.getCircuitoAbasto() == abasto.getCircuitoAbasto()){
+                    ordenList = i;
+                    abastoSwap.setCaudal(abasto.getCaudal());
+                    if(abasto.getCircuitoAbasto() > 0) abastoSwap.setCircuitoAbasto(abasto.getCircuitoAbasto());
+                    if(abasto.getFuenteAbasto() > 0) abastoSwap.setFuenteAbasto(abasto.getFuenteAbasto());
+                    if(abasto.getOrigenAbasto() > 0) abastoSwap.setOrigenAbasto(abasto.getOrigenAbasto());
+                    if(abasto.getPurga() > 0) abastoSwap.setPurga(abasto.getPurga());
+                    abastoSwap.setTipoCaudal(abasto.getTipoCaudal());
+                }
+                i += 1;
+            }
+            edita = true;
+        }
+    }    
+    
+    /**
+     * Método para editar un Dia del Horario laboral
+     */
+    public void editDia(){
+        int i = 0;
+        if(dia.getCodDia() > 0 && !edita){
+            diaSwap = new Dia();
+            for(Dia d : lstDias){
+                if(d.getNombre().equals(dia.getNombre())){
+                    ordenList = i;
+                    diaSwap.setCodDia(dia.getCodDia());
+                    diaSwap.setHorasInicDesc(dia.getHorasInicDesc());
+                    diaSwap.setMinInicDesc(dia.getMinInicDesc());
+                    diaSwap.setHorasFinDesc(dia.getHorasFinDesc());
+                    diaSwap.setMinFinDesc(dia.getMinFinDesc());
+                    diaSwap.setTurnos(dia.getTurnos());
+                }
+                i += 1;
+            }
+            edita = true;
+        }
+    }    
+    
+    
+    /**
      * Método para eliminar los datos complementarios de la declaración jurada que se está registrando
      */
     public void deleteDatosComplementarios(){
@@ -1213,6 +1953,8 @@ public class MbDeclaraciones implements Serializable{
         limpiarDatosComp();
         datosComReg = false;
         activeIndex = 0;
+        page = "registro/datoscomp.xhtml";
+        pulgarComp = "glyphicon-thumbs-down";
     }
     
     /**
@@ -1244,6 +1986,149 @@ public class MbDeclaraciones implements Serializable{
         activeIndex = 1;
     }    
     
+    /**
+     * Método para guardar las descargas en el vuelco de la declaración
+     */
+    public void createDescargas(){
+        if(!lstDescargas.isEmpty()){
+            declaracion.getVuelco().setDescargas(lstDescargas);
+            datosDescargas = true;
+            activeIndex = 4;
+            JsfUtil.addSuccessMessage("Las descargas confeccionadas se han agregado a las características del vuelco del Establecimiento."); 
+        }else{
+            JsfUtil.addErrorMessage("No hay descargas configuradas para agregar al Vuelco.");
+        }
+       
+    }
+    
+    /**
+     * Método para guardar los Pozos en el Abastecimiento de agua.
+     * Posteriormente, se guardará el Abastecimiento en la declaración
+     */
+    public void createPozos(){
+        if(!lstPozos.isEmpty()){
+            abastecimiento.setPozos(lstPozos);
+            declaracion.setAbastecimiento(abastecimiento);
+            datosPozos = true;
+            activeIndex = 5;
+            JsfUtil.addSuccessMessage("Los Pozos confeccionados se han agregado al Abastecimiento de agua del Establecimiento."); 
+        }else{
+            JsfUtil.addErrorMessage("No hay Pozos configurados para agregar al Abastecimiento.");
+        }
+    }
+    
+    /**
+     * Método para guardar los Abastos en el Abastecimiento general de agua.
+     * Valido si el Abastecimiento ya está iniciado con Pozos
+     */
+    public void createAbastos(){
+        if(!lstAbasto.isEmpty()){
+            if(declaracion.getAbastecimiento() != null){
+                declaracion.getAbastecimiento().setAbastos(lstAbasto);
+            }else{
+                abastecimiento.setAbastos(lstAbasto);
+                declaracion.setAbastecimiento(abastecimiento);
+            }
+            datosAbastos = true;
+            activeIndex = 6;
+            JsfUtil.addSuccessMessage("Los Abastos confeccionados se han agregado al Abastecimiento general de agua del Establecimiento."); 
+        }else{
+            JsfUtil.addErrorMessage("No hay Abastos configurados para agregar al Abastecimiento general de agua.");
+        }
+    }    
+    
+    /**
+     * Método para guardar los Días en el Horario laboral.
+     * Luego agrego el Horario a la Declaración
+     */
+    public void createHorario(){
+        if(!lstAbasto.isEmpty()){
+            horario.setDias(lstDias);
+            declaracion.setHorario(horario);
+            datosHorarios = true;
+            activeIndex = 7;
+            JsfUtil.addSuccessMessage("Los Días confeccionados se han agregado al Horario laboral del Establecimiento."); 
+        }else{
+            JsfUtil.addErrorMessage("No hay Días configurados para agregar al Horario laboral.");
+        }
+    }       
+    
+    /**
+     * Método para actualizar el listado de descargas correspondiente al vuelco de la declaración.
+     */
+    public void editDescargas(){
+        declaracion.getVuelco().setDescargas(lstDescargas);
+        JsfUtil.addSuccessMessage("Las descargas del vuelco se actualizaron correctamente.");
+    }
+    
+    /**
+     * Método para actualizar el listado de Pozos correspondientes al Abastecimiento de agua de la Declaración.
+     */
+    public void editPozos(){
+        declaracion.getAbastecimiento().setPozos(lstPozos);
+        JsfUtil.addSuccessMessage("Los Pozos del Abastecimiento se actualizaron correctamente.");
+    }
+    
+    /**
+     * Método para actualizar el listado de Pozos correspondientes al Abastecimiento de agua de la Declaración.
+     */
+    public void editAbastos(){
+        declaracion.getAbastecimiento().setAbastos(lstAbasto);
+        JsfUtil.addSuccessMessage("Los Abastos del Abastecimiento general de agua se actualizaron correctamente.");
+    }
+    
+    /**
+     * Método para actualizar el listado de Días correspondientes al Horario laboral de la Declaración.
+     */
+    public void editHorario(){
+        declaracion.getHorario().setDias(lstDias);
+        JsfUtil.addSuccessMessage("Los Días del Horario laborla se actualizaron correctamente.");
+    }        
+    
+    /**
+     * Método para eliminar las descargas del vuelco de la Declaración
+     */
+    public void deleteDescargas(){
+        declaracion.getVuelco().getDescargas().clear();
+        lstDescargas.clear();
+        descarga = new Descarga();
+        datosDescargas = false;
+        activeIndex = 3;
+    }
+    
+    /**
+     * Método para eliminar los Pozos del Abastecimiento de la Declaración
+     */
+    public void deletePozos(){
+        declaracion.getAbastecimiento().getPozos().clear();
+        lstPozos.clear();
+        pozo = new Pozo();
+        datosPozos = false;
+        activeIndex = 4;
+    }
+    
+    /**
+     * Método para eliminar los Abastos del Abastecimiento general de agua de la Declaración
+     */
+    public void deleteAbastos(){
+        declaracion.getAbastecimiento().getAbastos().clear();
+        lstAbasto.clear();
+        abasto = new Abasto();
+        datosAbastos = false;
+        activeIndex = 4;
+    }    
+    
+    /**
+     * Método para eliminar los Días del Horario laboral de la Declaración
+     */
+    public void deleteHorario(){
+        declaracion.getHorario().getDias().clear();
+        lstDias.clear();
+        dia = new Dia();
+        datosHorarios = false;
+        activeIndex = 6;
+    }        
+    
     public void guardarDtosValidDrp(){
         vuelco.setInscripto(true);
         vuelco.setExpNum(expediente.getExpNumero());
@@ -1265,8 +2150,41 @@ public class MbDeclaraciones implements Serializable{
     
     public void limpiarVuelco(){
         vuelco = new Vuelco();
-        limpiarDatosValid();
+        usDrp = "";
+        expediente = new ExpedienteDrp();
     }
+    
+    /**
+     * Método para eliminar las descargas configuradas. Previo al guardado
+     */
+    public void limpiarDescargas(){
+        lstDescargas.clear();
+        descarga = new Descarga();
+    }
+    
+    /**
+     * Método para eliminar los Pozos configurados. Previo al guardado.
+     */
+    public void limpiarPozos(){
+        lstPozos.clear();
+        pozo = new Pozo();
+    }
+    
+    /**
+     * Método para eliminar los Abastos configurados. Previo al guardado.
+     */
+    public void limpiarAbastos(){
+        lstAbasto.clear();
+        abasto = new Abasto();
+    }    
+    
+    /**
+     * Método para eliminar los Días configurados. Previo al guardado.
+     */
+    public void limpiarHorario(){
+        lstDias.clear();
+        dia = new Dia();
+    }        
     
     /**
      * Método para limpiar los datos del Usuario DRP validado
@@ -1274,7 +2192,88 @@ public class MbDeclaraciones implements Serializable{
     public void limpiarDatosValid(){
         usDrp = "";
         expediente = new ExpedienteDrp();
+        limpiarUsDrp();
     }
+    
+    /**
+     * Método para limpiar el formulario de descarga
+     */
+    public void limpiarDescarga(){
+        if(edita){
+            lstDescargas.set(ordenList, descSwap);
+            descarga = descSwap;
+        }else{
+            descarga = new Descarga();
+        }
+    }
+    
+    /**
+     * Método para limpiar el formulario de Pozo
+     */
+    public void limpiarPozo(){
+        if(edita){
+            lstPozos.set(ordenList, pozoSwap);
+            pozo = new Pozo();
+        }else{
+            pozo = new Pozo();
+        }
+    }
+    
+    /**
+     * Método para limpiar el formulario de Abasto
+     */
+    public void limpiarAbasto(){
+        if(edita){
+            lstAbasto.set(ordenList, abastoSwap);
+            abasto = new Abasto();
+        }else{
+            abasto = new Abasto();
+        }
+    }    
+    
+    /**
+     * Método para limpiar el formulario del Día
+     */
+    public void limpiarDia(){
+        if(edita){
+            lstDias.set(ordenList, diaSwap);
+            dia = new Dia();
+        }else{
+            dia = new Dia();
+        }
+    }     
+    
+    /**
+     * Método para cancelar la descarga seleccionada para su actualización
+     */
+    public void cancelarDescargaSel(){
+        descarga = new Descarga();
+        edita = false;
+    }
+    
+    /**
+     * Método para cancelar el Pozo seleccionado para su actualización
+     */
+    public void cancelarPozoSel(){
+        pozo = new Pozo();
+        edita = false;
+    }
+    
+    /**
+     * Método para cancelar el Abasto seleccionado para su actualización
+     */
+    public void cancelarAbastoSel(){
+        abasto = new Abasto();
+        edita = false;
+    }
+    
+    /**
+     * Método para cancelar el Día seleccionado para su actualización
+     */
+    public void cancelarDiaSel(){
+        dia = new Dia();
+        edita = false;
+    }    
     
     public void createDeclaracion(){
         /**
@@ -1336,22 +2335,20 @@ public class MbDeclaraciones implements Serializable{
      * Método para setear las propiedades necesarias para crear una descarga
      */
     public void prepareAddDescarga(){
-        if(descarga == null) descarga = new Descarga();   
+        descarga = new Descarga();   
         lstAforos = backendSrv.getAforosAll();
+        lstDestinos = backendSrv.getCursosAll();
     }
-    
-    /**
-     * Métido para setear las peopiedades necesarias para editar un descarga existente
-     */
-    public void prepareEditDescarga(){
-        if(descargaSelected == null) descargaSelected = new Descarga();  
-    }
+
     
     /**
      * Método para setear las propieadades necesarias para crear un tipo de tratamiento para la descarga
      */
     public void prepareAddTratamiento(){
-        if(tratamiento == null) tratamiento = new Tratamiento(); 
+        tratamiento = new Tratamiento(); 
+        tratamientoSelected = new Tratamiento();
+        edita = false;
+        removido = false;
     }
     
     /**
@@ -1506,29 +2503,254 @@ public class MbDeclaraciones implements Serializable{
 
     private boolean validarDescarga() {
         boolean result = true;
+        int i = 1;
 
-        if(descarga.getNumOrden() == 0) result = false;
-        if(descarga.getCaudal() == 0) result = false;
-        if(descarga.getCurso() == null) result = false;
-        if(descarga.isAnulado()){
-            if(descarga.getMotivoAnulado() == null) result = false;
+        if(descarga.getNumOrden() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("La descarga debe tener un número de orden.");
         }
-        
+        if(descarga.getCaudal() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("La descarga debe tener un caudal.");
+        }
+        if(descarga.getCurso() == null){
+            result = false;
+            JsfUtil.addErrorMessage("La descarga debe tener un curso.");
+        }
+        if(descarga.isAnulado()){
+            if(descarga.getMotivoAnulado() == null){
+                result = false;
+                JsfUtil.addErrorMessage("La descarga anulada debe tener un motivo que lo explique.");
+            }
+        }
+
+        if(!lstDescargas.isEmpty()){
+            for(Descarga desc : lstDescargas){
+                if(desc.getNumOrden() == descarga.getNumOrden() && desc.getClaveTipo() == descarga.getClaveTipo()){
+                    if(edita){
+                        if(i != ordenList){
+                            result = false;
+                            JsfUtil.addErrorMessage("Ya existe una descarga de este tipo con el mismo número de orden.");
+                        }
+                    }else{
+                        result = false;
+                        JsfUtil.addErrorMessage("Ya existe una descarga de este tipo con el mismo número de orden.");
+                    }
+                }
+                i += 1;
+            }
+        }
+ 
         return result;
     }
 
     private boolean validarTratamiento() {
         boolean result = true;
+        int i = 0;
+        
+        if(tratamiento.getClaveNombre() == 1){
+            if(tratamiento.getValor() < 1 || tratamiento.getValor() > 6){
+                result = false;
+                JsfUtil.addErrorMessage("El valor para el tipo " + Tratamiento.getMP_NOMBRES().get(1) + " debe ser entre 1 y 6.");
+            }
+        }else if(tratamiento.getClaveNombre() == 2){
+            if(tratamiento.getValor() < 1 || tratamiento.getValor() > 3){
+                result = false;
+                JsfUtil.addErrorMessage("El valor para el tipo " + Tratamiento.getMP_NOMBRES().get(2) + " debe ser entre 1 y 3.");
+            }
+        }else if(tratamiento.getClaveNombre() == 3){
+            if(tratamiento.getValor() < 1 || tratamiento.getValor() > 4){
+                result = false;
+                JsfUtil.addErrorMessage("El valor para el tipo " + Tratamiento.getMP_NOMBRES().get(3) + " debe ser entre 1 y 4.");
+            }
+        }else if(tratamiento.getClaveNombre() == 4){
+            if(tratamiento.getValor() < 1 || tratamiento.getValor() > 4){
+                result = false;
+                JsfUtil.addErrorMessage("El valor para el tipo " + Tratamiento.getMP_NOMBRES().get(4) + " debe ser entre 1 y 4.");
+            }
+        }else{
+            if(tratamiento.getValor() < 1 || tratamiento.getValor() > 2){
+                result = false;
+                JsfUtil.addErrorMessage("El valor para el tipo " + Tratamiento.getMP_NOMBRES().get(5) + " debe ser entre 1 y 2.");
+            }
+        }
         
         if(!descarga.getTratamientos().isEmpty()){
             for(Tratamiento trat : descarga.getTratamientos()){
-                result = trat.getClaveNombre() != tratamiento.getClaveNombre() || trat.getValor() != tratamiento.getValor();
+                if(trat.getClaveNombre() == tratamiento.getClaveNombre() && trat.getValor() == tratamiento.getValor()){
+                    if(edita){
+                        if(i != ordenList){
+                            result = false;
+                            JsfUtil.addErrorMessage("Ya existe un Tratamiento de este tipo con el mismo valor.");
+                        }
+                    }else{
+                        result = false;
+                        JsfUtil.addErrorMessage("Ya existe un Tratamiento de este tipo con el mismo valor.");
+                    }
+                }
+                i += 1;
             }
         }
 
         return result;
     }
+    
+    /**
+     * Metodo para velidar los datos de un pozo para su registro
+     */
+    private boolean validarPozo(){
+        boolean result = true;
+        int i = 0;
+        
+        if(pozo.getProfundidad() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("El pozo debe especificar su profundidad.");
+        }
+        if(pozo.getHorasFunc() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("El pozo debe especificar la cantidad de horas diarias de funcionamiento.");
+        }
+        if(pozo.getDiasFunc() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("El pozo debe especificar la cantidad de días semanales de funcionamiento.");
+        }
+        if(pozo.getTipoBomba() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("El pozo debe especificar un tipo de bomba.");
+        }
+        if(pozo.getPotenciaBomba() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("El pozo debe especificar la potencia de la bomba.");
+        } 
+        if(!lstPozos.isEmpty()){
+            for(Pozo pz : lstPozos){
+                if(pz.getNumero() == pozo.getNumero()){
+                    if(edita){
+                        if(i != ordenList){
+                            result = false;
+                            JsfUtil.addErrorMessage("Ya existe un pozo de este tipo con el mismo valor.");
+                        }
+                    }else{
+                        result = false;
+                        JsfUtil.addErrorMessage("Ya existe un pozo de este tipo con el mismo valor.");
+                    }
+                }
+                i += 1;
+            }
+        }        
+        return result;
+    }
+    
+    /**
+     * Metodo para validar los datos de un Abasto para su registro
+     */
+    private boolean validarAbasto(){
+        boolean result = true;
+        int i = 0;
+        
+        if(abasto.getTipoCaudal() == null){
+            result = false;
+            JsfUtil.addErrorMessage("El Abasto debe especificar un tipo de caudal.");
+        }
+        if(abasto.getCaudal() == 0){
+            result = false;
+            JsfUtil.addErrorMessage("El Abasto debe especificar un valor de caudal.");
+        }
+        
+        if(abasto.getFuenteAbasto() == 3){
+            if(abasto.getDescOtraFuente() == null){
+                JsfUtil.addErrorMessage("Debe especificar una descripción de para la fuente seleccionada.");
+                if(abasto.getDescOtraFuente().equals("")){
+                    JsfUtil.addErrorMessage("Debe especificar una descripción de para la fuente seleccionada.");
+                }
+            }
+        }
+        
+        if(!lstAbasto.isEmpty()){
+            for(Abasto ab : lstAbasto){
+                if(ab.getTipoAbasto().equals(abasto.getTipoAbasto()) && ab.getOrigenAbasto() == abasto.getOrigenAbasto() 
+                        && ab.getCircuitoAbasto() == abasto.getCircuitoAbasto()){
+                    if(edita){
+                        if(i != ordenList){
+                            result = false;
+                            JsfUtil.addErrorMessage("Ya existe un Abasto de este tipo.");
+                        }
+                    }else{
+                        result = false;
+                        JsfUtil.addErrorMessage("Ya existe un Abasto de este tipo.");
+                    }
+                }
+                i += 1;
+            }
+        }        
+        return result;        
+    }    
+    
+    /**
+     * Metodo para validar los datos de un Día para su registro en el Horario Laboral
+     */
+    private boolean validarDia() {
+        Calendar horaInicial = Calendar.getInstance();
+        Calendar horaFinal = Calendar.getInstance();
+        boolean result = true;
+        int i = 0;
+ 
+        
+        if(dia.getHorasInicDesc() > 0 && dia.getHorasFinDesc() > 0){
+            // convierto los enteros a horas
+            horaInicial.set(Calendar.HOUR, dia.getHorasInicDesc());
+            horaInicial.set(Calendar.MINUTE, dia.getMinInicDesc());
+            
+            horaFinal.set(Calendar.HOUR, dia.getHorasFinDesc());
+            horaFinal.set(Calendar.MINUTE, dia.getMinFinDesc());
+            
+            // valido que la hora de finalización sea anterior a la de incicio
+            if(!horaFinal.after(horaInicial)){
+                result = false;
+                JsfUtil.addErrorMessage("La hora de finalización de la descarga debe ser posterior a la de incicio.");
+            }
+        }else{
+            if(dia.getHorasFinDesc() > 0){
+                result = false;
+                JsfUtil.addErrorMessage("Si no hay hora de incio de descarga no puede haber hora de finalización.");
+            }
+        }
+        
+        if(!lstDias.isEmpty()){
+            for(Dia d : lstDias){
+                if(d.getCodDia() == dia.getCodDia()){
+                    if(edita){
+                        if(i != ordenList){
+                            result = false;
+                            JsfUtil.addErrorMessage("Ya está registrado este Día de la Semana.");
+                        }
+                    }else{
+                        result = false;
+                        JsfUtil.addErrorMessage("Ya está registrado este Día de la Semana.");
+                    }
+                }
+                i += 1;
+            }
+        }        
+        return result;          
+    }    
 
+    /**
+     * Método para limpiar los datos guardados de la validación de usuario DRP
+     */
+    private void limpiarUsDrp(){
+        vuelco.setInscripto(false);
+        vuelco.setExpNum(0);
+        vuelco.setExpAnio(0);
+        vuelco.setCaaNum(0);
+        vuelco.setCaaFechaVenc(null);
+        vuelco.setCaaVigente(false);
+        vuelco.setUsDrp(null);
+        vuelco.setNombreDrp(null);
+        vuelco.setTipoDrp(null);
+        vuelco.setDescDrp(null);
+    }
+    
     
     /********************************************************************
     ** Converter. Se debe actualizar la entidad y el facade respectivo **

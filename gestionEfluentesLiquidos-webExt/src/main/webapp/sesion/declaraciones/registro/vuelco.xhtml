@@ -4,14 +4,105 @@
       xmlns:b="http://bootsfaces.net/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
+        <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaVuelcoInscrip" title="Registro de DJ - Vuelco - Datos registrados en DRP" styleClass="modalAyudaVuelcoInscrip"
+            closable="true" >
+                Ayuda vuelco, datos registrados en la DRP del MAyDS 
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <!-- Formulario validar DRP -->
+        <b:modal id="dlgValidDrp" styleClass="modalValidDrp" closable="true" >
+            <h:form prependId="false" id="frValidDrp">
+                <b:panel id="pnValidDrp" title="Validar los datos del Establecimiento en la DRP" look="info" collapsible="false" >
+                    <b:row>
+                        <b:column span="10">
+                            <b:inputText id="txtUsDrp" label="" placeholder="Ingrese el usuario DRP ([CUIT]/[numOrden])" value="#{mbDeclaraciones.usDrp}" />
+                        </b:column>
+                        <b:column span="2">
+                            <b:commandButton id="btnValidar" action="#{mbDeclaraciones.validarUsuarioDrp()}" look="primary" icon="glyphicon-check" value=""
+                                     ajax="true" update="messages,frValidDrp" />
+                        </b:column>
+                    </b:row>
+
+                    <h:panelGrid columns="1" style="width: 100%" rendered="#{mbDeclaraciones.expediente.id gt 0}">
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="N° Exp.: " />
+                            </b:column>
+                            <b:column span="8">
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.expNumero}" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="Año Exp.: " />
+                            </b:column>
+                            <b:column span="8">
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.expAnio}" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="N° CAA.: " />
+                            </b:column>
+                            <b:column span="8">
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.caNumero}" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="Fecha venc. CAA.: " />
+                            </b:column>
+                            <b:column span="8">
+                                <p:calendar disabled="true" label="" value="#{mbDeclaraciones.expediente.caVencimiento.toGregorianCalendar().time}" pattern="dd/MM/yyyy" locale="es" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="Us DRP: " />
+                            </b:column>
+                            <b:column span="8">
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.usuario}" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="Nombre Est.: " />
+                            </b:column>
+                            <b:column span="8">
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.nombre}" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="4">
+                                <p:outputLabel style="font-weight: lighter; color: gray" value="Descrip.: " />
+                            </b:column>
+                            <b:column span="8">
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.descripcion}" />
+                            </b:column>
+                        </b:row>
+                    </h:panelGrid>
+                    <b:commandButton action="#{mbDeclaraciones.guardarDtosValidDrp}" look="primary" value="#{mbDeclaraciones.mdGuardarDatosValidDrp}" 
+                                     ajax="true" update="@next,frTabVuelcos,messages" process="@this" style="margin-right: 5px" oncomplete="closeModalValidDrp()" />
+                    <b:commandButton action="#{mbDeclaraciones.limpiarDatosValid}" icon="glyphicon-delete" value="#{mbDeclaraciones.mdLimpiarDatosValidDrp}" 
+                                     look="warning" update="frValidDrp,frTabVuelcos" style="margin-left: 5px" />
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>        
+        
         <h:form id="frTabVuelcos" prependId="false">
-            <b:panel title="" look="info" collapsible="false" style="height: 100%" >
+            <b:panel title="Vuelco" look="info" collapsible="false" style="height: 100%" >
                 
                 <b:row>
                     <b:column span="12" >
@@ -27,20 +118,24 @@
                             
                             <h:panelGrid columns="3" style="width: 100%" rendered="#{mbDeclaraciones.vuelco.expNum gt 0}" >
                                 <b:row>
-                                    <b:column span="3">
+                                    <b:column span="4">
                                         <b:inputText disabled="true" label="Número Expediente DRP: " value="#{mbDeclaraciones.vuelco.expNum}" />
                                         <b:inputText disabled="true" label="Año Expediente DRP: " value="#{mbDeclaraciones.vuelco.expAnio}" />
                                     </b:column>
-                                    <b:column span="3">
+                                    <b:column span="4">
                                         <b:inputText disabled="true" label="Número CAA: " value="#{mbDeclaraciones.vuelco.caaNum}" />
-                                        <p:outputLabel style="font-weight: lighter" value="Fecha venc. CAA.: " />
-                                        <p:calendar disabled="true" label="" value="#{mbDeclaraciones.vuelco.caaFechaVenc}" pattern="dd/MM/yyyy" locale="es" />
-                                        <b:inputText disabled="true" label="Vigente: " value="#{mbDeclaraciones.vuelco.caaVigente}" />
+                                        <p:calendar disabled="true" label="Fecha venc. CAA.:" value="#{mbDeclaraciones.vuelco.caaFechaVenc}" pattern="dd/MM/yyyy" locale="es" />
                                     </b:column>
-                                    <b:column span="6">
+                                    <b:column span="4">
                                         <b:inputText disabled="true" label="Usuario DRP: " value="#{mbDeclaraciones.vuelco.usDrp}" />
                                         <b:inputText disabled="true" label="Nombre: " value="#{mbDeclaraciones.vuelco.nombreDrp}" />
-                                        <b:inputText disabled="true" label="Descripción: " value="#{mbDeclaraciones.vuelco.descDrp}" />
+                                    </b:column>
+                                </b:row>
+                            </h:panelGrid>
+                            <h:panelGrid columns="3" style="width: 100%" rendered="#{mbDeclaraciones.vuelco.expNum gt 0}" >
+                                <b:row>
+                                    <b:column span="12">
+                                        <b:inputText disabled="true" label="Desc.: " value="#{mbDeclaraciones.vuelco.descDrp}" />
                                     </b:column>
                                 </b:row>
                             </h:panelGrid>
@@ -50,7 +145,7 @@
                 
                 <b:row>
                     <!-- Circuitos -->
-                    <b:column span="4" >
+                    <b:column span="5" >
                         <b:label tooltip="Indique las características de los diferentes circuitos de agua" text="Características de los circuitos" severity="info"/>
                         <b:panel collapsible="false" look="info">
                             <b:row>
@@ -68,7 +163,7 @@
                         </b:panel>
                     </b:column>
                     <!-- Calidad afluente -->
-                    <b:column span="8" >
+                    <b:column span="7" >
                         <b:label tooltip="Indique si el líquido residual crudo contiene alguna de estas sustancias" text="Calidad del Afluente" severity="info"/>
                         <b:panel collapsible="false" look="info">
                             <b:row>
@@ -122,97 +217,29 @@
                     </b:column>
                 </b:row>
                 
-                <!-- Descargas -->
                 <b:row>
                     <b:column span="12" >
-                        <b:label tooltip="Registre aquí las distintas descargas del Establecimiento" text="Descargas" severity="info"/>
-                        <b:panel collapsible="false" look="info">
-                            <b:row>
-                                <b:column span="12" >
-                                    <b:commandButton title="Registrar una nueva Descarga" action="#{mbDeclaraciones.prepareAddDescarga()}" 
-                                                     oncomplete="$('.modalDescargas').modal();return false;" size="xs" look="primary" 
-                                                     value="#{mbDeclaraciones.vlcAgregar}" icon="glyphicon-new-window" style="margin-bottom: 10px" ajax="true" />
-                                </b:column>
-                            </b:row>
-                            <b:row>
-                                <b:column span="12" >
-                                    <b:dataTable id="dtTrat" value="#{mbDeclaraciones.lstDescargas}" var="desc"
-                                                 styleClass="table table-striped table-bordered" style="width:100%;font-size: 12px" >
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="N° Conex." />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.numOrden}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Caudal" />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.caudal}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Destino" />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.curso.nombre}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Mayor a 5km" />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.mayor5km}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Anulado" />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.anulado}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Tiene CTM" />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.camTomaMuestra}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Aforo" />
-                                          </f:facet>
-                                          <h:outputText value="#{desc.aforo.nombre}" />
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Tratamientos" />
-                                          </f:facet>
-
-                                        </h:column>
-                                        <h:column>
-                                          <f:facet name="header">
-                                            <h:outputText value="Acciones" />
-                                          </f:facet>
-
-                                        </h:column>
-                                    </b:dataTable>
-                                </b:column>
-                            </b:row>
-                        </b:panel>
+                        <b:button onclick="$('.modalAyudaVuelcoBoolean').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco}" 
+                                         title="Guardar las carcterísticas del vuelco en la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.createVuelcos()}" 
+                                         look="primary" value="#{mbDeclaraciones.vlcGuardar}" ajax="true" update="frValidDrp,frTabVuelcos,messages" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco}" 
+                                         title="Limpiar las características del vuelco seleccionados" size="sm" 
+                                         action="#{mbDeclaraciones.limpiarVuelco()}" 
+                                         look="danger" value="#{mbDeclaraciones.vlcLimpiar}" 
+                                         ajax="true" update="@next,frValidDrp,frTabVuelcos,messages" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" 
+                                         title="Actualizar las caracterísicas del vuelco de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.editVuelcos()}" look="primary" 
+                                         value="#{mbDeclaraciones.vlcActualizar}" ajax="true" update="messages" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" 
+                                         title="Eliminar las características del vuelco de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.deleteVuelco()}" look="danger" 
+                                         value="#{mbDeclaraciones.vlcEliminar}" ajax="true" update="frValidDrp,frTabVuelcos" />
                     </b:column>
                 </b:row>
                 
-                <b:row>
-                    <b:column span="12" >
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco; mbDeclaraciones.activeIndex == 2}" title="Guardar las carcterísticas de vuelcos en la Declaración" size="sm" action="#{mbDeclaraciones.createVuelcos()}" 
-                                         look="primary" value="#{mbDeclaraciones.vlcGuardar}" style="margin-left: 5px" ajax="true" update="decGral,messages" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco; mbDeclaraciones.activeIndex == 2}" title="Limpiar las características de los vuelcos seleccionados" size="sm" action="#{mbDeclaraciones.limpiarVuelco()}" 
-                                         look="danger" value="#{mbDeclaraciones.vlcLimpiar}" 
-                                         ajax="true" update="@next,decGral,frValidDrp,messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" title="Actualizar las caracterísicas de vuelcos de la Declaración" size="sm" action="#{mbDeclaraciones.editVuelcos()}" look="primary" 
-                                         value="#{mbDeclaraciones.vlcActualizar}" ajax="true" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" title="Eliminar las características de vuelcos de la Declaración" size="sm" action="#{mbDeclaraciones.deleteVuelco()}" look="danger" 
-                                         value="#{mbDeclaraciones.vlcEliminar}" ajax="true" update="decGral,frValidDrp" />
-                        <b:button onclick="$('.modalAyudaVuelcoBoolean').modal();return false;" size="sm" look="warning" value="Ayuda" />
-                    </b:column>
-                </b:row>
             </b:panel>
         </h:form>
     </h:body>
@@ -304,4 +331,3 @@
         }
     </script>   
 </html>
-

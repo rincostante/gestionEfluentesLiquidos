@@ -1,0 +1,384 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <h:form id="frTabVuelcos" prependId="false">
+            <b:panel title="" look="info" collapsible="false" style="height: 100%" >
+                
+                <b:row>
+                    <b:column span="12" >
+                        <b:label tooltip="De estar inscripto, obtener los datos desde aquí" text="Inscripción registro MAyDS" severity="info"/>
+                        <b:panel collapsible="false" look="info">
+                            <b:button onclick="$('.modalAyudaVuelcoInscrip').modal();return false;" size="xs" look="warning" value="Ayuda" style="margin-bottom: 10px"/>
+                            <b:commandButton title="Validar DRP" oncomplete="$('.modalValidDrp').modal();return false;" 
+                                         size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" style="margin-bottom: 10px" ajax="true" />
+                            <b:commandButton title="Actualizar listado" update="dtSup" ajax="true" size="xs" look="default" 
+                                             value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-bottom: 10px" >
+                                <p:ajax update="frTabVuelcos" />
+                            </b:commandButton> 
+                            
+                            <h:panelGrid columns="3" style="width: 100%" rendered="#{mbDeclaraciones.vuelco.expNum gt 0}" >
+                                <b:row>
+                                    <b:column span="3">
+                                        <b:inputText disabled="true" label="Número Expediente DRP: " value="#{mbDeclaraciones.vuelco.expNum}" />
+                                        <b:inputText disabled="true" label="Año Expediente DRP: " value="#{mbDeclaraciones.vuelco.expAnio}" />
+                                    </b:column>
+                                    <b:column span="3">
+                                        <b:inputText disabled="true" label="Número CAA: " value="#{mbDeclaraciones.vuelco.caaNum}" />
+                                        <p:outputLabel style="font-weight: lighter" value="Fecha venc. CAA.: " />
+                                        <p:calendar disabled="true" label="" value="#{mbDeclaraciones.vuelco.caaFechaVenc}" pattern="dd/MM/yyyy" locale="es" />
+                                        <b:inputText disabled="true" label="Vigente: " value="#{mbDeclaraciones.vuelco.caaVigente}" />
+                                    </b:column>
+                                    <b:column span="6">
+                                        <b:inputText disabled="true" label="Usuario DRP: " value="#{mbDeclaraciones.vuelco.usDrp}" />
+                                        <b:inputText disabled="true" label="Nombre: " value="#{mbDeclaraciones.vuelco.nombreDrp}" />
+                                        <b:inputText disabled="true" label="Descripción: " value="#{mbDeclaraciones.vuelco.descDrp}" />
+                                    </b:column>
+                                </b:row>
+                            </h:panelGrid>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                
+                <b:row>
+                    <!-- Circuitos -->
+                    <b:column span="4" >
+                        <b:label tooltip="Indique las características de los diferentes circuitos de agua" text="Características de los circuitos" severity="info"/>
+                        <b:panel collapsible="false" look="info">
+                            <b:row>
+                                <b:column span="12" >
+                                    <h:panelGrid columns="1"  cellpadding="5">
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.circCerrRefrig}" label="" caption="Circuito  cerrado de refrigeración" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.recircAgua}" label="" caption="Recirculación de agua" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.lavaPisosInd}" label="" caption="Lavado de pisos de locales industriales" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.circAbierntRefrig}" label="" caption="Circuito abierto de refrigeración" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.caldera}" label="" caption="Caldera" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.captaAguaSubte}" label="" caption="Captación de Agua Subterránea" />
+                                    </h:panelGrid>
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                    <!-- Calidad afluente -->
+                    <b:column span="8" >
+                        <b:label tooltip="Indique si el líquido residual crudo contiene alguna de estas sustancias" text="Calidad del Afluente" severity="info"/>
+                        <b:panel collapsible="false" look="info">
+                            <b:row>
+                                <b:column span="6" >
+                                    <h:panelGrid columns="1"  cellpadding="5">
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.arsenico}" label="" caption="Arsénico" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.cadmio}" label="" caption="Cadmio" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.cianuro}" label="" caption="Cianuro" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.cromo}" label="" caption="Cromo" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.detergentes}" label="" caption="Detergentes" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.fenoles}" label="" caption="Fenoles" />
+                                    </h:panelGrid>
+                                </b:column>
+                                <b:column span="6" >
+                                    <h:panelGrid columns="1"  cellpadding="5">
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.hidrocarburos}" label="" caption="Hidrocarburos" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.mercurio}" label="" caption="Mercurio" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.plomo}" label="" caption="Plomo" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.solventesOrg}" label="" caption="Solvente Orgánico" />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.solidosSediment}" label="" caption="S.S.E.E." />
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.vuelco.sustSolubles}" label="" caption="Sulfuros" />
+                                    </h:panelGrid>
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                <!-- Características afluente -->
+                <b:row>
+                    <b:column span="12" >
+                        <b:label tooltip="Indique el grado de acidez del afluente" text="Carcaterística del Afluente" severity="info"/>
+                        <b:panel collapsible="false" look="info">
+                            <b:row>
+                                <b:column span="4" >
+                                    <b:selectBooleanCheckbox id="chkAcido" onclick="deshabilitarNoAcido();" 
+                                                             disabled="#{mbDeclaraciones.vuelco.neutro or mbDeclaraciones.vuelco.alcalino}"
+                                                             value="#{mbDeclaraciones.vuelco.acido}" label="" caption="pH menor o igual a 6 ACIDO" />
+                                </b:column>
+                                <b:column span="4" >
+                                    <b:selectBooleanCheckbox id="chkNeutro" onclick="deshabilitarNoNeutro()" 
+                                                             disabled="#{mbDeclaraciones.vuelco.acido or mbDeclaraciones.vuelco.alcalino}" 
+                                                             value="#{mbDeclaraciones.vuelco.neutro}" label="" caption="pH entre 6 y 8 NEUTRO" />
+                                </b:column>
+                                <b:column span="4" >
+                                    <b:selectBooleanCheckbox id="chkAlcalino" onclick="deshabilitarNoAlcalino()" 
+                                                             disabled="#{mbDeclaraciones.vuelco.neutro or mbDeclaraciones.vuelco.acido}" 
+                                                             value="#{mbDeclaraciones.vuelco.alcalino}" label="" caption="pH mayor o igual a 8 ALCALINO" />
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                
+                <!-- Descargas -->
+                <b:row>
+                    <b:column span="12" >
+                        <b:label tooltip="Registre aquí las distintas descargas del Establecimiento" text="Descargas" severity="info"/>
+                        <b:panel id="pnDesc" collapsible="false" look="info">
+                            <p:panel rendered="#{mbDeclaraciones.edita}">
+                                <b:row>
+                                    <b:column span="2">
+                                        <b:selectOneMenu label="Tipo de Descarga" id="pepe" value="#{mbDeclaraciones.descarga.claveTipo}" >
+                                            <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                            <f:selectItems value="#{mbDeclaraciones.mapTipoDescarga.entrySet()}" var="tipoDesc" 
+                                                           itemLabel="#{tipoDesc.value}" itemValue="#{tipoDesc.key}" />
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                    <b:column span="2">
+                                        <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.descarga.caudal}" >
+                                            <f:validateDoubleRange />
+                                        </b:inputText>
+                                    </b:column>
+                                    <b:column span="6">
+                                        <b:selectOneMenu label="Destino" id="cmbDestEdit" value="#{mbDeclaraciones.descarga.curso}" >
+                                            <f:selectItem itemLabel="Seleccione el Destino del efluente" itemValue="" noSelectionOption="true" />  
+                                            <f:selectItems value="#{mbDeclaraciones.lstDestinos}" var="curso" 
+                                                           itemLabel="#{curso.nombre} - #{curso.cuenca}" itemValue="#{curso}" />
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                    <b:column span="2">
+                                        <b:inputText label="N° de Conexión" value="#{mbDeclaraciones.descarga.numOrden}" />
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column span="2">
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.descarga.mayor5km}" label="Mayor de 5 km" caption="" />
+                                    </b:column>
+                                    <b:column span="2">
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.descarga.anulado}" label="Anulado" caption="" />
+                                    </b:column>
+                                    <b:column span="2">
+                                        <b:selectBooleanCheckbox value="#{mbDeclaraciones.descarga.camTomaMuestra}" label="CTM y MC reg." caption="" />
+                                    </b:column>
+
+                                    <b:column span="6">
+                                        <b:selectOneMenu label="Tipo de Aforo" id="cmbAf" value="#{mbDeclaraciones.descarga.aforo}" >
+                                            <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                            <f:selectItems value="#{mbDeclaraciones.lstAforos}" var="aforo" 
+                                                           itemLabel="#{aforo.nombre}" itemValue="#{aforo}" />
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:row>
+                                <b:row>
+                                    <b:column span="12">
+                                        <p:inputTextarea id="txMotAnulado" value="#{mbDeclaraciones.descarga.motivoAnulado}" style="font-weight: lighter; color: gray"
+                                                         styleClass="form-control bf-no-message" label="Destino" 
+                                                         placeholder="En caso de estar anulada, explique el motivo brevemente." maxlength="500" />
+                                    </b:column>
+                                </b:row>
+                            </p:panel>
+                            <br></br>
+                            <b:row>
+                                <b:column span="12" >
+                                    <b:button onclick="$('.modalAyudaVuelcoInscrip').modal();return false;" size="xs" look="warning" value="Ayuda" style="margin-bottom: 20px"/>
+                                    <b:commandButton title="Registrar una nueva Descarga" actionListener="#{mbDeclaraciones.prepareAddDescarga()}" 
+                                                     oncomplete="$('.modalDescargas').modal();return false;" size="xs" look="primary" update="frDescargas,decGral:messages" 
+                                                     value="#{mbDeclaraciones.vlcAgregar}" icon="glyphicon-new-window" style="margin-bottom: 20px" ajax="true" process="@this" />
+                                
+                                    <b:commandButton title="Actualizar listado" ajax="true" size="xs" look="default" 
+                                                     value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-bottom: 20px" >
+                                        <p:ajax update="pnDesc" />
+                                    </b:commandButton>  
+                                    <b:commandButton title="" action="#{mbDeclaraciones.addDescargas()}" 
+                                                     size="xs" look="primary" update="pnDesc"
+                                                     value="#{mbDeclaraciones.gralGuardar}" style="margin-bottom: 20px" ajax="true" process="@this" >
+                                    </b:commandButton>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12" >
+                                    <b:dataTable id="dtTrat" value="#{mbDeclaraciones.lstDescargas}" var="desc" 
+                                                 styleClass="table table-striped table-bordered" style="width:100%;font-size: 12px" >
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Tipo" />
+                                          </f:facet>
+                                            <h:outputText value="#{desc.tipo}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="N°" />
+                                          </f:facet>
+                                            <h:outputText value="#{desc.numOrden}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Caudal (m3)" />
+                                          </f:facet>
+                                          <h:outputText value="#{desc.caudal}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Destino" />
+                                          </f:facet>
+                                          <h:outputText value="#{desc.curso.nombre}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Mayor a 5km" />
+                                          </f:facet>
+                                          <h:outputText value="#{desc.mayor5km}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Anulado" />
+                                          </f:facet>
+                                          <h:outputText value="#{desc.anulado}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Tiene CTM" />
+                                          </f:facet>
+                                          <h:outputText value="#{desc.camTomaMuestra}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Aforo" />
+                                          </f:facet>
+                                          <h:outputText value="#{desc.aforo.nombre}" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Tratamientos" />
+                                          </f:facet>
+                                            <b:commandButton title="Ver / Editar Tratamientos" actionListener="#{mbDeclaraciones.prepareAddDescarga()}" 
+                                                             oncomplete="$('.modalDescargas').modal();return false;" size="xs" look="primary" update="frDescargas" 
+                                                             value="" icon="glyphicon-new-window" ajax="true" />
+                                        </h:column>
+                                        <h:column>
+                                          <f:facet name="header">
+                                            <h:outputText value="Acciones" />
+                                          </f:facet>
+                                            <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editDescarga()}" >
+                                                    <f:setPropertyActionListener value="#{desc}" target="#{mbDeclaraciones.descarga}" /> 
+                                                    <f:ajax execute="@this"/>
+                                            </b:commandButton>
+                                            <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeTratamiento()}" >
+                                                <f:setPropertyActionListener value="#{desc}" target="#{mbDeclaraciones.descarga}" />  
+                                                <p:ajax process="@this" />
+                                            </b:commandButton>
+                                        </h:column>
+                                    </b:dataTable>
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco; mbDeclaraciones.activeIndex == 2}" title="Guardar las carcterísticas de vuelcos en la Declaración" size="sm" action="#{mbDeclaraciones.createVuelcos()}" 
+                                         look="primary" value="#{mbDeclaraciones.vlcGuardar}" style="margin-left: 5px" ajax="true" update="decGral,messages" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco; mbDeclaraciones.activeIndex == 2}" title="Limpiar las características de los vuelcos seleccionados" size="sm" action="#{mbDeclaraciones.limpiarVuelco()}" 
+                                         look="danger" value="#{mbDeclaraciones.vlcLimpiar}" 
+                                         ajax="true" update="@next,decGral,frValidDrp,messages" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" title="Actualizar las caracterísicas de vuelcos de la Declaración" size="sm" action="#{mbDeclaraciones.editVuelcos()}" look="primary" 
+                                         value="#{mbDeclaraciones.vlcActualizar}" ajax="true" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" title="Eliminar las características de vuelcos de la Declaración" size="sm" action="#{mbDeclaraciones.deleteVuelco()}" look="danger" 
+                                         value="#{mbDeclaraciones.vlcEliminar}" ajax="true" update="decGral,frValidDrp" />
+                        <b:button onclick="$('.modalAyudaVuelcoBoolean').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                    </b:column>
+                </b:row>
+            </b:panel>
+        </h:form>
+    </h:body>
+    <script type="text/javascript">
+        var activeAcido;
+        var saveAcido;
+        var activeNetutro;
+        var saveNeutro;
+        var activeAlcalino;
+        var saveAlcalino;
+        
+        function deshabilitarNoAcido(){
+            if(#{mbDeclaraciones.vuelco.acido}){
+                saveAcido = true;
+            }
+            if(activeAcido){
+                if(saveAcido){
+                    frTabVuelcos:input_chkAlcalino.disabled = true;
+                    frTabVuelcos:input_chkNeutro.disabled = true;
+                    activeAcido = false;
+                }else{
+                    frTabVuelcos:input_chkAlcalino.disabled = false;
+                    frTabVuelcos:input_chkNeutro.disabled = false;
+                    activeAcido = false;
+                }
+            }else{
+                if(saveAcido){
+                    frTabVuelcos:input_chkAlcalino.disabled = false;
+                    frTabVuelcos:input_chkNeutro.disabled = false;
+                    activeAcido = true;
+                }else{
+                    frTabVuelcos:input_chkAlcalino.disabled = true;
+                    frTabVuelcos:input_chkNeutro.disabled = true;
+                    activeAcido = true;
+                }
+            }
+        }
+        function deshabilitarNoNeutro(){
+            if(#{mbDeclaraciones.vuelco.neutro}){
+                saveNeutro = true;
+            }
+            if(activeNetutro){
+                if(saveNeutro){
+                    frTabVuelcos:input_chkAlcalino.disabled = true;
+                    frTabVuelcos:input_chkAcido.disabled = true;
+                    activeNetutro = false;
+                }else{
+                    frTabVuelcos:input_chkAlcalino.disabled = false;
+                    frTabVuelcos:input_chkAcido.disabled = false;
+                    activeNetutro = false;
+                }
+            }else{
+                if(saveNeutro){
+                    frTabVuelcos:input_chkAlcalino.disabled = false;
+                    frTabVuelcos:input_chkAcido.disabled = false;
+                    activeNetutro = true;
+                }else{
+                    frTabVuelcos:input_chkAlcalino.disabled = true;
+                    frTabVuelcos:input_chkAcido.disabled = true;
+                    activeNetutro = true;
+                }
+            }
+        }
+        function deshabilitarNoAlcalino(){
+            if(#{mbDeclaraciones.vuelco.alcalino}){
+                saveAlcalino = true;
+            }        
+            if(activeAlcalino){
+                if(saveAlcalino){
+                    frTabVuelcos:input_chkNeutro.disabled = true;
+                    frTabVuelcos:input_chkAcido.disabled = true;
+                    activeAlcalino = false;
+                }else{
+                    frTabVuelcos:input_chkNeutro.disabled = false;
+                    frTabVuelcos:input_chkAcido.disabled = false;
+                    activeAlcalino = false;
+                }
+            }else{
+                if(saveAlcalino){
+                    frTabVuelcos:input_chkNeutro.disabled = false;
+                    frTabVuelcos:input_chkAcido.disabled = false;
+                    activeAlcalino = true;
+                }else{
+                    frTabVuelcos:input_chkNeutro.disabled = true;
+                    frTabVuelcos:input_chkAcido.disabled = true;
+                    activeAlcalino = true;
+                }
+            }
+        }
+    </script>   
+</html>
+

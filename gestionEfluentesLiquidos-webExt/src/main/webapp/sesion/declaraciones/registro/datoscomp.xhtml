@@ -11,35 +11,237 @@
     </h:head>
     <h:body>
         <p:growl id="messages" showDetail="false" />
+        
+        <!-- Ayudas -->
+        <b:modal id="dlgAyudaCompDoc" title="Registro de DJ - Datos Complementarios - Documentación presentada" styleClass="modalAyudaCompDoc"
+            closable="true" >
+                Ayuda datos comp Documentación presentada
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaCompAct" title="Registro de DJ - Datos Complementarios - Actividades" styleClass="modalAyudaDatosCompAct"
+            closable="true" >
+                Ayuda datos comp Actividades
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaCompFech" title="Registro de DJ - Datos Complementarios - Fechas" styleClass="modalAyudaDatosCompFech"
+            closable="true" >
+                Ayuda datos comp Fechas
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaCompPersonal" title="Registro de DJ - Datos Complementarios - Asignación de personal" styleClass="modalAyudaDatosCompPers"
+            closable="true" >
+                Ayuda datos comp Personal
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaCompSup" title="Registro de DJ - Datos Complementarios - Superficies edilicias" styleClass="modalAyudaDatosCompSup"
+            closable="true" >
+                Ayuda datos Superficies edilicias
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <!-- Formulario Actividades -->
+        <b:modal id="dlgAct" styleClass="modalFrmAct" closable="true" >
+            <h:form prependId="false" id="frModAct">
+                <b:panel id="pnAddAct" title="Agregar Actividades" look="info" collapsible="false" >
+                    <b:selectOneMenu label="" id="cmbAct" value="#{mbDeclaraciones.actividad}" >
+                        <f:selectItem itemLabel="Seleccione la Actividad a ingresar" itemValue="" noSelectionOption="true" />  
+                        <f:selectItems value="#{mbDeclaraciones.lstActividades}" var="act" 
+                                       itemLabel="#{act.codigo} - #{act.descripcion}" 
+                                             itemValue="#{act}"/>
+                    </b:selectOneMenu>
+                    <p:dataTable id="dtActDec" value="#{mbDeclaraciones.lstActDec}" var="activ" 
+                                 style="font-size: 12px" >
+                        <p:column width="60" headerText="Código" >
+                            <p:outputLabel style="font-weight: lighter" value="#{activ.actividad.codigo}"/>
+                        </p:column>
+                        <p:column headerText="Descripción" >
+                            <p:outputLabel style="font-weight: lighter" value="#{activ.actividad.descripcion}"/>
+                        </p:column>
+                        <p:column width="45" headerText="" >
+                            <b:commandButton look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeActividad()}" >
+                                <f:setPropertyActionListener value="#{activ}" target="#{mbDeclaraciones.actDecSelected}" />  
+                            </b:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <b:commandButton style="margin-right: 5px" action="#{mbDeclaraciones.addActividades()}" look="primary" value="#{mbDeclaraciones.mdAgregarAct}" 
+                                     ajax="true" update="@next,dtActDec,messages,cmbAct" />
+                    <b:commandButton style="margin-left: 5px" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" look="warning" update="dtActDec" />
+
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>
+        
+        <!-- Formulario Fechas -->
+        <b:modal id="dlgFechas" styleClass="modalFrmFechas" closable="true" >
+            <h:form prependId="false" id="frModFechas">
+                <b:panel id="pnAddFechas" title="Agregar Fechas de actualización" look="info" collapsible="false" >
+                    <b:selectOneMenu required="true" label="" id="cmbTipoFechas" value="#{mbDeclaraciones.fechaDec.tipoFecha}" >
+                        <f:selectItem itemLabel="Seleccione el tipo de fecha a ingresar" itemValue="" noSelectionOption="true" />  
+                        <f:selectItems value="#{mbDeclaraciones.mapTipoFecha.entrySet()}" var="tipoFecha" 
+                                       itemLabel="#{tipoFecha.value}" itemValue="#{tipoFecha.key}" />
+                    </b:selectOneMenu>
+
+                    <p:calendar style="font-size: 12px;font-weight: lighter" label="Fecha: " id="dtpFecha" value="#{mbDeclaraciones.fechaDec.fecha}" pattern="dd/MM/yyyy" locale="es" />
+                    <br></br><br></br>
+                    <p:dataTable id="dtFechas" value="#{mbDeclaraciones.lstFechaDec}" var="fecha" 
+                                 style="font-size: 12px" >
+                        <p:column headerText="Tipo" >
+                            <p:outputLabel style="font-weight: lighter" value="#{fecha.descripcion}"/>
+                        </p:column>
+                        <p:column width="100" headerText="Fecha" >
+                            <p:outputLabel style="font-weight: lighter" value="#{fecha.fecha}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column width="75" headerText="" >
+                            <b:commandButton look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editFecha()}" >
+                                <f:setPropertyActionListener value="#{fecha}" target="#{mbDeclaraciones.fechaDecSelected}" />  
+                                <p:ajax process="@this"  />
+                            </b:commandButton>
+                            <b:commandButton look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeFecha()}" >
+                                <f:setPropertyActionListener value="#{fecha}" target="#{mbDeclaraciones.fechaDecSelected}" />  
+                                <p:ajax process="@this" />
+                            </b:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <b:commandButton action="#{mbDeclaraciones.addFechas()}" look="primary" value="#{mbDeclaraciones.mdAgregarFecha}" 
+                                     ajax="true" update="@next,cmbTipoFechas,messages,dtFechas,dtpFecha" style="margin-right: 5px" />
+                    <b:commandButton icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" look="warning" update="cmbTipoFechas,dtpFecha,dtFechas" style="margin-left: 5px" />
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>   
+        
+        <!-- Formulario Personal -->
+        <b:modal id="dlgPers" styleClass="modalFrmPers" closable="true" >
+            <h:form prependId="false" id="frModPers">
+                <b:panel id="pnAddPers" title="Asignar personal" look="info" collapsible="false" >
+                    <b:selectOneMenu required="true" label="" id="cmbTipoPers" value="#{mbDeclaraciones.canPersDec.tipoPers}" >
+                        <f:selectItem itemLabel="Seleccione el rubro a asignar personal" itemValue="" noSelectionOption="true" />  
+                        <f:selectItems value="#{mbDeclaraciones.mapTipoPersonal.entrySet()}" var="tipoPers" 
+                                       itemLabel="#{tipoPers.value}" itemValue="#{tipoPers.key}" />
+                    </b:selectOneMenu>
+                    <b:inputText id="txtPers" label="" placeholder="Ingrese la cantidad de personal" value="#{mbDeclaraciones.canPersDec.cantidad}" />
+                    <br></br><br></br>
+                    <p:dataTable id="dtPersonal" value="#{mbDeclaraciones.lstCantPers}" var="pers" 
+                                 style="font-size: 12px" >
+                        <p:column headerText="Cantidad" >
+                            <p:outputLabel style="font-weight: lighter" value="#{pers.cantidad}" />
+                        </p:column>
+                        <p:column width="100" headerText="Rubro" >
+                            <p:outputLabel style="font-weight: lighter" value="#{pers.descripcion}" />
+                        </p:column>
+                        <p:column width="75" headerText="" >
+                            <b:commandButton look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editPersonal()}" >
+                                <f:setPropertyActionListener value="#{pers}" target="#{mbDeclaraciones.canPersDecSelected}" />  
+                                <p:ajax process="@this"  />
+                            </b:commandButton>
+                            <b:commandButton look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removePersonal()}" >
+                                <f:setPropertyActionListener value="#{pers}" target="#{mbDeclaraciones.canPersDecSelected}" />  
+                                <p:ajax process="@this" />
+                            </b:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <b:commandButton action="#{mbDeclaraciones.addPersonal()}" look="primary" value="#{mbDeclaraciones.mdAgregarPersonal}" 
+                                     ajax="true" update="@next,messages,frModPers" style="margin-right: 5px" />
+                    <b:commandButton icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" look="warning" update="frModPers" style="margin-left: 5px" />
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>       
+        
+        <!-- Formulario Superficies -->
+        <b:modal id="dlgSup" styleClass="modalFrmSup" closable="true" >
+            <h:form prependId="false" id="frModSup">
+                <b:panel id="pnAddSup" title="Asignar superficies" look="info" collapsible="false" >
+                    <b:selectOneMenu required="true" label="" id="cmbTipoSup" value="#{mbDeclaraciones.supDec.tipoSup}" >
+                        <f:selectItem itemLabel="Seleccione el tipo de superficie" itemValue="" noSelectionOption="true" />  
+                        <f:selectItems value="#{mbDeclaraciones.mapTipoSuperficie.entrySet()}" var="tipoSup" 
+                                       itemLabel="#{tipoSup.value}" itemValue="#{tipoSup.key}" />
+                    </b:selectOneMenu>
+                    <b:inputText id="txtSup" label="" placeholder="Ingrese los m2" value="#{mbDeclaraciones.supDec.cantidad}" >
+                        <f:validateDoubleRange />
+                    </b:inputText>
+                    <br></br><br></br>
+                    <p:dataTable id="dtSuperficie" value="#{mbDeclaraciones.lstSupDec}" var="sup" 
+                                 style="font-size: 12px" >
+                        <p:column width="100" headerText="Tipo" >
+                            <p:outputLabel style="font-weight: lighter" value="#{sup.tipo}" />
+                        </p:column>
+                        <p:column headerText="M2" >
+                            <p:outputLabel style="font-weight: lighter" value="#{sup.cantidad}" />
+                        </p:column>
+                        <p:column width="75" headerText="" >
+                            <b:commandButton look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editSupericie()}" >
+                                <f:setPropertyActionListener value="#{sup}" target="#{mbDeclaraciones.supDecSelected}" />  
+                                <p:ajax process="@this"  />
+                            </b:commandButton>
+                            <b:commandButton look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeSuperficie()}" >
+                                <f:setPropertyActionListener value="#{sup}" target="#{mbDeclaraciones.supDecSelected}" />  
+                                <p:ajax process="@this" />
+                            </b:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <br></br>
+                    <b:commandButton action="#{mbDeclaraciones.addSuperficies()}" look="primary" value="#{mbDeclaraciones.mdAgregarSuperficie}" 
+                                     ajax="true" update="@next,messages,frModSup" style="margin-right: 5px" />
+                    <b:commandButton icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" look="warning" update="frModSup" style="margin-left: 5px" />
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>        
+        
         <h:form id="frTabDatosComp" prependId="false">
-            <b:panel title="" look="info" collapsible="false" style="height: 100%" >
+            <b:panel title="Datos complementarios" look="info" collapsible="false" style="height: 100%" >
                 <b:row>
                     <b:column span="12" >
                         <b:label tooltip="Especificar si se presentó documentación, el visado correspondiente" text="Documentación presentada" severity="info"/>
-                            <b:panel collapsible="false" look="info">
-                                <b:row>
-                                    <b:column span="5" >
-                                        <p><h:outputText style="color: gray" value="Número y visado correspondientes a la DOCUMENTACION TECNICA presentada conforme a lo establecido por el artículo 8° del Decreto 776/92" /></p>
-                                    </b:column>
-                                    <b:column span="1" >
-                                        <b:inputText label="" value="#{mbDeclaraciones.docDec.numero}" placeholder="Número asignado" tooltip="Número que se le asignó a la documentación" >
-                                            <f:validateLongRange minimum="1" />
-                                        </b:inputText>
-                                    </b:column>
-                                    <b:column span="5" >
-                                        <b:selectOneMenu tooltip="Constancia obtenida, luego de concluído el trámite" requiredMessage="Debe seleccionar un tipo de visado para la Documentación presentada" label="" id="cmbVisados" value="#{mbDeclaraciones.docDec.tipoVisado}" >
-                                            <f:selectItem itemLabel="Seleccione el tipo de visado" itemValue="" noSelectionOption="true" />  
-                                            <f:selectItems value="#{mbDeclaraciones.mapTipoVisado.entrySet()}" var="tipoVis" 
-                                                           itemLabel="#{tipoVis.value}" itemValue="#{tipoVis.key}" />
-                                        </b:selectOneMenu>
-                                    </b:column>
-                                </b:row>
-                                <b:row>
-                                    <b:column>
-                                        <b:button style="margin-top: 5px" onclick="$('.modalAyudaCompDoc').modal();return false;" size="xs" look="warning" value="Ayuda" />
-                                    </b:column>
-                                </b:row>
-                            </b:panel>
+                        <b:panel collapsible="false" look="info">
+                            <b:row>
+                                <b:column span="6" >
+                                    <p><h:outputText style="color: gray" value="Número y visado correspondientes a la DOCUMENTACION TECNICA presentada conforme a lo establecido por el artículo 8° del Decreto 776/92" /></p>
+                                </b:column>
+                                <b:column span="2" >
+                                    <b:inputText label="" value="#{mbDeclaraciones.docDec.numero}" placeholder="Número asignado" tooltip="Número que se le asignó a la documentación" >
+                                        <f:validateLongRange minimum="1" />
+                                    </b:inputText>
+                                </b:column>
+                                <b:column span="4" >
+                                    <b:selectOneMenu tooltip="Constancia obtenida, luego de concluído el trámite" requiredMessage="Debe seleccionar un tipo de visado para la Documentación presentada" label="" id="cmbVisados" value="#{mbDeclaraciones.docDec.tipoVisado}" >
+                                        <f:selectItem itemLabel="Seleccione el tipo de visado" itemValue="" noSelectionOption="true" />  
+                                        <f:selectItems value="#{mbDeclaraciones.mapTipoVisado.entrySet()}" var="tipoVis" 
+                                                       itemLabel="#{tipoVis.value}" itemValue="#{tipoVis.key}" />
+                                    </b:selectOneMenu>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column>
+                                    <b:button style="margin-top: 5px" onclick="$('.modalAyudaCompDoc').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                                </b:column>
+                            </b:row>
+                        </b:panel>
                     </b:column>
                 </b:row>
                 
@@ -54,7 +256,7 @@
                                          size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" style="margin-top: 5px" ajax="true" />
                         <b:commandButton id="cmbLimpiarAct" title="Limpiar Actividades" update="dtAct,frModAct" action="#{mbDeclaraciones.removeActividades()}" 
                                          size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiarTodo}" icon="glyphicon-trash" style="margin-top: 5px" 
-                                         rendered="#{mbDeclaraciones.lstActDec.size() gt 0}" />
+                                         rendered="#{mbDeclaraciones.lstActDec.size() gt 0}" process="@this" />
                         <b:commandButton title="Actualizar listado" update="dtAct" ajax="true" size="xs" look="default" 
                                          value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-top: 5px" >
                             <p:ajax update="frTabDatosComp" />
@@ -73,9 +275,9 @@
                         <b:button style="margin-top: 5px" onclick="$('.modalAyudaDatosCompFech').modal();return false;" size="xs" look="warning" value="Ayuda" />
                         <b:commandButton title="Agregar/Editar Fechas" oncomplete="$('.modalFrmFechas').modal();return false;"
                                          size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" style="margin-top: 5px" ajax="true" />
-                        <b:commandButton id="cmbLimpFech" title="Limpiar Actividades" update="dtFch,frModFechas" action="#{mbDeclaraciones.removeFechas()}" 
+                        <b:commandButton id="cmbLimpFech" title="Limpiar Actividades" update="dtFch" action="#{mbDeclaraciones.removeFechas()}" 
                                          size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiarTodo}" icon="glyphicon-trash" style="margin-top: 5px" 
-                                         rendered="#{mbDeclaraciones.lstFechaDec.size() gt 0}" />
+                                         rendered="#{mbDeclaraciones.lstFechaDec.size() gt 0}" process="@this" />
                         <b:commandButton title="Actualizar listado" update="dtFch" ajax="true" size="xs" look="default" 
                                          value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-top: 5px" >
                             <p:ajax update="frTabDatosComp" />
@@ -93,9 +295,9 @@
                         <b:button style="margin-top: 5px" onclick="$('.modalAyudaDatosCompPers').modal();return false;" size="xs" look="warning" value="Ayuda" />
                         <b:commandButton title="Agregar/Editar Personal" oncomplete="$('.modalFrmPers').modal();return false;"
                                          size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" style="margin-top: 5px" ajax="true" />
-                        <b:commandButton id="cmbLimpPers" title="Limpiar Personal" update="dtPers,frModPers" action="#{mbDeclaraciones.removePersonales()}" 
+                        <b:commandButton id="cmbLimpPers" title="Limpiar Personal" update="dtPers" action="#{mbDeclaraciones.removePersonales()}" 
                                          size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiarTodo}" icon="glyphicon-trash" style="margin-top: 5px" 
-                                         rendered="#{mbDeclaraciones.lstCantPers.size() gt 0}" />
+                                         rendered="#{mbDeclaraciones.lstCantPers.size() gt 0}" process="@this" />
                         <b:commandButton title="Actualizar listado" update="dtPers" ajax="true" size="xs" look="default" 
                                          value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-top: 5px" >
                             <p:ajax update="frTabDatosComp" />
@@ -110,9 +312,9 @@
                         <b:button style="margin-top: 5px" onclick="$('.modalAyudaDatosCompSup').modal();return false;" size="xs" look="warning" value="Ayuda" />
                         <b:commandButton title="Agregar/Editar Superficies" oncomplete="$('.modalFrmSup').modal();return false;"
                                          size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" style="margin-top: 5px" ajax="true" />
-                            <b:commandButton id="cmbLimpSup" title="Limpiar Superficie" update="dtSup,frModSup" action="#{mbDeclaraciones.removeSuperficies()}" 
+                            <b:commandButton id="cmbLimpSup" title="Limpiar Superficie" update="dtSup" action="#{mbDeclaraciones.removeSuperficies()}" 
                                          size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiarTodo}" icon="glyphicon-trash" style="margin-top: 5px" 
-                                         rendered="#{mbDeclaraciones.lstSupDec.size() gt 0}" />
+                                         rendered="#{mbDeclaraciones.lstSupDec.size() gt 0}" process="@this" />
                         <b:commandButton title="Actualizar listado" update="dtSup" ajax="true" size="xs" look="default" 
                                          value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-top: 5px" >
                             <p:ajax update="frTabDatosComp" />
@@ -123,18 +325,29 @@
 
                 <b:row>
                     <b:column span="12" >
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosComReg; mbDeclaraciones.activeIndex == 1}" title="Guardar los datos complementarios en la Declaración" size="sm" action="#{mbDeclaraciones.createDatosCmplementarios()}" 
-                                         look="primary" value="#{mbDeclaraciones.compGuardar}" style="margin-left: 5px" ajax="true" update="decGral,messages" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosComReg; mbDeclaraciones.activeIndex == 1}" title="Limpiar los datos complementarios seleccionados" size="sm" action="#{mbDeclaraciones.limpiarDatosComp()}" look="danger" value="#{mbDeclaraciones.compLimpiar}" 
-                                         ajax="true" update="@next,decGral,frModAct,frModFechas,frModPers,frModSup,messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosComReg}" title="Actualizar los datos complementarios de la Declaración" size="sm" action="#{mbDeclaraciones.editDatosComplementarios()}" look="primary" 
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosComReg; mbDeclaraciones.activeIndex == 1}" 
+                                         title="Guardar los datos complementarios en la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.createDatosCmplementarios()}" ajax="true" oncomplete="reload();" 
+                                         look="primary" value="#{mbDeclaraciones.compGuardar}" update="messages,frTabDatosComp" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosComReg; mbDeclaraciones.activeIndex == 1}" 
+                                         title="Limpiar los datos complementarios seleccionados" size="sm" 
+                                         action="#{mbDeclaraciones.limpiarDatosComp()}" look="danger" value="#{mbDeclaraciones.compLimpiar}" 
+                                         ajax="true" update="frTabDatosComp,frModAct,frModFechas,frModPers,frModSup" process="@this" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosComReg}" title="Actualizar los datos complementarios de la Declaración" 
+                                         size="sm" action="#{mbDeclaraciones.editDatosComplementarios()}" look="primary" 
                                          value="#{mbDeclaraciones.compActualizar}" ajax="true" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosComReg}" title="Eliminar los datos complementarios de la Declaración" size="sm" action="#{mbDeclaraciones.deleteDatosComplementarios()}" look="danger" 
-                                         value="#{mbDeclaraciones.compEliminar}" ajax="true" update="decGral,frModAct,frModFechas,frModPers,frModSup" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosComReg}" title="Eliminar los datos complementarios de la Declaración" 
+                                         size="sm" action="#{mbDeclaraciones.deleteDatosComplementarios()}" look="danger" oncomplete="reload();"  
+                                         value="#{mbDeclaraciones.compEliminar}" ajax="true" update="frTabDatosComp,frModAct,frModFechas,frModPers,frModSup" />
                     </b:column>
                 </b:row>
             </b:panel>
         </h:form>
     </h:body>
+    <script type="text/javascript">
+        function reload(){
+            location.reload(true);
+        }
+    </script>
 </html>
 

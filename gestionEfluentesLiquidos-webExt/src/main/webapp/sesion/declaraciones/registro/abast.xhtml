@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaFrm" title="Registro de DJ - Abastos - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
+                Ayuda registro y edición de Abastecimientos de agua
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaGestAbastos" title="Registro de DJ - Abastos" styleClass="modalAyudaGestAbastos"
+            closable="true" >
+                Ayuda para la gestión general de Abastecimientos de agua
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+     
+        <h:form id="frAbastos" prependId="false">
+            <b:panel title="Abastecimientos de agua" look="info" collapsible="false">
+                <b:label tooltip="Utilice este formulario para ingresar los datos de nuevos Abastos o actualizar los ya cargados." 
+                         text="Ingreso de Abastos nuevos o edición de existentes" severity="info"/>
+                <b:panel id="pnForm" look="info">
+                    <b:row>
+                        <b:column span="6">
+                            <b:selectOneMenu label="Tipo" id="cmbTipo" value="#{mbDeclaraciones.abasto.tipoAbasto}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.lstTiposAbasto}" var="tipoAbasto" 
+                                               itemLabel="#{tipoAbasto.nombre}" itemValue="#{tipoAbasto}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                        <b:column span="3">
+                            <b:selectOneMenu label="Origen" id="cmbOrigen" value="#{mbDeclaraciones.abasto.origenAbasto}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.mapOrigenes.entrySet()}" var="origenAbasto" 
+                                               itemLabel="#{origenAbasto.value}" itemValue="#{origenAbasto.key}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                        <b:column span="3">
+                            <b:selectOneMenu label="Circuito" id="cmbCircuito" value="#{mbDeclaraciones.abasto.circuitoAbasto}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.mapCircuitos.entrySet()}" var="circuitoAbasto" 
+                                               itemLabel="#{circuitoAbasto.value}" itemValue="#{circuitoAbasto.key}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="2">
+                            <b:inputText label="Caudal (m3/h)" value="#{mbDeclaraciones.abasto.caudal}" >
+                                <f:validateDoubleRange />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText label="Purga (m3/h)" value="#{mbDeclaraciones.abasto.purga}" >
+                                <f:validateDoubleRange />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="4">
+                            <b:selectOneMenu label="Tipo caudal" id="cmbTipoCaudal" value="#{mbDeclaraciones.abasto.tipoCaudal}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.lstTiposCaudal}" var="tipoCaudal" 
+                                               itemLabel="#{tipoCaudal.nombre}" itemValue="#{tipoCaudal}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                        <b:column span="4">
+                            <b:selectOneMenu label="Fuente" id="cmbFuente" value="#{mbDeclaraciones.abasto.fuenteAbasto}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.mapFuentes.entrySet()}" var="fuenteAbasto" 
+                                               itemLabel="#{fuenteAbasto.value}" itemValue="#{fuenteAbasto.key}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+                    <br></br>
+                    <b:row>
+                        <b:column span="12" >
+                            <b:button title="Breve explicación del proceso de registro de un Abasto" onclick="$('.modalAyudaFrm').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                            <b:commandButton title="Agregar el Abasto nuevo o guardar la actualización de uno existente" 
+                                             action="#{mbDeclaraciones.addAbasto()}" size="xs" look="primary" 
+                                             value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frAbastos,messages" />
+                            <b:commandButton title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                             size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                             action="#{mbDeclaraciones.limpiarAbasto()}" update="pnForm" />
+                            <b:commandButton title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
+                                             action="#{mbDeclaraciones.cancelarAbastoSel()}" update="pnForm" />
+                        </b:column>
+                    </b:row>
+                </b:panel>
+                
+                <b:label tooltip="Podrá seleccionar un Abasto del listado para su eliminación o edición." 
+                         text="Listado de Abastos ingresados" severity="info"/>
+                <b:panel id="pnTable" look="info">
+                    <b:row>
+                        <b:column span="12" >
+                            <b:dataTable id="dtAbastos" value="#{mbDeclaraciones.lstAbasto}" var="abasto" 
+                                         styleClass="table table-striped table-bordered" style="font-size: 12px" >
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Tipo Abasto" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.tipoAbasto.nombre}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Origen" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.origen}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Circuito" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.circuito}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Caudal" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.caudal}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Tipo Caudal" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.tipoCaudal.nombre}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Purga" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.purga}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Fuente" />
+                                    </f:facet>
+                                    <h:outputText value="#{abasto.fuente}" />
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Acciones" />
+                                    </f:facet>
+                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                     action="#{mbDeclaraciones.editAbasto()}" >
+                                        <f:setPropertyActionListener value="#{abasto}" target="#{mbDeclaraciones.abasto}" /> 
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                     action="#{mbDeclaraciones.removeAbasto()}" update="frAbastos" >
+                                        <f:setPropertyActionListener value="#{abasto}" target="#{mbDeclaraciones.abasto}" />  
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                </h:column>
+                            </b:dataTable>
+                        </b:column>
+                    </b:row>
+                </b:panel>
+                <b:row>
+                    <b:column span="12" >
+                        <b:button title="Breve explicación del proceso de configuración de los Abastos que componen el Abastecimiento general de agua del Establecimiento" 
+                                  onclick="$('.modalAyudaGestAbastos').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosAbastos}" 
+                                         title="Guardar los Abastos configurados en el Abasteciemiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.createAbastos()}" 
+                                         look="primary" value="#{mbDeclaraciones.pzGuardar}" ajax="true" update="messages,frAbastos" process="@this" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosAbastos}" 
+                                         title="Limpiar los Abastos componentes del Abastecimiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.limpiarAbastos()}" process="@this"  
+                                         look="danger" value="#{mbDeclaraciones.pzLimpiar}" ajax="true" update="frAbastos" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosAbastos}" 
+                                         title="Actualizar los Abastos que componen el Abastecimiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.editAbastos()}" look="primary" process="@this"
+                                         value="#{mbDeclaraciones.pzActualizar}" ajax="true" update="messages" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosAbastos}" 
+                                         title="Eliminar los Abastos componentes del Abastecimiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.deleteAbastos()}" look="danger" process="@this" 
+                                         value="#{mbDeclaraciones.pzEliminar}" ajax="true" update="frAbastos" />
+                    </b:column>
+                </b:row>
+            </b:panel>
+        </h:form>
+    </h:body>
+</html>
+

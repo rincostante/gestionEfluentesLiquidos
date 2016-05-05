@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaFrm" title="Registro de DJ - Pozos - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
+                Ayuda registro y edición de pozos de captación de agua
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaGestPozos" title="Registro de DJ - Pozos" styleClass="modalAyudaGestPozos"
+            closable="true" >
+                Ayuda para la gestión general de pozos de captación de agua
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+     
+        <h:form id="frPozos" prependId="false">
+            <b:panel title="Pozos de captación de agua" look="info" collapsible="false">
+                <b:label tooltip="Utilice este formulario para ingresar los datos de nuevos Pozos o actualizar los ya cargados." 
+                         text="Ingreso de Pozos nuevos o edición de existentes" severity="info"/>
+                <b:panel id="pnForm" look="info">
+                    <b:row>
+                        <b:column span="2">
+                            <b:inputText label="N°" value="#{mbDeclaraciones.pozo.numero}" />
+                        </b:column>
+                        <b:column span="3">
+                            <b:selectBooleanCheckbox value="#{mbDeclaraciones.pozo.enServicio}" label="En servicio" />
+                        </b:column>
+                        <b:column span="3">
+                            <b:inputText label="Profundidad (mts)" value="#{mbDeclaraciones.pozo.profundidad}" >
+                                <f:validateDoubleRange />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText label="Horas diarias" value="#{mbDeclaraciones.pozo.horasFunc}" >
+                                <f:validateDoubleRange />
+                                <f:validateLongRange minimum="1" maximum="12" />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText label="Días x sem." value="#{mbDeclaraciones.pozo.diasFunc}" >
+                                <f:validateDoubleRange />
+                                <f:validateLongRange minimum="1" maximum="7" />
+                            </b:inputText>
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="3">
+                            <b:inputText label="Rendimiento (m3/h)" value="#{mbDeclaraciones.pozo.rendimiento}" >
+                                <f:validateDoubleRange />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="5">
+                            <b:selectOneMenu label="Tipo de Bomba" id="cmbTipoBomba" value="#{mbDeclaraciones.pozo.tipoBomba}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.mapTipoBomba.entrySet()}" var="tipoBmb" 
+                                               itemLabel="#{tipoBmb.value}" itemValue="#{tipoBmb.key}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                        <b:column span="4">
+                            <b:inputText label="Ptencia (HP)" value="#{mbDeclaraciones.pozo.potenciaBomba}" >
+                                <f:validateDoubleRange />
+                            </b:inputText>
+                        </b:column>
+                    </b:row>
+
+                    <br></br>
+                    <b:row>
+                        <b:column span="12" >
+                            <b:button title="Breve explicación del proceso de registro de un Pozo" onclick="$('.modalAyudaFrm').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                            <b:commandButton title="Agregar el Pozo nuevo o guardar la actualización de uno existente" 
+                                             action="#{mbDeclaraciones.addPozo()}" size="xs" look="primary" 
+                                             value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frPozos,messages" />
+                            <b:commandButton title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                             size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                             action="#{mbDeclaraciones.limpiarPozo()}" update="pnForm" />
+                            <b:commandButton title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
+                                             action="#{mbDeclaraciones.cancelarPozoSel()}" update="pnForm" />
+                        </b:column>
+                    </b:row>
+                </b:panel>
+                
+                <b:label tooltip="Podrá seleccionar un Pozo del listado para su eliminación o edición." 
+                         text="Listado de Pozos ingresados" severity="info"/>
+                <b:panel id="pnTable" look="info">
+                    <b:row>
+                        <b:column span="12" >
+                            <b:dataTable id="dtPozos" value="#{mbDeclaraciones.lstPozos}" var="pozo" 
+                                         styleClass="table table-striped table-bordered" style="font-size: 12px" >
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="N°" />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.numero}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="En srv." />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.enServicio}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Profundidad" />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.profundidad}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Hrs/día" />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.horasFunc}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Días/sem" />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.diasFunc}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Rendim." />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.rendimiento}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Tipo bomba" />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.tipoBmb}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Potencia" />
+                                  </f:facet>
+                                    <h:outputText value="#{pozo.potenciaBomba}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Acciones" />
+                                  </f:facet>
+                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                     action="#{mbDeclaraciones.editPozo()}" >
+                                        <f:setPropertyActionListener value="#{pozo}" target="#{mbDeclaraciones.pozo}" /> 
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                     action="#{mbDeclaraciones.removePozo()}" update="frPozos" >
+                                        <f:setPropertyActionListener value="#{pozo}" target="#{mbDeclaraciones.pozo}" />  
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                </h:column>
+                            </b:dataTable>
+                        </b:column>
+                    </b:row>
+                </b:panel>
+                <b:row>
+                    <b:column span="12" >
+                        <b:button title="Breve explicación del proceso de configuración de los Pozos del Abastecimiento de agua del Establecimiento" 
+                                  onclick="$('.modalAyudaGestPozos').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosPozos}" 
+                                         title="Guardar los Pozos configurados en el Abasteciemiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.createPozos()}" 
+                                         look="primary" value="#{mbDeclaraciones.pzGuardar}" ajax="true" update="messages,frPozos" process="@this" />
+                        <b:commandButton rendered="#{not mbDeclaraciones.datosPozos}" 
+                                         title="Limpiar los Pozos configurados en el Abastecimiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.limpiarPozos()}" process="@this"  
+                                         look="danger" value="#{mbDeclaraciones.pzLimpiar}" ajax="true" update="frPozos" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosPozos}" 
+                                         title="Actualizar los Pozos configurados en el Abastecimiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.editPozos()}" look="primary" process="@this"
+                                         value="#{mbDeclaraciones.pzActualizar}" ajax="true" update="messages" />
+                        <b:commandButton rendered="#{mbDeclaraciones.datosPozos}" 
+                                         title="Eliminar los Pozos del Abastecimiento de agua de la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.deletePozos()}" look="danger" process="@this" 
+                                         value="#{mbDeclaraciones.pzEliminar}" ajax="true" update="frPozos" />
+                    </b:column>
+                </b:row>
+            </b:panel>
+        </h:form>
+    </h:body>
+</html>
+

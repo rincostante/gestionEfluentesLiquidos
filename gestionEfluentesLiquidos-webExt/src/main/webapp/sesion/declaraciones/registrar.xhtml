@@ -79,6 +79,13 @@
                     <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
                 </f:facet>
             </b:modal>
+            <b:modal id="dlgAyudaVuelcoAddTratam" title="Registro de DJ - Vuelco - Agregar tratamientos" styleClass="modalAyudaVuelcoAddTratam"
+                closable="true" >
+                    Ayuda vuelco, tratamientos de los líquidos vertidos.
+                <f:facet name="footer">
+                    <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                </f:facet>
+            </b:modal>
             
             <!-- Formulario Actividades -->
             <b:modal id="dlgAct" styleClass="modalFrmAct" closable="true" >
@@ -211,7 +218,7 @@
                                            itemLabel="#{tipoSup.value}" itemValue="#{tipoSup.key}" />
                         </b:selectOneMenu>
                         <b:inputText id="txtSup" label="" placeholder="Ingrese los m2" value="#{mbDeclaraciones.supDec.cantidad}" >
-                            <f:convertNumber pattern="0.00"/>
+                            <f:validateDoubleRange />
                         </b:inputText>
                         <br></br><br></br>
                         <p:dataTable id="dtSup" value="#{mbDeclaraciones.lstSupDec}" var="sup" 
@@ -344,8 +351,19 @@
                             </b:column>
                         </b:row>
                         <b:row>
+                            <b:column span="12">
+                                <b:selectOneMenu label="Destino" id="cmbDestino" value="#{mbDeclaraciones.descarga.curso}" >
+                                    <f:selectItem itemLabel="Seleccione el Destino del efluente" itemValue="" noSelectionOption="true" />  
+                                    <f:selectItems value="#{mbDeclaraciones.lstDestinos}" var="curso" 
+                                                   itemLabel="#{curso.nombre} - #{curso.cuenca}" itemValue="#{curso}" />
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+                        <b:row>
                             <b:column span="3">
-                                <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.descarga.caudal}" />
+                                <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.descarga.caudal}" >
+                                    <f:validateDoubleRange />
+                                </b:inputText>
                             </b:column>
                             <b:column span="3">
                                 <b:selectBooleanCheckbox value="#{mbDeclaraciones.descarga.mayor5km}" label="" caption="Mayor de 5 km" />
@@ -355,6 +373,13 @@
                             </b:column>
                             <b:column span="3">
                                 <b:selectBooleanCheckbox value="#{mbDeclaraciones.descarga.camTomaMuestra}" label="" caption="CTM y MC reglamentaria" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="12">
+                                <p:inputTextarea id="txMotivoAnulado" value="#{mbDeclaraciones.descarga.motivoAnulado}" style="font-weight: lighter; color: gray"
+                                                 styleClass="form-control bf-no-message" label="Destino" 
+                                                 placeholder="En caso de estar anulada, explique el motivo brevemente." maxlength="500" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -368,7 +393,16 @@
                             <b:column span="3">
                                 <b:commandButton title="Registrar tratamientos de los líquidos" action="#{mbDeclaraciones.prepareAddTratamiento()}" 
                                                  oncomplete="$('.modalTratamientos').modal();return false;" style="margin-top: 20px" process="@this"
-                                                 look="primary" value="#{mbDeclaraciones.vlcTratamientos}" icon="glyphicon-new-window" ajax="true" />
+                                                 look="primary" value="#{mbDeclaraciones.vlcTratamientos}" icon="glyphicon-new-window" ajax="true" update="frTratamientos" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column>
+                                <b:commandButton action="#{mbDeclaraciones.addDescargas()}" oncomplete="closeModalDescargas()" look="primary" value="#{mbDeclaraciones.dscGuardarDesc}" 
+                                                 ajax="true" update="@next" />
+                                <b:commandButton action="#{mbDeclaraciones.removeDescarga()}" icon="glyphicon-trash" value="#{mbDeclaraciones.mdLimpiarTodo}" 
+                                                 look="danger" process="@this" ajax="true"  />
+                                <b:button value="Ayuda" look="warning" onclick="ayudaTrat()" />
                             </b:column>
                         </b:row>
                         <f:facet name="footer">
@@ -377,6 +411,55 @@
                     </b:panel>
                 </h:form>
             </b:modal>
+            
+            <!-- Formulario Descargas edit -->
+            <b:modal id="dlgDescargasEdit" styleClass="modalDescargasEdit" closable="true" >
+                <h:form prependId="false" id="frDescargasEdit">
+                    <b:panel id="pnDescargasEdit" title="Ingrese aquí los datos correspondientes a la Descarga" look="info" collapsible="false" >
+                        <b:row>
+                            <b:column span="9">
+                                <b:selectOneMenu label="Tipo de Descarga" id="cmbTipoDescEdit" value="#{mbDeclaraciones.descargaSelected.claveTipo}" >
+                                    <f:selectItem itemLabel="Seleccione el Tipo de descarga" itemValue="" noSelectionOption="true" />  
+                                    <f:selectItems value="#{mbDeclaraciones.mapTipoDescarga.entrySet()}" var="tipoDesc" 
+                                                   itemLabel="#{tipoDesc.value}" itemValue="#{tipoDesc.key}" />
+                                </b:selectOneMenu>
+                            </b:column>
+                            <b:column span="3">
+                                <b:inputText label="N° de Conexión" value="#{mbDeclaraciones.descargaSelected.numOrden}" />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="12">
+                                <b:selectOneMenu label="Destino" id="cmbDestinoEdit" value="#{mbDeclaraciones.descargaSelected.curso}" >
+                                    <f:selectItem itemLabel="Seleccione el Destino del efluente" itemValue="" noSelectionOption="true" />  
+                                    <f:selectItems value="#{mbDeclaraciones.lstDestinos}" var="curso" 
+                                                   itemLabel="#{curso.nombre} - #{curso.cuenca}" itemValue="#{curso}" />
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column span="3">
+                                <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.descargaSelected.caudal}" >
+                                    <f:validateDoubleRange />
+                                </b:inputText>
+                            </b:column>
+                            <b:column span="3">
+                                <b:selectBooleanCheckbox value="#{mbDeclaraciones.descargaSelected.mayor5km}" label="" caption="Mayor de 5 km" />
+                            </b:column>
+                            <b:column span="3">
+                                <b:selectBooleanCheckbox value="#{mbDeclaraciones.descargaSelected.anulado}" label="" caption="Anulado" />
+                            </b:column>
+                            <b:column span="3">
+                                <b:selectBooleanCheckbox value="#{mbDeclaraciones.descargaSelected.camTomaMuestra}" label="" caption="CTM y MC reglamentaria" />
+                            </b:column>
+                        </b:row>
+                  
+                        <f:facet name="footer">
+                            <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                        </f:facet>
+                    </b:panel>
+                </h:form>
+            </b:modal>            
             
             <!-- Formulario Tratamientos líquidos -->
             <b:modal id="dlgTratamientos" styleClass="modalTratamientos" closable="true" >
@@ -417,10 +500,10 @@
                         <b:row>
                             <b:column>
                                 <b:commandButton action="#{mbDeclaraciones.addTratamientos}" look="primary" value="#{mbDeclaraciones.vlcGuardarTrat}" 
-                                                 ajax="true" update="@next,cmbTipoTrat,txTipoTrat,messages" style="margin-right: 5px" />
-                                <b:commandButton icon="glyphicon-refresh" value="#{mbDeclaraciones.mdLimpiar}" update="cmbTipoTrat,txTipoTrat" style="margin-left: 5px" />
+                                                 ajax="true" update="@next,cmbTipoTrat,txTipoTrat,dtTratamientos,messages" />
                                 <b:commandButton action="#{mbDeclaraciones.removeTratamientos()}" icon="glyphicon-trash" value="#{mbDeclaraciones.mdLimpiarTodo}" 
-                                                 look="danger" ajax="true" update="cmbTipoTrat,txTipoTrat,dtTratamientos" style="margin-left: 5px" />
+                                                 look="danger" process="@this" ajax="true" update="cmbTipoTrat,txTipoTrat,dtTratamientos" />
+                                <b:button value="Ayuda" look="warning" onclick="ayudaTrat()" />
                             </b:column>
                         </b:row>
                         <f:facet name="footer">
@@ -447,7 +530,7 @@
                         <b:tab title="Abastecimiento" rendered="#{mbDeclaraciones.datosVuelco}">
                             <ui:include src="registro/datosgrales.xhtml" />
                         </b:tab>
-                        <b:tab title="Productos elamborados" rendered="#{mbDeclaraciones.datosAbasto}">
+                        <b:tab title="Productos elamborados" rendered="#{mbDeclaraciones.datosAbastos}">
                             <ui:include src="registro/datosgrales.xhtml" />
                         </b:tab>
                         <b:tab title="Recibo" rendered="#{mbDeclaraciones.datosProd}">
@@ -500,6 +583,12 @@
     <script type="text/javascript">
         function closeModalValidDrp() {
             $('.modalValidDrp').modal('hide');
+        }
+        function closeModalDescargas() {
+            $('.modalDescargas').modal('hide');
+        }        
+        function ayudaTrat(){
+            alert('PRETRATAMIENTO: entre 1 y 6; PRIMARIO FISICO: entre 1 y 3; PRIMARIO QUIMICO: entre 1 y 4; SECUNDARIO: entre 1 y 6; DESINFECCION: entre 1 y 2. No se permite agregar un mismo para tratamiento - valor.');
         }
     </script>    
 </html>

@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/sesionTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">    
+            <f:metadata>  
+                 <f:event listener="#{mbDeclaraciones.iniciar}" type="preRenderView"></f:event>  
+            </f:metadata> 
+
+            <!-- Tabs -->
+            <b:well>
+
+                <h2>Registrar DJ</h2>
+                <p style="color: gray; font-weight: normal; font-size: 12px">#{bundle.instruccionesGenerales}</p>
+
+                <b:row>
+                    <b:column span="3">
+                        <h:form>
+                            <b:panel id="pnMenu" look="primary" collapsible="flase" title="Pasos a completar">
+                                <b:listLinks >
+                                    <b:navLink value="Datos generales" update="@form @(.content)"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/datosgrales.xhtml')" />
+                                    <b:navLink value="Datos complementarios" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarComp}" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/datoscomp.xhtml')" />
+                                    <b:navLink value="Vuelco" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/vuelco.xhtml')" />
+                                    <b:navLink value="Descargas" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/descargas.xhtml')" />
+                                    <b:navLink value="Pozos" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/pozos.xhtml')" />
+                                    <b:navLink value="Abastecimientos" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/abast.xhtml')" />
+                                    <b:navLink value="Horarios" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/horarios.xhtml')" />
+                                    <b:navLink value="Productos elaborados" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/productos.xhtml')" />
+                                    <b:navLink value="Barros" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/barros.xhtml')" />
+                                    <b:navLink value="Croquis" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/croquis.xhtml')" />
+                                </b:listLinks>
+                            </b:panel>
+                        </h:form>
+                    </b:column>
+                    <b:column span="9" class="content">
+                        <ui:include src="#{mbDeclaraciones.page}" />
+                    </b:column>
+                </b:row>
+
+            </b:well>
+        </ui:define> 
+    </ui:composition>
+    <script>
+        PrimeFaces.locales['es'] = {
+            closeText: 'Cerrar',
+            prevText: 'Anterior',
+            nextText: 'Siguiente',
+            monthNames: ['Enero','Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+            dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+            dayNamesShort: ['Dom','Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            dayNamesMin: ['D','L','M','M','J','V','S'],
+            weekHeader: 'Semana',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: '',
+            timeOnlyTitle: 'Sólo hora',
+            timeText: 'Tiempo',
+            hourText: 'Hora',
+            minuteText: 'Minuto',
+            secondText: 'Segundo',
+            currentText: 'Fecha actual',
+            ampm: false,
+            month: 'Mes',
+            week: 'Semana',
+            day: 'Día',
+            allDayText : 'Todo el día'
+        };
+    </script>
+    
+    <script type="text/javascript">
+        function closeModalValidDrp() {
+            $('.modalValidDrp').modal('hide');
+        }
+        function closeModalDescargas() {
+            $('.modalDescargas').modal('hide');
+        }        
+        function ayudaTrat(){
+            alert('PRETRATAMIENTO: entre 1 y 6; PRIMARIO FISICO: entre 1 y 3; PRIMARIO QUIMICO: entre 1 y 4; SECUNDARIO: entre 1 y 6; DESINFECCION: entre 1 y 2. No se permite agregar un mismo para tratamiento - valor.');
+        }
+    </script>    
+</html>
+
