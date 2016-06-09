@@ -47,6 +47,34 @@ public class FirmanteFacade extends AbstractFacade<Firmante> {
     } 
     
     /**
+     * Método para validar que no exista un Firmante con el dni enviado
+     * @param dni
+     * @return 
+     */
+    public boolean noExisteDni(Long dni){
+        em = getEntityManager();
+        String queryString = "SELECT fir FROM Firmante fir "
+                + "WHERE fir.dni = :dni";
+        Query q = em.createQuery(queryString)
+                .setParameter("dni", dni);
+        return q.getResultList().isEmpty();
+    } 
+    
+    /**
+     * Método para validar que no exista un Firmante con el dni enviado
+     * @param cuit
+     * @return 
+     */
+    public boolean noExisteCuit(Long cuit){
+        em = getEntityManager();
+        String queryString = "SELECT fir FROM Firmante fir "
+                + "WHERE fir.cuit = :cuit";
+        Query q = em.createQuery(queryString)
+                .setParameter("cuit", cuit);
+        return q.getResultList().isEmpty();
+    }     
+    
+    /**
      * Método que devuelve un LIST con las entidades HABILITADAS
      * @return: True o False
      */
@@ -59,6 +87,45 @@ public class FirmanteFacade extends AbstractFacade<Firmante> {
         result = q.getResultList();
         return result;
     } 
-     
+    
+    /**
+     * Método que devuelve el Firmante correspondiente al CUIT
+     * @param cuit
+     * @return 
+     */
+    public Firmante getByCuit(Long cuit){
+        em = getEntityManager();
+        List<Firmante> lFir;
+        String queryString = "SELECT fir FROM Firmante fir "
+                + "WHERE fir.cuit = :cuit";
+        Query q = em.createQuery(queryString)
+                .setParameter("cuit", cuit);
+        lFir = q.getResultList();
+        if(!lFir.isEmpty()){
+            return lFir.get(0);
+        }else{
+            return null;
+        }
+    }
+    
+    /**
+     * Método que devuelve el Firmante correspondiente al DNI
+     * @param dni
+     * @return 
+     */
+    public Firmante getByDni(Long dni){
+        em = getEntityManager();
+        List<Firmante> lFir;
+        String queryString = "SELECT fir FROM Firmante fir "
+                + "WHERE fir.dni = :dni";
+        Query q = em.createQuery(queryString)
+                .setParameter("dni", dni);
+        lFir = q.getResultList();
+        if(!lFir.isEmpty()){
+            return lFir.get(0);
+        }else{
+            return null;
+        }
+    }
 }
 

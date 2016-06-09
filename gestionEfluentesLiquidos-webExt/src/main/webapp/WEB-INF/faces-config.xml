@@ -35,7 +35,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>inciar</from-outcome>
-            <to-view-id>/libre/iniciar.xhtml</to-view-id>
+            <to-view-id>/faces/libre/iniciar.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>logout</from-outcome>

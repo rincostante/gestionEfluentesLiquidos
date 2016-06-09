@@ -12,6 +12,8 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Curso;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Firmante;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialDeclaraciones;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialFirmantes;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Operador;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Partido;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Rol;
@@ -26,6 +28,8 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.CursoFac
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.DeclaracionJuradaFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.EstablecimientoFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.FirmanteFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.HistorialDeclaracionesFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.HistorialFirmantesFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.OperadorFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.RolFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.UsuarioExternoFacade;
@@ -75,6 +79,10 @@ public class BackendSrv {
     private ActividadFacade actividadFacade;
     @EJB
     private DeclaracionJuradaFacade decFacade;
+    @EJB
+    private HistorialFirmantesFacade historialFirmFacade;
+    @EJB
+    private HistorialDeclaracionesFacade historialDeclaFacade;
 
     /******************************
      * Métodos para los Usuarios **
@@ -358,6 +366,24 @@ public class BackendSrv {
     }
     
     /**
+     * Método para validar que no existe un Firmante con el dni enviado.
+     * @param dni
+     * @return 
+     */
+    public boolean firXDniNoExiste(Long dni){
+        return firmanteFacade.noExisteDni(dni);
+    }    
+    
+    /**
+     * Método para validar que no existe un Firmante con el cuit enviado.
+     * @param cuit
+     * @return 
+     */
+    public boolean firXCuitNoExiste(Long cuit){
+        return firmanteFacade.noExisteCuit(cuit);
+    }    
+    
+    /**
      * Método para obtener las Declaraciones  Juradas activas
      * @return 
      */
@@ -375,12 +401,55 @@ public class BackendSrv {
     }
     
     /**
+     * Método para obtener el Firmante correspondiente al CUIT
+     * @param cuit
+     * @return 
+     */
+    public Firmante getFirmanteByCuit(Long cuit){
+        return firmanteFacade.getByCuit(cuit);
+    }
+    
+    /**
+     * Método para obtener el Firmante correspondiente al DNI
+     * @param dni
+     * @return 
+     */
+    public Firmante getFirmanteByDni(Long dni){
+        return firmanteFacade.getByDni(dni);
+    }
+    
+    /**
      * Método para insertar un nuevo firmante. Se implementa para poder exponerlo como servicio.
      * @param fir 
      */
     public void createFirmante(Firmante fir){
         firmanteFacade.create(fir);
     }
+    
+    /**
+     * Método para obtener el úlitmo firmante de un Establecimiento
+     * @param est: Establecimiento del que se quiere obtener el último Firmante
+     * @return: El historial del último activo.
+     */
+    public HistorialFirmantes getUltimoFirmante(Establecimiento est){
+        return historialFirmFacade.getUltimoActivo(est);
+    }
+    
+    /**
+     * Método para insertar un nuevo Historial de Firmante. Se implementa para poder exponerlo como servicio.
+     * @param hisFir 
+     */
+    public void createHisFirmante(HistorialFirmantes hisFir){
+        historialFirmFacade.create(hisFir);
+    }  
+    
+    /**
+     * Método para editar un historial de Firmante. Se implementa para poder exponerlo como servicio.
+     * @param hisFir 
+     */
+    public void editHisFirmante(HistorialFirmantes hisFir){
+        historialFirmFacade.edit(hisFir);
+    }    
     
     /**
      * Método para editar un firmante existente. Se implementa para poder exponerlo como servicio.
@@ -428,6 +497,15 @@ public class BackendSrv {
      */
     public Establecimiento getEstablecimientoByCude(Long idPartido, Long numEst, int crs){
         return estFacade.getByCude(idPartido, numEst, crs);
+    }
+    
+    /**
+     * Método que obtiene todos los Establecimientos vinculados al cuit recibido
+     * @param cuit
+     * @return 
+     */
+    public List<Establecimiento> getEstablecimientosByCuit(Long cuit){
+        return estFacade.getByCuit(cuit);
     }
     
     
@@ -739,5 +817,39 @@ public class BackendSrv {
      */
     public List<DeclaracionJurada> getDeclaracionAll(){
         return decFacade.findAll();
-    }      
+    }     
+    
+    /**
+     * Método para obtener la última Declaración presentada de un Establecimiento
+     * @param est: Establecimiento del que se quiere obtener la última Declaración
+     * @return: El historial del último activo.
+     */
+    public HistorialDeclaraciones getUltimaDeclaracion(Establecimiento est){
+        return historialDeclaFacade.getUltimoActivo(est);
+    }
+    
+    /**
+     * Método para insertar un nuevo Historial de Declaración. Se implementa para poder exponerlo como servicio.
+     * @param hisDecla 
+     */
+    public void createHisDeclaracion(HistorialDeclaraciones hisDecla){
+        historialDeclaFacade.create(hisDecla);
+    }  
+    
+    /**
+     * Método para editar un historial de Declaración. Se implementa para poder exponerlo como servicio.
+     * @param hisDecla 
+     */
+    public void editHisDeclaracion(HistorialDeclaraciones hisDecla){
+        historialDeclaFacade.edit(hisDecla);
+    }  
+    
+    /**
+     * Método para obtener la Declaración recién ingresada
+     * @param cude: CUDE del Establecimiento vinculado a la Declaración insertada
+     * @return 
+     */
+    public Integer obtenerDeclaReciente(String cude){
+        return decFacade.getInsertada(cude);
+    }
 }

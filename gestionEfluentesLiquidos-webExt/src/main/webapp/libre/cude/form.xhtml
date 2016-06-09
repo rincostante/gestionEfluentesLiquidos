@@ -50,7 +50,7 @@
                         <b:panel collapsible="false" look="info" title="#{bundle.panelCudeDescripcion}">
                             Para obtener el <a onclick="$('.modalCude').modal();return false;" >CUDE</a> 
                             actualizado, deberá ingresar en el formulario, 
-                            el CUIT de la Razón Social del Establecimiento, y el CUIT del 
+                            el CUIT de la Razón Social del Establecimiento, y el DNI del 
                             <a onclick="$('.modalFirmante').modal();return false;" >firmante</a> 
                             de la última Declaración Jurada presentada.
                         </b:panel>
@@ -72,19 +72,20 @@
                                 
                                 <p:outputLabel for="cuitFirmante" value="#{bundle.lebelCudeCuitFir}:" style="margin-bottom: 10px; color: gray" />
                                 <b:inputText value="#{mbCude.consulta.cuitFirmante}" id="cuitFirmante"  
-                                             placeholder="CUIT Firmante"
+                                             placeholder="DNI Firmante"
                                              converter="#{Integer}"
                                              required="true" 
-                                             requiredMessage="El campo #{bundle.lebelCudeCuitFir} es obligatorio" 
-                                             validatorMessage="El campo #{bundle.lebelCudeCuitFir} debe tener 11 dígitos"
-                                             title="Ingrese el CUIT del Firmante" 
+                                             requiredMessage="El campo DNI es obligatorio" 
+                                             validatorMessage="El campo DNI debe tener entre 7 y 8 dígitos"
+                                             title="Ingrese el DNI del Firmante" 
                                              style="margin-bottom: 10px" >
-                                    <f:validateLength maximum="11" minimum="11" />
+                                    <f:validateLength maximum="8" minimum="7" />
                                 </b:inputText>
                             </h:panelGrid>
                             <b:row style="margin-top: 5px">
                                 <b:column span="6" >
-                                    <b:commandButton style="margin-right: 5px; width: 100%" id="loginButton" look="primary" ajax="true" value="#{mbCude.cmbValidar}" action="#{mbCude.validar}" update="mensajes,form" />
+                                    <b:commandButton style="margin-right: 5px; width: 100%" id="loginButton" look="primary" ajax="true" 
+                                                     value="#{mbCude.cmbValidar}" action="#{mbCude.validar}" update="mensajes,form" />
                                 </b:column>
                                 <b:column span="6">
                                     <b:button look="warning" value="#{mbCude.cmbLimpiar}" style="width: 100%" onclick="reset()" />
@@ -93,13 +94,54 @@
                         </b:panel>
                     </b:column>
                 </b:row>
-                <b:row rendered="#{mbCude.resultado and mbCude.mostrarResult}">
-                    <b:column span="12">
-                        <b:panel look="success" title="Resultados de la consulta" collapsible="false">
-                            <h:panelGrid columns="3" cellpadding="1" rendered="#{mbCude.resultado}">
-                                <p>#{bundle.panelCudeValidoMessage_1} <h1>#{mbCude.cude}</h1></p>
-                                <p>#{bundle.panelCudeValidoMessage_2}</p>
-                            </h:panelGrid>
+                <b:row>
+                    <b:column span="12" rendered="#{mbCude.resultado and mbCude.mostrarResult}">
+                        <b:panel look="success" title="Listado de Establecimientos vinculados al CUIT ingresado" collapsible="false" >
+                            <b:dataTable id="dtEst" value="#{mbCude.lstEst}" var="est" 
+                                         styleClass="table table-striped table-bordered" style="font-size: 12px" >
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="CUDE" />
+                                  </f:facet>
+                                    <h:outputText style="font-size: 18px; font-weight: bold" value="#{est.cude}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Razón Social" />
+                                  </f:facet>
+                                    <h:outputText value="#{est.razonSocial}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Número" />
+                                  </f:facet>
+                                    <h:outputText value="#{est.numero}" />
+                                </h:column>
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Ubic. Calle" />
+                                  </f:facet>
+                                    <h:outputText value="#{est.inmueble.calle}" />
+                                </h:column>                             
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Ubic. N°" />
+                                  </f:facet>
+                                    <h:outputText value="#{est.inmueble.numero}" />
+                                </h:column> 
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Ubic. Localidad" />
+                                  </f:facet>
+                                    <h:outputText value="#{est.inmueble.localidad}" />
+                                </h:column> 
+                                <h:column>
+                                  <f:facet name="header">
+                                    <h:outputText value="Ubic. Partido" />
+                                  </f:facet>
+                                    <h:outputText value="#{est.inmueble.departamento}" />
+                                </h:column> 
+                            </b:dataTable>
                         </b:panel>
                     </b:column>
                 </b:row>

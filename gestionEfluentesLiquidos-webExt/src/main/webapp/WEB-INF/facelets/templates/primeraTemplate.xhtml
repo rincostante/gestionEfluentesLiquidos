@@ -16,21 +16,14 @@
                         border: 0px solid #000000">
             <b:row >
                 <b:column>
-                    <h1 style="float: left">[Logo]</h1>
-                    <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="339" height="67" style="float: right" />
+                    <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="339" height="67" style="float: left" />
                 </b:column>
             </b:row>
         </b:container>
         <br/>
-        <b:navBar static="true" brand="Inicio" brandHref="http://localhost:8080/gestionEfluentesLiquidos-webExt" inverse="true" >
+        <b:navBar static="true" inverse="true" >
             <b:navbarLinks >
-                <b:dropMenu value="Consultas generales">
-                    <b:navLink value="Guía de trámite" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml"></b:navLink>
-                    <b:navLink value="Normativa" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml"></b:navLink>
-                    <b:navLink value="Preguntas frecuentes" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml"></b:navLink>
-                </b:dropMenu>
 
-                <b:navLink value="Contacto" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <b:container style="background-color: #e0e4de; border-radius: 10px 10px 10px 10px;
@@ -46,15 +39,7 @@
             <b:container>
                 <br/>
                 <b:row>
-                    <b:column span="3">
-                        <span style="color: #f5f5ed" >Menú principal</span><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Inicio</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml" >Guía de trámite</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml" >Normativa</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml" >Preguntas frecuentes</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/contacto/form.xhtml" >Contacto</a><br/>
-                    </b:column>
-                    <b:column style="color: cadetblue" span="7">
+                    <b:column style="color: cadetblue" span="8">
                         <span style="color: #f5f5ed" >Contacto</span><br/>
                         Dirección de Prevención y Recomposición Ambiental (DPyRA)<br/>
                         Subsecretaría de Fiscalización y Control Ambiental y Prevención de la Contaminación<br/>
@@ -66,8 +51,8 @@
                         Teléfono: (54) (11) 4480-4500, int.2497<br/>
                         Correo electrónico: <a href="mailto:dpyra@ambiente.gob.ar">dpyra@ambiente.gob.ar </a>
                     </b:column>
-                    <b:column span="2">
-                        <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="136" height="27" />
+                    <b:column span="4">
+                        <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="271" height="53" />
                     </b:column>
                 </b:row>
                 <br/>

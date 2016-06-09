@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:b="http://bootsfaces.net/ui"
@@ -31,63 +30,19 @@
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
-        
-        <!-- Formulario Tratamientos líquidos -->
-        <b:modal id="dlgTratamientos" styleClass="modalTratamientos" closable="true" >
-            <h:form prependId="false" id="frTratamientos">
-                <b:panel id="pnTratamientos" title="Ingrese aquí los tratamientos de los líquidos" look="info" collapsible="false" >
-                    <b:row>
-                        <b:column span="9">
-                            <b:selectOneMenu label="Tratamiento" id="cmbTipoTrat" value="#{mbDeclaraciones.tratamiento.claveNombre}" >
-                                <f:selectItem itemLabel="Seleccione el Tipo de Tratamiento" itemValue="" noSelectionOption="true" />  
-                                <f:selectItems value="#{mbDeclaraciones.mapTipoTratamiento.entrySet()}" var="tipoTrat" 
-                                               itemLabel="#{tipoTrat.value}" itemValue="#{tipoTrat.key}" />
-                            </b:selectOneMenu>
-                        </b:column>
-                        <b:column span="3">
-                            <b:inputText id="txTipoTrat" label="Tipo" value="#{mbDeclaraciones.tratamiento.valor}" />
-                        </b:column>
-                    </b:row>
-                    <p:dataTable id="dtTratamientos" value="#{mbDeclaraciones.descarga.tratamientos}" var="tratamiento" 
-                                 style="font-size: 12px" >
-                        <p:column headerText="Tratamiento" >
-                            <p:outputLabel style="font-weight: lighter" value="#{tratamiento.nombre}"/>
-                        </p:column>
-                        <p:column width="100" headerText="Tipo" >
-                            <p:outputLabel style="font-weight: lighter" value="#{tratamiento.valor}" />
-                        </p:column>
-                        <p:column width="75" headerText="" >
-                            <b:commandButton look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editTratamiento()}" >
-                                <f:setPropertyActionListener value="#{tratamiento}" target="#{mbDeclaraciones.tratamientoSelected}" />  
-                                <p:ajax process="@this"  />
-                            </b:commandButton>
-                            <b:commandButton look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeTratamiento()}" >
-                                <f:setPropertyActionListener value="#{tratamiento}" target="#{mbDeclaraciones.tratamientoSelected}" />  
-                                <p:ajax process="@this" />
-                            </b:commandButton>
-                        </p:column>
-                    </p:dataTable>
-                    <br></br>
-                    <b:row>
-                        <b:column>
-                            <b:commandButton action="#{mbDeclaraciones.addTratamientos}" look="primary" value="#{mbDeclaraciones.vlcGuardarTrat}" 
-                                             ajax="true" update="@next,cmbTipoTrat,txTipoTrat,dtTratamientos,messages" />
-                            <b:commandButton action="#{mbDeclaraciones.removeTratamientos()}" icon="glyphicon-trash" value="#{mbDeclaraciones.mdLimpiarTodo}" 
-                                             look="danger" process="@this" ajax="true" update="cmbTipoTrat,txTipoTrat,dtTratamientos" />
-                            <b:button value="Ayuda" look="warning" onclick="ayudaTrat()" />
-                        </b:column>
-                    </b:row>
-                    <f:facet name="footer">
-                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
-                    </f:facet>
-                </b:panel>
-            </h:form>
-        </b:modal>        
-        <h:form id="frTabDescargas" prependId="false">
-            <b:panel title="Descargas" look="info" collapsible="false">
-                <b:label tooltip="Utilice este formulario para ingresar los datos de nuevas descargas o actualizar las ya cargadas." 
-                         text="Ingreso de Descargas nuevas o edición de existentes" severity="info"/>
-                <b:panel id="pnFrom" look="info">
+   
+        <b:panel title="Descargas" look="info" collapsible="false">
+            <h:form id="frActDesc" prependId="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frActDesc,frDesc,frTrat,frDtDesc,frBtDesc" value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+            </h:form>    
+            <b:label tooltip="Utilice este formulario para ingresar los datos de nuevas descargas o actualizar las ya cargadas." 
+                     text="Ingreso de Descargas nuevas o edición de existentes" severity="info"/>
+            <b:panel id="pnFrom" look="info">
+                <h:form id="frDesc" prependId="false">
                     <b:row>
                         <b:column span="4">
                             <b:selectOneMenu label="Tipo de Descarga" id="pepe" value="#{mbDeclaraciones.descarga.claveTipo}" >
@@ -101,6 +56,7 @@
                         <b:column span="3">
                             <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.descarga.caudal}" >
                                 <f:validateDoubleRange />
+                                <f:validateLongRange minimum="1"/>
                             </b:inputText>
                         </b:column>
                         <b:column span="6">
@@ -111,7 +67,9 @@
                             </b:selectOneMenu>
                         </b:column>
                         <b:column span="3">
-                            <b:inputText label="N° de Conexión" value="#{mbDeclaraciones.descarga.numOrden}" />
+                            <b:inputText label="N° de Conexión" value="#{mbDeclaraciones.descarga.numOrden}" >
+                                <f:validateLongRange minimum="1"/>
+                            </b:inputText>
                         </b:column>
                     </b:row>
                     <b:row>
@@ -144,21 +102,94 @@
                     <b:row>
                         <b:column span="12" >
                             <b:button title="Breve explicación del proceso de registro de una descarga" onclick="$('.modalAyudaRegDesc').modal();return false;" size="xs" look="warning" value="Ayuda" />
-                            <b:commandButton title="Agregar la descarga nueva o guardar la actualización de una existente" 
-                                             action="#{mbDeclaraciones.addDescargas()}" size="xs" look="primary" 
-                                             value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frTabDescargas,messages" />
-                            <b:commandButton title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
-                                             size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Agregar la descarga nueva o guardar la actualización de una existente" 
+                                             icon="glyphicon-ok" action="#{mbDeclaraciones.addDescargas()}" size="xs" look="primary" 
+                                             value="#{mbDeclaraciones.vlcGuardarDescargas}" ajax="true" update="frDesc,frDtDesc,pnTrat,messages" />
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                             icon="glyphicon-remove-circle" size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
                                              action="#{mbDeclaraciones.limpiarDescarga()}" update="pnFrom" />
-                            <b:commandButton title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
-                                             action="#{mbDeclaraciones.cancelarDescargaSel()}" update="pnFrom" />
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Cancelar la selección de la descarga para su actualización" size="xs" 
+                                             icon="glyphicon-minus-sign" value="#{mbDeclaraciones.gralCancelarSel}" 
+                                             action="#{mbDeclaraciones.cancelarDescargaSel()}" update="pnFrom,frDesc,frDtDesc,pnTrat" />
                         </b:column>
                     </b:row>
+                </h:form>
+                <br></br>
+                <!-- Formulario Tratamientos líquidos -->
+                <b:panel id="pnTrat" title="Ingrese aquí los tratamientos de los líquidos" look="info" collapsible="false" >
+                    <h:form prependId="false" id="frTrat">
+                        <b:row>
+                            <b:column span="6">
+                                <b:selectOneMenu onchange="ajax:mbDeclaraciones.tipoTratChangeListener()" label="Tratamiento" id="cmbTipoTrat" 
+                                                 value="#{mbDeclaraciones.tratamiento.claveNombre}" >
+                                    <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                    <f:selectItems value="#{mbDeclaraciones.mapTipoTratamiento.entrySet()}" var="tipoTrat" 
+                                                   itemLabel="#{tipoTrat.value}" itemValue="#{tipoTrat.key}" />
+                                    <p:ajax event="change" update="cmbValorTipoTrat"/>
+                                </b:selectOneMenu>
+                            </b:column>
+                            <b:column span="6">
+                                <b:selectOneMenu label="Tipo de tratado" id="cmbValorTipoTrat" value="#{mbDeclaraciones.valorTipoTrat}" >
+                                    <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                    <f:selectItems value="#{mbDeclaraciones.mapValoresTrat.entrySet()}" var="valTrat" 
+                                                   itemLabel="#{valTrat.value}" itemValue="#{valTrat.key}" />
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column>
+                                <b:button title="Breve explicación del proceso de registro de Tratamientos" size="xs" value="Ayuda" look="warning" onclick="ayudaTrat()" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Guardar el Tratamiento definido" 
+                                                 icon="glyphicon-ok" action="#{mbDeclaraciones.addTratamientos}" look="primary" 
+                                                 value="#{mbDeclaraciones.vlcGuardarTrat}" ajax="true" size="xs"
+                                                 update="@next,frTrat,dtTratamientos,messages" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Vaciar el listado de Tratamientos definidos para la Descarga" 
+                                                 action="#{mbDeclaraciones.removeTratamientos()}" icon="glyphicon-trash" 
+                                                 value="#{mbDeclaraciones.mdLimpiarTodo}" size="xs"
+                                                 look="danger" process="@this" ajax="true" update="frTrat" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-minus-sign" 
+                                                 title="Cancelar la selección de la descarga para su actualización" size="xs" 
+                                                 value="#{mbDeclaraciones.gralCancelarSel}" 
+                                                 action="#{mbDeclaraciones.cancelarTratSel()}" update="frTrat" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-remove-circle" 
+                                                 title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                                 size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                                 action="#{mbDeclaraciones.limpiarTratamiento()}" update="frTrat" />
+                            </b:column>
+                        </b:row>
+                        <br></br>
+                        <p:dataTable id="dtTratamientos" value="#{mbDeclaraciones.descarga.tratamientos}" var="tratamiento" 
+                                     style="font-size: 12px" >
+                            <p:column headerText="Tratamiento" >
+                                <p:outputLabel style="font-weight: lighter" value="#{tratamiento.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Tipo" >
+                                <p:outputLabel style="font-weight: lighter" value="#{tratamiento.tratado}" />
+                            </p:column>
+                            <p:column headerText="Acciones" >
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Editar" 
+                                                 look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                 action="#{mbDeclaraciones.editTratamiento()}" >
+                                    <f:setPropertyActionListener value="#{tratamiento}" target="#{mbDeclaraciones.tratamiento}" />  
+                                    <p:ajax process="@this" />
+                                </b:commandButton>
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar" 
+                                                 look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                 action="#{mbDeclaraciones.removeTratamiento()}" update="frTrat" >
+                                    <f:setPropertyActionListener value="#{tratamiento}" target="#{mbDeclaraciones.tratamiento}" />  
+                                    <p:ajax process="@this" />
+                                </b:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
                 </b:panel>
-                
-                <b:label tooltip="Podrá seleccionar una Descarga del listado para su eliminación o edición." 
-                         text="Listado de Descargas ingresadas" severity="info"/>
-                <b:panel id="pnTable" look="info">
+                <!-- FIN Formulario Tratamientos líquidos -->
+            </b:panel>
+
+            <b:label tooltip="Podrá seleccionar una Descarga del listado para su eliminación o edición." 
+                     text="Listado de Descargas ingresadas" severity="info"/>
+            <b:panel id="pnTable" look="info">
+                <h:form id="frDtDesc" prependId="false">
                     <b:row>
                         <b:column span="12" >
                             <b:dataTable id="dtTrat" value="#{mbDeclaraciones.lstDescargas}" var="desc" 
@@ -213,23 +244,17 @@
                                 </h:column>
                                 <h:column>
                                   <f:facet name="header">
-                                    <h:outputText value="Trat." />
-                                  </f:facet>
-                                    <b:commandButton title="Ver / Editar Tratamientos" actionListener="#{mbDeclaraciones.prepareAddTratamiento()}" 
-                                                     oncomplete="$('.modalTratamientos').modal();return false;" size="xs" look="primary" 
-                                                     value="" icon="glyphicon-new-window" ajax="true" process="@this" />
-                                </h:column>
-                                <h:column>
-                                  <f:facet name="header">
                                     <h:outputText value="Acciones" />
                                   </f:facet>
-                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
-                                                     action="#{mbDeclaraciones.editDescarga()}" >
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Editar" 
+                                                     look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                     action="#{mbDeclaraciones.editDescarga()}" update="frDesc,pnTrat" >
                                         <f:setPropertyActionListener value="#{desc}" target="#{mbDeclaraciones.descarga}" /> 
                                         <p:ajax process="@this" />
                                     </b:commandButton>
-                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
-                                                     action="#{mbDeclaraciones.removeDescarga()}" update="frTabDescargas" >
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar" 
+                                                     look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                     action="#{mbDeclaraciones.removeDescarga()}" update="frDesc,frDtDesc,frTrat" >
                                         <f:setPropertyActionListener value="#{desc}" target="#{mbDeclaraciones.descarga}" />  
                                         <p:ajax process="@this" />
                                     </b:commandButton>
@@ -237,31 +262,36 @@
                             </b:dataTable>
                         </b:column>
                     </b:row>
-                </b:panel>
+                </h:form>
+            </b:panel>
+            <h:form id="frBtDesc" prependId="false">
                 <b:row>
                     <b:column span="12" >
                         <b:button title="Breve explicación del proceso de configuración de las descargas del Vuelco del Establecimiento" 
                                   onclick="$('.modalAyudaDescListado').modal();return false;" size="sm" look="warning" value="Ayuda" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosDescargas}" 
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" rendered="#{not mbDeclaraciones.datosDescargas}" 
                                          title="Guardar las descargas configuradas en el Vuelco de la Declaración" size="sm" 
-                                         action="#{mbDeclaraciones.createDescargas()}" 
-                                         look="primary" value="#{mbDeclaraciones.dscGuardarDesc}" ajax="true" update="messages,frTabDescargas" process="@this" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosDescargas}" 
+                                         icon="glyphicon-ok" action="#{mbDeclaraciones.createDescargas()}" 
+                                         look="primary" value="#{mbDeclaraciones.dscGuardarDesc}" ajax="true" 
+                                         update="frNav,messages,frDesc,frDtDesc,frBtDesc" process="@this" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{not mbDeclaraciones.datosDescargas}" 
                                          title="Limpiar las descargas configuradas en el Vuelco de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.limpiarDescargas()}" process="@this"  
-                                         look="danger" value="#{mbDeclaraciones.dscLimpiarDesc}" ajax="true" update="frTabDescargas" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosDescargas}" 
+                                         look="danger" value="#{mbDeclaraciones.dscLimpiarDesc}" ajax="true" 
+                                         update="frDesc,frDtDesc,frBtDesc" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{mbDeclaraciones.datosDescargas}" 
                                          title="Actualizar las descargas configuradas en el Vuelco de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.editDescargas()}" look="primary" process="@this"
-                                         value="#{mbDeclaraciones.dscGuardarDesc}" ajax="true" update="messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosDescargas}" 
+                                         value="#{mbDeclaraciones.dscActualizarDesc}" ajax="true" update="messages" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{mbDeclaraciones.datosDescargas}" 
                                          title="Eliminar las descargas del Vuelco de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.deleteDescargas()}" look="danger" process="@this" 
-                                         value="#{mbDeclaraciones.dscEliminar}" ajax="true" update="frTabDescargas" />
+                                         value="#{mbDeclaraciones.dscEliminar}" ajax="true" 
+                                         update="frNav,frDesc,frDtDesc,frBtDesc" />
                     </b:column>
                 </b:row>
-            </b:panel>
-        </h:form>
+            </h:form>
+        </b:panel>
     </h:body>
 </html>
 

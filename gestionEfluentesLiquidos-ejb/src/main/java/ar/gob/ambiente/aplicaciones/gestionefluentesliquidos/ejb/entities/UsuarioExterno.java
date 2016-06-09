@@ -83,9 +83,8 @@ public class UsuarioExterno implements Serializable {
     /**
      * Campo que se completa al momento de la creación del usuario, con los datos correspondientes del RUP
      */
-    @Column (nullable=false, length=100)
-    @NotNull(message = "El campo Tipo de Establecimiento no puede ser nulo")
-    @Size(message = "El campo Tipo de Establecimiento no puede contener más de 100 caracteres", min = 1, max = 100)        
+    @Column (length=100)
+    @Size(message = "El campo Tipo de Establecimiento no puede contener más de 100 caracteres", max = 100)        
     private String tipoEst;
     
     /**

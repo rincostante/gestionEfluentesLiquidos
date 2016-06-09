@@ -59,7 +59,7 @@ public class Abasto implements Serializable {
      * Campo que guarda la descripción de otra fuente si existiera
      */
     @Column (length=250)
-    @Size(message = "El campo descOtraFuente no puede tener más de 250 caracteres", min = 1, max = 250)
+    @Size(message = "El campo descOtraFuente no puede tener más de 250 caracteres", max = 250)
     private String descOtraFuente;
     
     /**

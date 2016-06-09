@@ -43,8 +43,7 @@ public class Pozo implements Serializable {
     /**
      * Campo que guarda el rendimiento del pozo en m3/h
      */
-    @Column (nullable=false)
-    @NotNull(message = "El campo rendimiento no puede ser nulo")
+    @Column
     private float rendimiento;  
     
     /**
@@ -71,16 +70,14 @@ public class Pozo implements Serializable {
     /**
      * Campo que guarda la potencia de la bomba en mts del pozo.
      */
-    @Column (nullable=false)
-    @NotNull(message = "El campo potenciaBomba no puede ser nulo")
+    @Column
     private float potenciaBomba;     
     
     /**
      * Campo que guarda la clave del tipo de bomba
      * Con el método getTipo, se accede a la tipo de bomba correpondiente a la clave
      */
-    @Column (nullable=false)
-    @NotNull(message = "El campo tipoSup no puede ser nulo")
+    @Column
     private int tipoBomba;
     
     /**

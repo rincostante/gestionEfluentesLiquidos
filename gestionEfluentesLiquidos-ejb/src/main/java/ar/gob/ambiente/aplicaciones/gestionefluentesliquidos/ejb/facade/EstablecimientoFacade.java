@@ -31,6 +31,13 @@ public class EstablecimientoFacade extends AbstractFacade<Establecimiento> {
         super(Establecimiento.class);
     }
     
+    /**
+     * Método que devuelve el Establecimiento correpondiente al CUDE
+     * @param idPartido
+     * @param numEst
+     * @param crs
+     * @return 
+     */
     public Establecimiento getByCude(Long idPartido, Long numEst, int crs){
         List<Establecimiento> lstEst;
         em = getEntityManager();
@@ -48,5 +55,19 @@ public class EstablecimientoFacade extends AbstractFacade<Establecimiento> {
         }else{
             return lstEst.get(0);
         }
+    }
+    
+    /**
+     * Método que devuelve todos los establecimientos vinculados el CUIT recibido
+     * @param cuit
+     * @return 
+     */
+    public List<Establecimiento> getByCuit(Long cuit){
+        em = getEntityManager();
+        String queryString = "SELECT est FROM Establecimiento est "
+                + "WHERE est.cuit = :cuit";
+        Query q = em.createQuery(queryString)
+                .setParameter("cuit", cuit);
+        return q.getResultList();
     }
 }

@@ -3,9 +3,11 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -161,6 +163,44 @@ public class Vuelco implements Serializable {
      */
     private boolean inscripto;
     
+    /**
+     * Guarda el nombre de la calle sobre la cual se otorgó la factibilidad
+     */
+    private String calleFactibilidad;
+    
+    /**
+     * Guarda el caudal autorizado para el Establecimiento
+     * La suma de los caudales vertidos no debe superarlo
+     */
+    private float caudalAutorizado;
+    
+    /**
+     * Guarda el Organismo autorizante de los vertidos
+     * String (100)
+     */
+    private String orgAutorizante;
+    
+    /**
+     * Flag que determina si hay un radio de servido
+     */
+    @Column
+    private boolean radioServido;
+    
+    /**
+     * Guarda la descripción del proceso productivo que realiza el Establecimiento.
+     * Solo si el Establecimiento no se encuentra registrado en DRP
+     */
+    @Column
+    private String procProduct;
+    
+    /**
+     * Campo que muestra los días en los que se efectúan las descargas, si corresponiera
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vuelco_id", referencedColumnName = "id")
+    private List<DiaVuelco> dias;      
+    
+    
     /***********************************************
      * Campos vinculados la administración de DRP **
      ***********************************************/
@@ -211,10 +251,80 @@ public class Vuelco implements Serializable {
      */
     private String descDrp;
     
+    /**
+     * Campo que indica si las descargas no se realizan en días y horarios específicos.
+     * Si es verdadero con se incluirán días
+     */
+    private boolean horarioDiscontinuo;
+    
+ 
+    /*****************
+     ** Constructor **
+     *****************/    
+    public Vuelco(){
+        dias = new ArrayList<>();
+    }       
+    
 
     /**********************
      * Métodos de acceso **
      **********************/
+    public List<DiaVuelco> getDias() {
+        return dias;
+    }
+
+    public void setDias(List<DiaVuelco> dias) {
+        this.dias = dias;
+    }
+
+    public boolean isHorarioDiscontinuo() {
+        return horarioDiscontinuo;
+    }
+
+    public void setHorarioDiscontinuo(boolean horarioDiscontinuo) {
+        this.horarioDiscontinuo = horarioDiscontinuo;
+    }
+
+    public String getProcProduct() {
+        return procProduct;
+    }
+
+    public void setProcProduct(String procProduct) {
+        this.procProduct = procProduct;
+    }
+
+    public boolean isRadioServido() {
+        return radioServido;
+    }
+
+    public void setRadioServido(boolean radioServido) {
+        this.radioServido = radioServido;
+    }
+
+    public float getCaudalAutorizado() {
+        return caudalAutorizado;
+    }
+
+    public void setCaudalAutorizado(float caudalAutorizado) {
+        this.caudalAutorizado = caudalAutorizado;
+    }
+
+    public String getOrgAutorizante() {
+        return orgAutorizante;
+    }
+
+    public void setOrgAutorizante(String orgAutorizante) {
+        this.orgAutorizante = orgAutorizante;
+    }
+
+    public String getCalleFactibilidad() {
+        return calleFactibilidad;
+    }
+
+    public void setCalleFactibilidad(String calleFactibilidad) {
+        this.calleFactibilidad = calleFactibilidad;
+    }
+
     public DocDec getOperador() {
         return operador;
     }

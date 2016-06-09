@@ -77,12 +77,28 @@ public class HistorialFirmantes implements Serializable {
     String strFecha;
     
     /**
-     * Guarda la referencia al usuario que registró el cambio
+     * Guarda la referencia al usuario que registró el cambio (si fue un usuario interno)
      */
     @ManyToOne 
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
+    
+    /**
+     * Guarda la referencia al usuario que registró el cambio (si fue un usuario interno)
+     */
+    @ManyToOne 
+    @JoinColumn(name="usuarioexterno_id")
+    private UsuarioExterno usuarioExterno;
 
+    public UsuarioExterno getUsuarioExterno() {
+        return usuarioExterno;
+    }
+
+    public void setUsuarioExterno(UsuarioExterno usuarioExterno) {
+        this.usuarioExterno = usuarioExterno;
+    }
+
+    
     public Establecimiento getEstablecimiento() {
         return establecimiento;
     }

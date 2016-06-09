@@ -128,9 +128,8 @@ public class Establecimiento implements Serializable {
     /**
      * Guarda el proceso productivo del establecimiento
      */
-    @Column (nullable=false, length=50)
-    @NotNull(message = "El campo procProduct no puede ser nulo")
-    @Size(message = "El campo procProduct tiene un máximo de 50 caracteres", min = 1, max = 50)
+    @Column (length=50)
+    @Size(message = "El campo procProduct tiene un máximo de 50 caracteres", max = 50)
     private String procProduct;
     
     /**
@@ -141,11 +140,47 @@ public class Establecimiento implements Serializable {
     @NotNull(message = "El campo admin no puede ser nulo") 
     private AdminEntidad admin;    
     
+    /**
+     * Por problemas de integridad de información heredada, hasta no profundizar la depuración
+     * Se tomará como código de partido para el CUDE lo que traían los Establecimientos heredados
+     */
+    private int partidoGel;
+    
+    /**
+     * Guardará solo los recibos de la DJ del 2014
+     */
+    private String codRecibo;
+    
     public Establecimiento() {
         historialActividades = new ArrayList();
         historialFirmantes = new ArrayList();
         historialDeclaraciones = new ArrayList();
     }      
+
+    public String getCodRecibo() {
+        return codRecibo;
+    }
+
+    public void setCodRecibo(String codRecibo) {
+        this.codRecibo = codRecibo;
+    }
+
+    public String getCude(){
+        String sPart, sNum, sCrs;
+        sPart = String.valueOf(this.partidoGel);
+        sNum = String.valueOf(this.numero);
+        sCrs = String.valueOf(this.crs);
+        
+        return sPart + "-" + sNum + "-" + sCrs;
+    }
+    
+    public int getPartidoGel() {
+        return partidoGel;
+    }
+
+    public void setPartidoGel(int partidoGel) {
+        this.partidoGel = partidoGel;
+    }
     
     public Long getId() {
         return id;

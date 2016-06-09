@@ -6,10 +6,13 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialFirmantes;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,24 @@ public class HistorialFirmantesFacade extends AbstractFacade<HistorialFirmantes>
         super(HistorialFirmantes.class);
     }
     
+    /**
+     * Método para obtener el registro del último cambio de Firmante para un Establecimiento
+     * @param est: Establecimiento soble el que se consulta
+     * @return 
+     */
+    public HistorialFirmantes getUltimoActivo(Establecimiento est){
+        List<HistorialFirmantes> listHisFirm;
+        em = getEntityManager();    
+        String queryString = "SELECT hf FROM HistorialFirmantes hf "
+                + "WHERE hf.establecimiento = :est "
+                + "AND hf.activa = true";  
+        Query q = em.createQuery(queryString)
+                .setParameter("est", est);
+        listHisFirm = q.getResultList();
+        if(!listHisFirm.isEmpty()){
+            return listHisFirm.get(0);
+        }else{
+            return null;
+        }
+    }    
 }

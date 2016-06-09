@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <p:growl id="messages" showDetail="false" />
+        
+        <!-- Modal ayuda actualización -->
+        <b:modal id="dlgAyudaActFirmante" title="Registro de DJ - Firma - Actulización de Firmant" styleClass="modalAyudaActFirmante"
+            closable="true" >
+                Ayuda sobre la convalidación de los datos del Firmante
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <!-- Modal ayuda nuevo firmante -->
+        <b:modal id="dlgAyudaNewFirmante" title="Registro de DJ - Firma - Asignación de nuevo Firmante" styleClass="modalAyudaNewFirmante"
+            closable="true" >
+                Ayuda sobre la selección de un Firmante registrado o el registro de uno nuevo
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <!-- Modal ayuda general -->
+        <b:modal id="dlgAyudaFirma" title="Registro de DJ - Firma" styleClass="modalAyudaFirma"
+            closable="true" >
+                Ayuda sobre el proceso de firma de la Declaración
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <!-- Modal selección de nuevo firmante -->
+        <b:modal id="dlgSelNewFirmante" styleClass="modalSelNewFirmante" closable="true" >
+            <h:form prependId="false" id="frSelNewFirmante">
+                <b:panel id="pnSelNewFirmante" title="Seleccionar un Firmante existente para el Establecimiento" look="info" collapsible="false" >
+                    <b:row>
+                        <b:column span="12">
+                            <b:selectOneMenu label="" id="cmbAct" value="#{mbDeclaraciones.newFirmanteSel}" >
+                                <f:selectItem itemLabel="Seleccione la Actividad a ingresar" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.lstFirmantes}" var="fir" 
+                                               itemLabel="#{fir.nombreYApellido} - #{fir.cuit} - #{fir.dni}" itemValue="#{fir}"/>
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="12">
+                            <b:commandButton value="Actualizar" icon="glyphicon-refresh" look="success" update="frSelNewFirmante" />
+                            <b:commandButton title="Guardar el firmante seleccionado" icon="glyphicon-ok" action="#{mbDeclaraciones.vincularFirmante()}" 
+                                             oncomplete="closeModalSelNewFirmante()" look="primary" value="#{mbDeclaraciones.gralGuardar}" 
+                                             ajax="true" update="frFirm,frSelNewFirmante,messages" />
+                        </b:column>
+                    </b:row>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>
+        
+        <!-- Modal registro de nuevo firmante -->
+        <b:modal id="dlgRegNewFirmante" styleClass="modalRegNewFirmante" closable="true" >
+            <h:form prependId="false" id="frRegNewFirmante">
+                <b:panel id="pnRegNewFirmante" title="Registrar un nuevo Firmante para el Establecimiento" look="info" collapsible="false" >
+                    <b:row>
+                        <b:column span="8">
+                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.newFirmanteReg.nombreYApellido}" />
+                        </b:column>
+                        <b:column span="4">
+                            <b:inputText label="DNI" value="#{mbDeclaraciones.newFirmanteReg.dni}" />
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="12">
+                            <b:commandButton value="Actualizar" icon="glyphicon-refresh" look="success" update="frRegNewFirmante" />
+                            <b:commandButton title="Guardar el nuevo firmante" icon="glyphicon-ok" action="#{mbDeclaraciones.editFirmVinculado()}" 
+                                             oncomplete="closeModalRegNewFirmante()" look="primary" value="#{mbDeclaraciones.gralGuardar}" 
+                                             ajax="true" update="frFirm,frRegNewFirmante,messages" />
+
+                            <b:commandButton title="Limpiar los datos del formulario" icon="glyphicon-trash" 
+                                             action="#{mbDeclaraciones.limpiarNewRegFirmante}" look="danger" 
+                                             value="#{mbDeclaraciones.mdLimpiar}" ajax="true" update="frFirm,frRegNewFirmante,messages" />
+                        </b:column>
+                    </b:row>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>    
+        </b:modal>
+        
+        <!-- Modal actualización del firmante existente -->
+        <b:modal id="dlgRegActFirmanteExist" styleClass="modalRegActFirmanteExist" closable="true" >
+            <h:form prependId="false" id="frRegActFirmanteExist">
+                <b:panel id="pnRegActFirmanteExist" title="Actualizar los datos del Firmante" look="info" collapsible="false" >
+                    <b:row>
+                        <b:column span="6">
+                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.upFirmExist.nombreYApellido}" />
+                        </b:column>
+                        <b:column span="3">
+                            <b:inputText label="CUIT" value="#{mbDeclaraciones.upFirmExist.cuit}" />
+                        </b:column>
+                        <b:column span="3">
+                            <b:inputText label="DNI" value="#{mbDeclaraciones.upFirmExist.dni}" />
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="12">
+                            <b:commandButton value="Actualizar" icon="glyphicon-refresh" look="success" update="frRegActFirmanteExist" />
+                            <b:commandButton title="Actualizar el firmante" icon="glyphicon-ok" action="#{mbDeclaraciones.editFirmVinculado()}" 
+                                             oncomplete="closeModalRegActFirmanteExist()" look="primary" value="#{mbDeclaraciones.gralGuardar}" 
+                                             ajax="true" update="frFirm,pnRegActFirmanteExist,messages" />
+
+                            <b:commandButton title="Limpiar los datos del formulario" icon="glyphicon-trash" 
+                                             action="#{mbDeclaraciones.limpiarRegActFirmanteExist()}" look="danger" 
+                                             value="#{mbDeclaraciones.mdLimpiar}" ajax="true" update="frFirm,pnRegActFirmanteExist,messages" />
+                        </b:column>
+                    </b:row>
+                    <f:facet name="footer">
+                        <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+                    </f:facet>
+                </b:panel>
+            </h:form>
+        </b:modal>
+        
+        <b:panel title="Firma" look="info" collapsible="false">
+            <h:form id="frActFirma" prependId="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frActFirma,frFirm,frNewFirm,frBtnFirm" 
+                                         value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+            </h:form>  
+            
+            <!-- Panel de actualización -->
+            <b:label tooltip="Utilice este formulario para validar el firmante de la Declaración o actualizar sus datos." 
+                     text="Representante registrado del Establecimiento" severity="info"/>
+            <b:panel id="pnFirm" look="info">
+                <h:form id="frFirm" prependId="false">
+                    <b:row>
+                        <b:column span="7">
+                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.firmante.nombreYApellido}" />
+                        </b:column>
+                        <b:column span="3">
+                            <b:inputText label="CUIT" value="#{mbDeclaraciones.firmante.cuit}" />
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText label="DNI" value="#{mbDeclaraciones.firmante.dni}" />
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="7">
+                            <b:button title="Breve explicación del proceso de actualización de los datos del Firmante registrado" 
+                                      onclick="$('.modalAyudaActFirmante').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                            <b:commandButton title="Actualizar los datos del Frimante" disabled="#{mbDeclaraciones.firmDeshechado || mbDeclaraciones.declaracion.firmante.id gt 0}" 
+                                             icon="glyphicon-ok" action="#{mbDeclaraciones.prepareUpdateFirm()}" size="xs" look="primary" 
+                                             value="#{mbDeclaraciones.mdActualizar}" ajax="true" update="frRegActFirmanteExist,frFirm,frNewFirm,frBtnFirm,messages"
+                                             oncomplete="$('.modalRegActFirmanteExist').modal();return false;"/>
+                            <b:commandButton title="Desvincular el Firmante existente" disabled="#{mbDeclaraciones.firmDeshechado || mbDeclaraciones.declaracion.firmante.id gt 0}"  
+                                             icon="glyphicon-trash" action="#{mbDeclaraciones.deshecharFirmante()}" size="xs" look="danger" 
+                                             value="#{mbDeclaraciones.firDeshechar}" ajax="true" update="frFirm,frNewFirm,frBtnFirm,messages" />
+                            <b:commandButton title="Cancelar la desvinculación del Firmante" disabled="#{not mbDeclaraciones.firmDeshechado}"  
+                                             icon="glyphicon-minus-sign" action="#{mbDeclaraciones.cancelarDesFirmante()}" size="xs" 
+                                             value="#{mbDeclaraciones.firCancelar}" ajax="true" update="frFirm,frNewFirm,frBtnFirm,messages" />
+                        </b:column>
+                    </b:row>
+                </h:form>
+            </b:panel>
+            
+            <!-- Panel de nuevo firmante -->
+            <b:label tooltip="Utilice este formulario para seleccionar o agregar un nuevo Firmante." 
+         text="Nuevo representante del Establecimiento" severity="info"/>
+            <b:panel id="pnNewFirm" look="info">
+                <h:form id="frNewFirm" prependId="false">
+                    <b:row>
+                        <b:column span="7">
+                            <b:button title="Breve explicación del proceso de asignación de un nuevo Firmante" 
+                                      onclick="$('.modalAyudaNewFirmante').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                            <b:commandButton title="Seleccionar un nuevo Firmante" 
+                                             disabled="#{not mbDeclaraciones.firmDeshechado}" icon="glyphicon-new-window" 
+                                             oncomplete="$('.modalSelNewFirmante').modal();return false;" 
+                                             size="xs" look="primary"  value="#{mbDeclaraciones.firAgregarExistente}" 
+                                             ajax="true" update="frFirm,frNewFirm,messages" />
+                            <b:commandButton title="Registrar un nuevo Firmante" 
+                                             disabled="#{not mbDeclaraciones.firmDeshechado}" icon="glyphicon-new-window" 
+                                             oncomplete="$('.modalRegNewFirmante').modal();return false;" 
+                                             size="xs" look="success"  value="#{mbDeclaraciones.firRegistarNuevo}" 
+                                             ajax="true" update="frFirm,frNewFirm,messages" />
+                        </b:column>
+                    </b:row>
+                </h:form>
+            </b:panel>
+            <h:form id="frBtnFirm" prependId="false">
+                <b:row>
+                    <b:column span="12">
+                        <b:button title="Breve explicación del proceso de firma de la Declaración" 
+                                      onclick="$('.modalAyudaFirma').modal();return false;" look="warning" value="Ayuda" />
+                        <b:commandButton title="Vincular el nuevo Firmante al Establecimiento. Esta operación no se puede deshacer" 
+                                         action="#{mbDeclaraciones.vincularDefinitivo()}" 
+                                         disabled="#{not mbDeclaraciones.firmDeshechado}" icon="glyphicon-ok" 
+                                         look="primary"  value="#{mbDeclaraciones.firVincularSel}" 
+                                         ajax="true" update="frFirm,frNewFirm,frBtnFirm,messages" />
+
+                        <b:commandButton title="Firmar la declaración" action="#{mbDeclaraciones.firmarDeclaracion()}" 
+                                         disabled="#{mbDeclaraciones.firmDeshechado || mbDeclaraciones.firmante.id eq 0 || mbDeclaraciones.declaracion.firmante.id gt 0}" icon="glyphicon-ok" 
+                                         look="primary"  value="#{mbDeclaraciones.firFirmar}" 
+                                         ajax="true" update="frNav,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
+                        <b:commandButton title="Cancelar la firma de la Declaración" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada}"  
+                                             icon="glyphicon-minus-sign" action="#{mbDeclaraciones.cancelarFirmaDeclaracion()}"
+                                             value="#{mbDeclaraciones.firCancelar}" ajax="true" update="frNav,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
+                    </b:column>
+                </b:row>
+            </h:form>
+        </b:panel>
+        
+        <h:form id="frBtnRegistroDec" prependId="false">
+            <b:panel rendered="#{mbDeclaraciones.decRegistrada}" look="success" title="Resultado del proceso de Registro" collapsible="false">
+                <h:panelGrid columns="3" cellpadding="1" >
+                    <p style="color: darkcyan; font-size: 18px">La Declaración Jurada se ha guardado correctamente.</p>
+                    <p style="color: darkcyan; font-size: 18px">Para imprimirla, primero deberá generar e 
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml" class="btn btn-success">Imprimir</a>  
+                        el Recibo correspondiente.</p>
+                    <p style="color: darkcyan; font-size: 18px">¡Muchas gracias!</p>
+                </h:panelGrid>
+            </b:panel>    
+            <b:panel collapsible="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton title="Registrar la Declaración" action="#{mbDeclaraciones.createDeclaracion()}" 
+                                         icon="glyphicon-ok" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada}"
+                                         look="primary"  value="#{mbDeclaraciones.gralRegistrar}" update="frBtnRegistroDec,frBtnFirm,messages" 
+                                         ajax="true"  />
+                    </b:column>
+                </b:row>  
+            </b:panel>   
+        </h:form>
+    </h:body>
+    <script type="text/javascript">
+        function closeModalSelNewFirmante() {
+            $('.modalSelNewFirmante').modal('hide');
+        }
+        
+        function closeModalRegNewFirmante() {
+            $('.modalRegNewFirmante').modal('hide');
+        }
+        
+        function closeModalRegActFirmanteExist() {
+            $('.modalRegActFirmanteExist').modal('hide');
+        }
+    </script>   
+</html>

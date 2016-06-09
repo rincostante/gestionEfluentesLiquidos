@@ -42,8 +42,8 @@
                         <b:row style="margin-top: 5px">
                             <b:column span="6" >
                                 <b:commandButton id="btnEnviar" style="margin-right: 5px; width: 100%"
-                                                 look="primary" ajax="true" value="#{mbSesion.cmbEnviar}" 
-                                                     action="#{mbSesion.enviarSolicitud}" update="pnRecuperar,recMsg" />
+                                                 look="primary" ajax="true" value="#{mbSesion.cmbEnviar}" oncomplete="closeModalRecuperar()"  
+                                                 action="#{mbSesion.enviarSolicitud}" update="pnRecuperar,recMsg" />
                             </b:column>
                             <b:column span="6">
                                 <b:button look="warning" value="#{mbSesion.cmbLimpiar}" style="width: 100%" onclick="resetRecuperar()" />
@@ -104,19 +104,20 @@
 
                             <b:row style="margin-top: 5px">
                                 <b:column span="6" >
-                                    <b:commandButton style="margin-right: 5px; width: 100%" 
+                                    <b:commandButton style="margin-right: 5px; width: 100%" icon="glyphicon-play"
                                                      look="primary" ajax="true" value="#{mbSesion.cmbValidar}" 
                                                      action="#{mbSesion.login}" update="mensajes,loginForm" />
                                 </b:column>
                                 <b:column span="6">
-                                    <b:button look="warning" value="#{mbSesion.cmbLimpiar}" style="width: 100%" onclick="resetLogin()" />
+                                    <b:button look="danger" icon="glyphicon-trash" value="#{mbSesion.cmbLimpiar}" style="width: 100%" 
+                                              onclick="resetLogin()" />
                                 </b:column>
                             </b:row>
                             
                             <b:row style="margin-top: 5px">
                                 <b:column span="12" >
                                     <b:commandButton value="#{mbSesion.cmbRecuperar}"
-                                                     update="mensajes"
+                                                     update="mensajes" look="warning"
                                                      onclick="$('.modalRecuperar').modal();return false;"
                                                      style="width:100%" />
                                 </b:column>
@@ -135,7 +136,11 @@
         
         function resetLogin() {
             document.getElementById("loginForm").reset();
-        }        
+        }    
+
+        function closeModalRecuperar() {
+            $('.modalRecuperar').modal('hide');
+        }
     </script>   
 </html>
 

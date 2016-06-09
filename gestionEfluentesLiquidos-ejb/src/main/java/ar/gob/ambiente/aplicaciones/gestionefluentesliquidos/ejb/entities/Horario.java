@@ -3,6 +3,7 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,15 +25,35 @@ public class Horario implements Serializable {
     private Long id;
     
     /**
+     * Campo agregado para poder persistir y evitar la Exception por no tener campos salvo la id
+     */
+    private boolean tieneDias;    
+    
+    /**
      * Campo que muestra los días que componen el horario semanal
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "horario_id", referencedColumnName = "id")
-    private List<Dia> dias;       
+    private List<Dia> dias;   
+    
+    /*****************
+     ** Constructor **
+     *****************/    
+    public Horario(){
+        dias = new ArrayList<>();
+    }      
 
     /**********************
      * Métodos de acceso **
      **********************/
+    public boolean isTieneDias() {
+        return tieneDias;
+    }
+
+    public void setTieneDias(boolean tieneDias) {
+        this.tieneDias = tieneDias;
+    }
+
     public List<Dia> getDias() {
         return dias;
     }

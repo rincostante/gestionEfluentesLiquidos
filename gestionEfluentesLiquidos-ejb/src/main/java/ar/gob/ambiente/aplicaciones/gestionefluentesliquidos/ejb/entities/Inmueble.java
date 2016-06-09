@@ -25,6 +25,11 @@ public class Inmueble implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    /**
+     * Guarda el id del domicilio en el RUP
+     */
+    private Long idRupDom;
         
     /**
      * Guarda los datos correspondientes a la partida inmobiliara
@@ -37,7 +42,7 @@ public class Inmueble implements Serializable {
      * Guarda los datos correspondientes a la identificación catastral del inmuebble
      */
     @Column (length=100)
-    @Size(message = "El campo nomCatastral tiene un máximo de 20 caracteres", max = 100)
+    @Size(message = "El campo nomCatastral tiene un máximo de 100 caracteres", max = 100)
     private String nomCatastral;
     
     /**
@@ -82,6 +87,79 @@ public class Inmueble implements Serializable {
     @Column
     private boolean radioServido;
     
+    /**
+     * Guarda el nombre de la calle sobre la cual se otorgó la factibilidad
+     */
+    @Column
+    private String calleFactibilidad;   
+    
+    /*******************************************
+     ** Campos cacheados del domicilio de RUP **
+     *******************************************/
+    
+    @Column
+    private String calle;
+    
+    @Column
+    private String numero;
+    
+    @Column
+    private String localidad;
+    
+    @Column
+    private String departamento;
+    
+    
+    /**********************
+     * Métodos de acceso **
+     **********************/
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public Long getIdRupDom() {
+        return idRupDom;
+    }
+
+    public void setIdRupDom(Long idRupDom) {
+        this.idRupDom = idRupDom;
+    }
+
+    public String getCalleFactibilidad() {
+        return calleFactibilidad;
+    }
+
+    public void setCalleFactibilidad(String calleFactibilidad) {
+        this.calleFactibilidad = calleFactibilidad;
+    }
     
     public Long getId() {
         return id;

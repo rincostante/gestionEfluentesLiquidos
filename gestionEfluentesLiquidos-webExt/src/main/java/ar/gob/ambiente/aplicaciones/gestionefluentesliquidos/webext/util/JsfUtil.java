@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.util;
 
@@ -11,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -108,5 +106,25 @@ public class JsfUtil {
     public static boolean deleteFile(String path){
         File file = new File(path);
         return file.delete();
-    }    
+    } 
+    
+    /**
+     * Método para convertir una fecha (Date) en un String
+     * [aaaa+mm+dd]
+     * @param date
+     * @return 
+     */
+    public static String getDateInString(Date date){
+        if(date == null){
+            return null;
+        }else{
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int anio = cal.get(Calendar.YEAR);
+            int mes = cal.get(Calendar.MONTH) + 1;
+            int dia = cal.get(Calendar.DATE);
+            
+            return String.valueOf(anio) + String.valueOf(mes) + String.valueOf(dia);        
+        }
+    }
 }

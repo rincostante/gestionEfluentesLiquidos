@@ -6,10 +6,13 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialDeclaraciones;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,24 @@ public class HistorialDeclaracionesFacade extends AbstractFacade<HistorialDeclar
         super(HistorialDeclaraciones.class);
     }
     
+    /**
+     * Método para obtener el registro de la última Declaración vigente para un Establecimiento
+     * @param est: Establecimiento soble el que se consulta
+     * @return 
+     */
+    public HistorialDeclaraciones getUltimoActivo(Establecimiento est){
+        List<HistorialDeclaraciones> listHisDec;
+        em = getEntityManager();    
+        String queryString = "SELECT hd FROM HistorialDeclaraciones hd "
+                + "WHERE hd.establecimiento = :est "
+                + "AND hd.activa = true";  
+        Query q = em.createQuery(queryString)
+                .setParameter("est", est);
+        listHisDec = q.getResultList();
+        if(!listHisDec.isEmpty()){
+            return listHisDec.get(0);
+        }else{
+            return null;
+        }        
+    }    
 }

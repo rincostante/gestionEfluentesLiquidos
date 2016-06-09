@@ -29,6 +29,12 @@ public class HistorialDeclaraciones implements Serializable {
     private Long id;
     
     /**
+     * Flag que indica que la Declaración es la activa
+     */
+    @Column
+    private boolean activa;    
+    
+    /**
      * Campo que guarda el Establecimiento al que pertenece la Declaración jurada
      */
     @OneToOne
@@ -64,6 +70,14 @@ public class HistorialDeclaraciones implements Serializable {
     @ManyToOne 
     @JoinColumn(name="usuario_id")
     private UsuarioExterno usuario;
+
+    public boolean isActiva() {
+        return activa;
+    }
+
+    public void setActiva(boolean activa) {
+        this.activa = activa;
+    }
 
     public Date getFecha() {
         return fecha;

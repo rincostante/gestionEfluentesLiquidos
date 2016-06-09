@@ -26,6 +26,13 @@
      
         <h:form id="frAbastos" prependId="false">
             <b:panel title="Abastecimientos de agua" look="info" collapsible="false">
+
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frAbastos" value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+
                 <b:label tooltip="Utilice este formulario para ingresar los datos de nuevos Abastos o actualizar los ya cargados." 
                          text="Ingreso de Abastos nuevos o edición de existentes" severity="info"/>
                 <b:panel id="pnForm" look="info">
@@ -78,17 +85,27 @@
                             </b:selectOneMenu>
                         </b:column>
                     </b:row>
+                    <b:row>
+                        <b:column span="12">
+                            <p:inputTextarea value="#{mbDeclaraciones.abasto.descOtraFuente}" style="font-weight: lighter; color: gray; font-size: 14px" 
+                                            styleClass="form-control bf-no-message" label="Descripción de otra fuente" 
+                                            placeholder="Descripción de las características de la fuente si la hubiera." maxlength="250" />
+                        </b:column>
+                    </b:row>
                     <br></br>
                     <b:row>
                         <b:column span="12" >
                             <b:button title="Breve explicación del proceso de registro de un Abasto" onclick="$('.modalAyudaFrm').modal();return false;" size="xs" look="warning" value="Ayuda" />
-                            <b:commandButton title="Agregar el Abasto nuevo o guardar la actualización de uno existente" 
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                             title="Agregar el Abasto nuevo o guardar la actualización de uno existente" 
                                              action="#{mbDeclaraciones.addAbasto()}" size="xs" look="primary" 
                                              value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frAbastos,messages" />
-                            <b:commandButton title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" 
+                                             title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
                                              size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
                                              action="#{mbDeclaraciones.limpiarAbasto()}" update="pnForm" />
-                            <b:commandButton title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-minus-sign" 
+                                             title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
                                              action="#{mbDeclaraciones.cancelarAbastoSel()}" update="pnForm" />
                         </b:column>
                     </b:row>
@@ -148,12 +165,14 @@
                                     <f:facet name="header">
                                       <h:outputText value="Acciones" />
                                     </f:facet>
-                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Editar" 
+                                                     look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
                                                      action="#{mbDeclaraciones.editAbasto()}" >
                                         <f:setPropertyActionListener value="#{abasto}" target="#{mbDeclaraciones.abasto}" /> 
                                         <p:ajax process="@this" />
                                     </b:commandButton>
-                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar" 
+                                                     look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
                                                      action="#{mbDeclaraciones.removeAbasto()}" update="frAbastos" >
                                         <f:setPropertyActionListener value="#{abasto}" target="#{mbDeclaraciones.abasto}" />  
                                         <p:ajax process="@this" />
@@ -167,22 +186,22 @@
                     <b:column span="12" >
                         <b:button title="Breve explicación del proceso de configuración de los Abastos que componen el Abastecimiento general de agua del Establecimiento" 
                                   onclick="$('.modalAyudaGestAbastos').modal();return false;" size="sm" look="warning" value="Ayuda" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosAbastos}" 
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{not mbDeclaraciones.datosAbastos}" 
                                          title="Guardar los Abastos configurados en el Abasteciemiento de agua de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.createAbastos()}" 
-                                         look="primary" value="#{mbDeclaraciones.pzGuardar}" ajax="true" update="messages,frAbastos" process="@this" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosAbastos}" 
+                                         look="primary" value="#{mbDeclaraciones.abastGuardar}" ajax="true" update="frNav,messages,frAbastos" process="@this" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{not mbDeclaraciones.datosAbastos}" 
                                          title="Limpiar los Abastos componentes del Abastecimiento de agua de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.limpiarAbastos()}" process="@this"  
-                                         look="danger" value="#{mbDeclaraciones.pzLimpiar}" ajax="true" update="frAbastos" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosAbastos}" 
+                                         look="danger" value="#{mbDeclaraciones.abastLimpiar}" ajax="true" update="frAbastos" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{mbDeclaraciones.datosAbastos}" 
                                          title="Actualizar los Abastos que componen el Abastecimiento de agua de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.editAbastos()}" look="primary" process="@this"
-                                         value="#{mbDeclaraciones.pzActualizar}" ajax="true" update="messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosAbastos}" 
+                                         value="#{mbDeclaraciones.abastActualizar}" ajax="true" update="messages" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{mbDeclaraciones.datosAbastos}" 
                                          title="Eliminar los Abastos componentes del Abastecimiento de agua de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.deleteAbastos()}" look="danger" process="@this" 
-                                         value="#{mbDeclaraciones.pzEliminar}" ajax="true" update="frAbastos" />
+                                         value="#{mbDeclaraciones.abastEliminar}" ajax="true" update="frNav,frAbastos" />
                     </b:column>
                 </b:row>
             </b:panel>

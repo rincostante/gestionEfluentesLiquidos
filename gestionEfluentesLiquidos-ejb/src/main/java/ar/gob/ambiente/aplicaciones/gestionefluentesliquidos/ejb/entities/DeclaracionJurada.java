@@ -98,7 +98,20 @@ public class DeclaracionJurada implements Serializable {
      * Campo que guarda el Abastecimiento asociado
      */
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    private Abastecimiento abastecimiento;     
+    private Abastecimiento abastecimiento;    
+    
+    /**
+     * Campo que muestra los Productos generados por el Establecimiento
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "declaracion_id", referencedColumnName = "id")
+    private List<Producto> productos;     
+    
+    /**
+     * Campo que guarda los datos del Barro generado, si corresponde
+     */
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private Barro barro;      
     
     /**
      * Guarda el conjunto de datos administrativos.
@@ -119,8 +132,86 @@ public class DeclaracionJurada implements Serializable {
      */
     @OneToOne
     @JoinColumn(name="recibo_id")
-    private Recibo recibo;    
+    private Recibo recibo; 
     
+    /**
+     * Flag que indica si presenta Copia de Balnce de masas
+     */
+    private boolean adjuntaBalanceMasas;
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente al Balnce de masas
+     * String (250)
+     */
+    private String rutaBalanceMasas;
+    
+    /**
+     * Flag que indica si presenta Copia de Manifiestos y Certificado ambiental
+     */
+    private boolean adjuntaManifYCert;
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente a los Manifiestos y Certificado ambiental
+     * String (250)
+     */
+    private String rutaManifYCert;
+    
+    /**
+     * Flag que indica si presenta Copia del Permiso de factibilidad
+     * entregado por Orgnismo competente.
+     */
+    private boolean adjuntaPermisoFact;
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente al Permiso de factibilidad
+     * String (250)
+     */
+    private String rutaPermisoFact;   
+    
+    /**
+     * Flag que indica si presenta Copia de Inicio de trámite de Factibilidad
+     */
+    private boolean adjuntaInicoFact;    
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente al Inicio de trámite de Factibilidad
+     * String (250)
+     */
+    private String rutaInicioFact;   
+    
+    /**
+     * Flag que indica si presenta Croquis de ubicación del Establecimiento
+     */
+    private boolean adjuntaCroquis;   
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente al Croquis de ubicación del Establecimiento
+     * String (250)
+     */
+    private String rutaCroquis; 
+    
+    /**
+     * Flag que indica si presenta Certificado de retiro y disposición final de las descargas
+     */
+    private boolean adjuntaCertRetiroYDispFinal;     
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente al Certificado de retiro y disposición final de las descargas
+     * String (250)
+     */
+    private String rutaCertRetiroYDispFinal; 
+    
+    /**
+     * Flag que indica si presenta Copia de Protocolo de caracterización de barros
+     */
+    private boolean adjuntaProtocolo;     
+    
+    /**
+     * Ruta en la que que se alojará el archivo correspondiente al Protocolo de caracterización de barros
+     * String (250)
+     */
+    private String rutaProtocolo;     
+
     
     /*****************
      ** Constructor **
@@ -131,11 +222,140 @@ public class DeclaracionJurada implements Serializable {
         superficies = new ArrayList<>();
         cantPersonal = new ArrayList<>();
         fechasDeclaracion = new ArrayList<>();
+        productos = new ArrayList<>();
     }
     
     /**********************
      * Métodos de acceso **
      **********************/
+    public boolean isAdjuntaBalanceMasas() {
+        return adjuntaBalanceMasas;
+    }
+
+    public void setAdjuntaBalanceMasas(boolean adjuntaBalanceMasas) {
+        this.adjuntaBalanceMasas = adjuntaBalanceMasas;
+    }
+
+    public String getRutaBalanceMasas() {
+        return rutaBalanceMasas;
+    }
+
+    public void setRutaBalanceMasas(String rutaBalanceMasas) {
+        this.rutaBalanceMasas = rutaBalanceMasas;
+    }
+
+    public boolean isAdjuntaManifYCert() {
+        return adjuntaManifYCert;
+    }
+
+    public void setAdjuntaManifYCert(boolean adjuntaManifYCert) {
+        this.adjuntaManifYCert = adjuntaManifYCert;
+    }
+
+    public String getRutaManifYCert() {
+        return rutaManifYCert;
+    }
+
+    public void setRutaManifYCert(String rutaManifYCert) {
+        this.rutaManifYCert = rutaManifYCert;
+    }
+
+    public boolean isAdjuntaPermisoFact() {
+        return adjuntaPermisoFact;
+    }
+
+    public void setAdjuntaPermisoFact(boolean adjuntaPermisoFact) {
+        this.adjuntaPermisoFact = adjuntaPermisoFact;
+    }
+
+    public String getRutaPermisoFact() {
+        return rutaPermisoFact;
+    }
+
+    public void setRutaPermisoFact(String rutaPermisoFact) {
+        this.rutaPermisoFact = rutaPermisoFact;
+    }
+
+    public boolean isAdjuntaInicoFact() {
+        return adjuntaInicoFact;
+    }
+
+    public void setAdjuntaInicoFact(boolean adjuntaInicoFact) {
+        this.adjuntaInicoFact = adjuntaInicoFact;
+    }
+
+    public String getRutaInicioFact() {
+        return rutaInicioFact;
+    }
+
+    public void setRutaInicioFact(String rutaInicioFact) {
+        this.rutaInicioFact = rutaInicioFact;
+    }
+
+    public boolean isAdjuntaCroquis() {
+        return adjuntaCroquis;
+    }
+
+    public void setAdjuntaCroquis(boolean adjuntaCroquis) {
+        this.adjuntaCroquis = adjuntaCroquis;
+    }
+
+    public String getRutaCroquis() {
+        return rutaCroquis;
+    }
+
+    public void setRutaCroquis(String rutaCroquis) {
+        this.rutaCroquis = rutaCroquis;
+    }
+
+    public boolean isAdjuntaCertRetiroYDispFinal() {
+        return adjuntaCertRetiroYDispFinal;
+    }
+
+    public void setAdjuntaCertRetiroYDispFinal(boolean adjuntaCertRetiroYDispFinal) {
+        this.adjuntaCertRetiroYDispFinal = adjuntaCertRetiroYDispFinal;
+    }
+
+    public String getRutaCertRetiroYDispFinal() {
+        return rutaCertRetiroYDispFinal;
+    }
+
+    public void setRutaCertRetiroYDispFinal(String rutaCertRetiroYDispFinal) {
+        this.rutaCertRetiroYDispFinal = rutaCertRetiroYDispFinal;
+    }
+
+    public boolean isAdjuntaProtocolo() {
+        return adjuntaProtocolo;
+    }
+
+    public void setAdjuntaProtocolo(boolean adjuntaProtocolo) {
+        this.adjuntaProtocolo = adjuntaProtocolo;
+    }
+
+    public String getRutaProtocolo() {
+        return rutaProtocolo;
+    }
+
+    public void setRutaProtocolo(String rutaProtocolo) {
+        this.rutaProtocolo = rutaProtocolo;
+    }
+
+    public Barro getBarro() {
+        return barro;
+    }
+
+    public void setBarro(Barro barro) {
+        this.barro = barro;
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
+
     
     public Horario getHorario() {
         return horario;

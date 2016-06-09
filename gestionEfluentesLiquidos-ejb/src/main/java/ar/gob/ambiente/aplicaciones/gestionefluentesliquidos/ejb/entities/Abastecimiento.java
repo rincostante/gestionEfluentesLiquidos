@@ -25,6 +25,11 @@ public class Abastecimiento implements Serializable {
     private Long id;
     
     /**
+     * Campo agregado para poder persistir y evitar la Exception por no tener campos salvo la id
+     */
+    private boolean tieneAbastos;
+    
+    /**
      * Campo que muestra los Pozos que abastecen de agua al Establecimiento
      */
     @OneToMany(cascade = CascadeType.ALL)
@@ -50,6 +55,14 @@ public class Abastecimiento implements Serializable {
     /**********************
      * Métodos de acceso **
      **********************/    
+    public boolean isTieneAbastos() {
+        return tieneAbastos;
+    }
+
+    public void setTieneAbastos(boolean tieneAbastos) {
+        this.tieneAbastos = tieneAbastos;
+    }
+    
     public List<Abasto> getAbastos() {
         return abastos;
     }

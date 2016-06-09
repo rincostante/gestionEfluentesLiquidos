@@ -74,17 +74,22 @@
                             <p style="color: gray">#{bundle.instruccionesSeleccion}</p>
                         </b:column>
                     </b:row>
-                    <p:gmap id="geoGmap" widgetVar="geoMap" center="#{mbEstablecimiento.centerGeoMap}" zoom="12" type="ROADMAP" 
-                            style="width:100%;height:400px" model="#{mbEstablecimiento.geoModel}" 
-                            onPointClick="handlePointClick(event);" >
-                        <p:ajax event="geocode" listener="#{mbEstablecimiento.onGeocode}" update="@this" />
-                    </p:gmap>
+                    <f:view contentType="text/html">
+                        <p:gmap id="geoGmap" widgetVar="geoMap" center="#{mbEstablecimiento.centerGeoMap}" zoom="12" type="ROADMAP" 
+                                style="width:100%;height:400px" model="#{mbEstablecimiento.geoModel}" 
+                                onPointClick="handlePointClick(event);" >
+                            <p:ajax event="geocode" listener="#{mbEstablecimiento.onGeocode}" update="@this" />
+                        </p:gmap>
+                    </f:view>
+
                 </b:panel>
                 
                 <b:panel rendered="#{mbEstablecimiento.actualizado}" collapsible="false" look="info" title="Ubicación geográfica">
-                    <p:gmap id="actualizadoGmap" center="#{mbEstablecimiento.centerGeoMap}" zoom="12" type="ROADMAP" 
-                            style="width:100%;height:400px" model="#{mbEstablecimiento.actualizadoModel}" >
-                    </p:gmap>
+                    <f:view contentType="text/html">
+                        <p:gmap id="actualizadoGmap" center="#{mbEstablecimiento.centerGeoMap}" zoom="12" type="ROADMAP" 
+                                style="width:100%;height:400px" model="#{mbEstablecimiento.actualizadoModel}" >
+                        </p:gmap>
+                    </f:view>
                 </b:panel>
             </h:form>                
         </ui:define> 

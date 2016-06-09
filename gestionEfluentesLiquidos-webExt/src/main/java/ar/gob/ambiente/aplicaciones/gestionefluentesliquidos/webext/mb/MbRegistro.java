@@ -2,14 +2,13 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.AdminEntidad;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Usuario;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.UsuarioExterno;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.srv.BackendSrv;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.modelo.SolicitudCuenta;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.util.CriptPass;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.util.JsfUtil;
-import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt.CuitAfip;
-import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt.CuitAfipWs;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.wsExt.CuitAfipWs_Service;
 import java.io.Serializable;
 import java.util.Date;
@@ -48,6 +47,7 @@ public class MbRegistro implements Serializable{
     private String mensajeError;
     private String clave;
     private boolean iniciado;
+    private Establecimiento est;
     
     // botonos
     private String cmbValidar;
@@ -100,7 +100,14 @@ public class MbRegistro implements Serializable{
     /**********************
      * Métodos de acceso **
      **********************/
-    
+    public Establecimiento getEst() {
+        return est;
+    }
+
+    public void setEst(Establecimiento est) {
+        this.est = est;
+    }
+
     public String getCmbValidar() {
         return cmbValidar;
     }
@@ -164,74 +171,88 @@ public class MbRegistro implements Serializable{
      *****************************/
     
     public void solicitar(){
+        boolean valida = true;
+        
+        // obtengo el Establecimiento según el CUDE ingresado
+        String cude = solicitud.getCude();
+        int primerGuion = cude.indexOf("-");
+        int segundoGuion = cude.lastIndexOf("-");
+        Long lPart = Long.valueOf(cude.substring(0, primerGuion));
+        Long lNumEst = Long.valueOf(cude.substring(primerGuion + 1, segundoGuion));
+        int lCrs = Integer.parseInt(cude.substring(segundoGuion + 1, cude.length()));
 
-        try{
-            if(solicitud.getCuitEstablecimiento().equals(solicitud.getCuitFirmante())){
-                /*
-                 * Aquí deberían validarse los datos brindados por el usuario y en caso de ser correctos, 
-                 * generarse el usuario y enviar credenciales por correo electrónico.
-                 * En este caso damos por válido los datos y generamos el usuario
-                 */
+        est = backendSrv.getEstablecimientoByCude(lPart, lNumEst, lCrs);
+        if(est != null){
+            if(!solicitud.getCodigoRecibo().equals(est.getCodRecibo())){
+                valida = false;
+                mensajeError = "El código de recibo ingresado no corresponde con el último vigente.";
+            }else{
+                // verifico que el esablecimiento no tenga ya una cuenta
+                if(!backendSrv.usrExtNoExiste(cude)){
+                    String email = backendSrv.getUsuarioExt(cude).getEmail();
+                    valida = false;
+                    mensajeError = "El Establecimiento ya tiene una cuenta de usuario vinculada al correo " + email + ".";
+                }
+            }
+        }else{
+            valida = false;
+            mensajeError = "El cude ingresado no corresponde a ningún Establecimiento registrado.";
+        }
+        
+        if(valida){
+            try{
+                // Solo prosigo si validé los procedimientos anteriores
                 // seteo la admin. Primero obtengo el usuario de alta, deberá ser un usuario estandar, por ahora seré yo
                 Date date = new Date(System.currentTimeMillis());
                 AdminEntidad admEnt = new AdminEntidad();
                 usExt = new UsuarioExterno();
-                Usuario usSistema = backendSrv.getUsrByID(Long.valueOf(1));
+                Usuario usSistema = backendSrv.getUsrByID(Long.valueOf(3));
                 admEnt.setFechaAlta(date);
                 admEnt.setHabilitado(true);
                 admEnt.setUsAlta(usSistema);
                 usExt.setAdmin(admEnt);
+                
+                usExt.setRazonSocial(est.getRazonSocial());
 
-                // obtengo la razón social
-                CuitAfip cuitAfip = getRazonSocial(solicitud.getCuitEstablecimiento());
-                usExt.setRazonSocial(cuitAfip.getPejRazonSocial());
-
-                // generación de usuario
+                // generación de clave
                 clave = CriptPass.generar();
                 String claveEncriptada = CriptPass.encriptar(clave);
                 
                 usExt.setCude(solicitud.getCude());
                 usExt.setClave(claveEncriptada);
                 usExt.setPrimeraVez(true);
-                usExt.setCuit(solicitud.getCuitEstablecimiento());
+                usExt.setCuit(est.getCuit());
                 usExt.setEmail(solicitud.getCorreoElectronico());
                 
-                /****************************************************************************
-                 ***** Estos datos deberían surgir de la valicación del Establecimiento *****
-                 ****************************************************************************/
-
-                usExt.setTipoEst("Depósito");
-                usExt.setDomCalle("CABOTO");
-                usExt.setNumero("1129");
-                usExt.setPiso("0");
-                usExt.setDpto("0");
-                usExt.setLocalidad("LA BOCA");
+                usExt.setDomCalle(est.getInmueble().getCalle());
+                usExt.setNumero(est.getInmueble().getNumero());
+                usExt.setLocalidad(est.getInmueble().getLocalidad());
 
                 // inserto
                 backendSrv.createUsuarioExterno(usExt);
-
-                if(!enviarCorreo(solicitud.getCorreoElectronico(), solicitud.getCude(), usExt.getRazonSocial())){
+                
+                if(!enviarCorreo(usExt.getEmail(), usExt.getCude(), usExt.getRazonSocial())){
                     JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("envioCorreoUsError"));
                 }else{
-                    resultado = true;
                     JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateRegExito"));
                 }
-            }else{
-                // supondremos que el correo es inválido y que el cude también
-                resultado = false;
-                mensajeError = "Su correo electrónico es iválido. Su CUDE es inválido.";
-                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("panelRegIvalidoMessage_1") + ": " + mensajeError);
+                
+                resultado = true;
+                
+            }catch(Exception ex){
+                // muestro un mensaje al usuario
+                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("generarUsError"));
+                // lo escribo en el log del server
+                System.out.println(ResourceBundle.getBundle("/Bundle").getString("generarUsError") + ex.getMessage());
             }
-            solicitado = true;
-            mostrarResult = true;
-            solicitud = null;
-            
-        }catch(Exception ex){
-            // muestro un mensaje al usuario
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("generarUsError"));
-            // lo escribo en el log del server
-            System.out.println(ResourceBundle.getBundle("/Bundle").getString("generarUsError") + ex.getMessage());
+        }else{
+            resultado = false;
+            mensajeError = mensajeError + " No se pudo procesar su solicitud.";
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("panelRegIvalidoMessage_1") + ": " + mensajeError);
         }
+        solicitado = true;
+        mostrarResult = true;
+        solicitud = new SolicitudCuenta();;
     }
     
     public void limpiar(){
@@ -243,25 +264,6 @@ public class MbRegistro implements Serializable{
     /*********************
      * Métodos privados **
      *********************/
-    
-    /**
-     * Método para obtener la razón social vinculada al cuit
-     * @param cuit
-     * @return 
-     */
-    private CuitAfip getRazonSocial(Long cuit){
-        
-        try {
-            CuitAfipWs port = service.getCuitAfipWsPort();
-            return port.verPersona(cuit);
-        } catch (Exception ex) {
-            // muestro un mensaje al usuario
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("cuitAfipWsError"));
-            // lo escribo en el log del server
-            System.out.println(ResourceBundle.getBundle("/Bundle").getString("cuitAfipWsError") + ex.getMessage());
-            return null;
-        }
-    }
     
     private boolean enviarCorreo(String correo, String cude, String razonSocial){  
         boolean result;

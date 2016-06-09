@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -33,9 +32,9 @@ public class Firmante implements Serializable {
     
     /**
      * Guarda la referencia correspondiente a la persona física en el RUP
+     * (para los firmantes no validados, que se ingresen al momento de firmar,
+     * no se guardará)
      */
-    @Column (nullable=false, unique=true)
-    @NotNull(message = "El campo idRupFis no puede ser nulo")
     private Long idRupFis;
     
     /**
@@ -53,17 +52,20 @@ public class Firmante implements Serializable {
     /**
      * Guarda el nombre y apellido obtenido de la persona del RUP
      */
-    @Column (nullable=false, length=50, unique=true)
+    @Column (nullable=false, unique=true)
     @NotNull(message = "El campo nombreYApellido no puede ser nulo")
-    @Size(message = "El campo nombreYApellido tiene un máximo de 50 caracteres", min = 1, max = 50)
     private String nombreYApellido;
     
     /**
-     * Guarda el cuti/cuil de la persona obtenida del RUP
+     * Guarda el cuti/cuil de la persona obtenida del RUP (para los firmantes no validados, que se ingresen al momento de firmar,
+     * solo se guardará el dni)
      */
-    @Column (nullable=false, unique=true)
-    @NotNull(message = "El campo cuit no puede ser nulo")
     private long cuit;
+    
+    /**
+     * Guarda el dni para los casos en que la persona no sea validada en el RUP
+     */
+    private long dni;
    
     /**
      * Muestra las Declaraciones Juradas vinculadas al Firmante
@@ -84,6 +86,14 @@ public class Firmante implements Serializable {
         establecimientos = new ArrayList<>();
         historialEstablecimientos = new ArrayList<>();
         declaraciones = new ArrayList<>();
+    }
+
+    public long getDni() {
+        return dni;
+    }
+
+    public void setDni(long dni) {
+        this.dni = dni;
     }
 
     public String getNombreYApellido() {

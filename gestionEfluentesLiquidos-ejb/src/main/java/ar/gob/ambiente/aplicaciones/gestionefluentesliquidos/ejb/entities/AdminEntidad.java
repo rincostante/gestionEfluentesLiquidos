@@ -37,9 +37,12 @@ public class AdminEntidad implements Serializable {
     private Long id;
     
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="usalta_id", nullable=false)
-    @NotNull(message = "Debe haber un usuario dealta")
+    @JoinColumn(name="usalta_id")
     private Usuario usAlta;
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="usextalta_id")
+    private UsuarioExterno usExtAlta;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaAlta;
@@ -48,12 +51,20 @@ public class AdminEntidad implements Serializable {
     @JoinColumn(name="usmodif_id", nullable=true)
     private Usuario usModif;
     
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="usextmodif_id")
+    private UsuarioExterno usExtModif;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaModif;
     
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="usbaja_id", nullable=true)
     private Usuario usBaja;
+    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="usextbaja_id")
+    private UsuarioExterno usExtBaja;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaBaja;
@@ -75,7 +86,35 @@ public class AdminEntidad implements Serializable {
      * Campo que muestra la fecha de baja como string
      */
     @Transient
-    private String strFechaBaja;    
+    private String strFechaBaja;   
+    
+    
+    /**********************
+     * Metodos de acceso **
+     **********************/
+    public UsuarioExterno getUsExtAlta() {
+        return usExtAlta;
+    }
+
+    public void setUsExtAlta(UsuarioExterno usExtAlta) {
+        this.usExtAlta = usExtAlta;
+    }
+
+    public UsuarioExterno getUsExtModif() {
+        return usExtModif;
+    }
+
+    public void setUsExtModif(UsuarioExterno usExtModif) {
+        this.usExtModif = usExtModif;
+    }
+
+    public UsuarioExterno getUsExtBaja() {
+        return usExtBaja;
+    }
+
+    public void setUsExtBaja(UsuarioExterno usExtBaja) {
+        this.usExtBaja = usExtBaja;
+    }
 
     public Usuario getUsAlta() {
         return usAlta;

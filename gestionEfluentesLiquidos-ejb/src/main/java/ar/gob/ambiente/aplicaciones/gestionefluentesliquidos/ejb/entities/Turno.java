@@ -3,12 +3,10 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
 
 /**
  * Clase que encapsula los datos correspondientes a cada turno laboral diario
@@ -29,40 +27,64 @@ public class Turno implements Serializable {
     /**
      * Campo que guarda la hora de inicio del turno
      */
-    @Temporal(javax.persistence.TemporalType.TIME)
-    private Date horaInic;
+    private int horasInicio;
+    
+    /**
+     * Campo que guarda los minutos inicio del turno
+     */
+    private int minInicio;
     
     /**
      * Campo que guarda la hora de finalización del turno
      */
-    @Temporal(javax.persistence.TemporalType.TIME)
-    private Date horaFinal;    
+    private int horasFin;
+    
+    /**
+     * Campo que guarda los minutos finalizazión del turno
+     */
+    private int minFin;     
 
     /**********************
      * Métodos de acceso **
      **********************/       
+    public int getHorasInicio() {
+        return horasInicio;
+    }
+
+    public void setHorasInicio(int horasInicio) {
+        this.horasInicio = horasInicio;
+    }
+
+    public int getMinInicio() {
+        return minInicio;
+    }
+
+    public void setMinInicio(int minInicio) {
+        this.minInicio = minInicio;
+    }
+
+    public int getHorasFin() {
+        return horasFin;
+    }
+
+    public void setHorasFin(int horasFin) {
+        this.horasFin = horasFin;
+    }
+
+    public int getMinFin() {
+        return minFin;
+    }
+
+    public void setMinFin(int minFin) {
+        this.minFin = minFin;
+    }
+       
     public int getNumOrden() {
         return numOrden;
     }
 
     public void setNumOrden(int numOrden) {
         this.numOrden = numOrden;
-    }
-
-    public Date getHoraInic() {
-        return horaInic;
-    }
-
-    public void setHoraInic(Date horaInic) {
-        this.horaInic = horaInic;
-    }
-
-    public Date getHoraFinal() {
-        return horaFinal;
-    }
-
-    public void setHoraFinal(Date horaFinal) {
-        this.horaFinal = horaFinal;
     }
        
     public Long getId() {

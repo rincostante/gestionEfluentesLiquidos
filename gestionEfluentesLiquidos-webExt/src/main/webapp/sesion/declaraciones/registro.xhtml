@@ -23,29 +23,31 @@
 
                 <b:row>
                     <b:column span="3">
-                        <h:form>
+                        <h:form id="frNav">
                             <b:panel id="pnMenu" look="primary" collapsible="flase" title="Pasos a completar">
                                 <b:listLinks >
                                     <b:navLink value="Datos generales" update="@form @(.content)"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/datosgrales.xhtml')" />
                                     <b:navLink value="Datos complementarios" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarComp}" iconAlign="left"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/datoscomp.xhtml')" />
-                                    <b:navLink value="Vuelco" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
-                                               onclick="ajax:mbDeclaraciones.setPage('registro/vuelco.xhtml')" />
-                                    <b:navLink value="Descargas" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
-                                               onclick="ajax:mbDeclaraciones.setPage('registro/descargas.xhtml')" />
-                                    <b:navLink value="Pozos" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                    <b:navLink value="Vuelco" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarVuelco}" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/vuelco.xhtml')" oncomplete="reload();" />
+                                    <b:navLink value="Descargas" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarDesc}" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/descargas.xhtml')" ajax="false" />
+                                    <b:navLink value="Pozos" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarPozos}" iconAlign="left"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/pozos.xhtml')" />
-                                    <b:navLink value="Abastecimientos" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                    <b:navLink value="Abastecimientos" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarAbasto}" iconAlign="left"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/abast.xhtml')" />
-                                    <b:navLink value="Horarios" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                    <b:navLink value="Horarios" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarHorario}" iconAlign="left"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/horarios.xhtml')" />
-                                    <b:navLink value="Productos elaborados" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                    <b:navLink value="Productos elaborados" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarProductos}" iconAlign="left"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/productos.xhtml')" />
-                                    <b:navLink value="Barros" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
+                                    <b:navLink value="Barros" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarBarros}" iconAlign="left"
                                                onclick="ajax:mbDeclaraciones.setPage('registro/barros.xhtml')" />
-                                    <b:navLink value="Croquis" update="@form @(.content)" icon="glyphicon-thumbs-down" iconAlign="left"
-                                               onclick="ajax:mbDeclaraciones.setPage('registro/croquis.xhtml')" />
+                                    <b:navLink value="Adjuntar documentos" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarDocumentos}" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/archivos.xhtml')" />
+                                    <b:navLink value="Firmar" update="@form @(.content)" icon="#{mbDeclaraciones.pulgarFirma}" iconAlign="left"
+                                               onclick="ajax:mbDeclaraciones.setPage('registro/firma.xhtml')" />
                                 </b:listLinks>
                             </b:panel>
                         </h:form>
@@ -54,7 +56,6 @@
                         <ui:include src="#{mbDeclaraciones.page}" />
                     </b:column>
                 </b:row>
-
             </b:well>
         </ui:define> 
     </ui:composition>
@@ -88,15 +89,15 @@
     </script>
     
     <script type="text/javascript">
-        function closeModalValidDrp() {
-            $('.modalValidDrp').modal('hide');
-        }
         function closeModalDescargas() {
             $('.modalDescargas').modal('hide');
         }        
         function ayudaTrat(){
             alert('PRETRATAMIENTO: entre 1 y 6; PRIMARIO FISICO: entre 1 y 3; PRIMARIO QUIMICO: entre 1 y 4; SECUNDARIO: entre 1 y 6; DESINFECCION: entre 1 y 2. No se permite agregar un mismo para tratamiento - valor.');
         }
+        function reload(){
+            location.reload(true);
+        }        
     </script>    
 </html>
 

@@ -10,9 +10,22 @@
     </h:head>
     <h:body>
         <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaVuelcoGral" title="Registro de DJ - Vuelco" styleClass="modalAyudaVuelcoGral"
+            closable="true" >
+                Ayuda vuelco, general. 
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
         <b:modal id="dlgAyudaVuelcoInscrip" title="Registro de DJ - Vuelco - Datos registrados en DRP" styleClass="modalAyudaVuelcoInscrip"
             closable="true" >
                 Ayuda vuelco, datos registrados en la DRP del MAyDS 
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaFrmHorarios" title="Registro de DJ - Vuelco - Registro/Edición Horario Descargas" styleClass="modalAyudaFrmHorarios" closable="true" >
+                Ayuda registro y edición de Horario de trabajo
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -25,20 +38,21 @@
                     <b:row>
                         <b:column span="10">
                             <b:inputText id="txtUsDrp" label="" placeholder="Ingrese el usuario DRP ([CUIT]/[numOrden])" value="#{mbDeclaraciones.usDrp}" />
+
                         </b:column>
                         <b:column span="2">
-                            <b:commandButton id="btnValidar" action="#{mbDeclaraciones.validarUsuarioDrp()}" look="primary" icon="glyphicon-check" value=""
+                            <b:commandButton id="btnValidar" action="#{mbDeclaraciones.validarUsuarioDrp(1)}" look="primary" icon="glyphicon-check" value=""
                                      ajax="true" update="messages,frValidDrp" />
                         </b:column>
                     </b:row>
 
-                    <h:panelGrid columns="1" style="width: 100%" rendered="#{mbDeclaraciones.expediente.id gt 0}">
+                    <h:panelGrid columns="1" style="width: 100%" rendered="#{mbDeclaraciones.expGen.id gt 0}">
                         <b:row>
                             <b:column span="4">
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="N° Exp.: " />
                             </b:column>
                             <b:column span="8">
-                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.expNumero}" />
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expGen.expNumero}" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -46,7 +60,7 @@
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="Año Exp.: " />
                             </b:column>
                             <b:column span="8">
-                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.expAnio}" />
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expGen.expAnio}" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -54,7 +68,7 @@
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="N° CAA.: " />
                             </b:column>
                             <b:column span="8">
-                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.caNumero}" />
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expGen.caNumero}" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -62,7 +76,7 @@
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="Fecha venc. CAA.: " />
                             </b:column>
                             <b:column span="8">
-                                <p:calendar disabled="true" label="" value="#{mbDeclaraciones.expediente.caVencimiento.toGregorianCalendar().time}" pattern="dd/MM/yyyy" locale="es" />
+                                <p:calendar disabled="true" label="" value="#{mbDeclaraciones.expGen.caVencimiento.toGregorianCalendar().time}" pattern="dd/MM/yyyy" locale="es" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -70,7 +84,7 @@
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="Us DRP: " />
                             </b:column>
                             <b:column span="8">
-                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.usuario}" />
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expGen.usuario}" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -78,7 +92,7 @@
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="Nombre Est.: " />
                             </b:column>
                             <b:column span="8">
-                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.nombre}" />
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expGen.nombre}" />
                             </b:column>
                         </b:row>
                         <b:row>
@@ -86,35 +100,192 @@
                                 <p:outputLabel style="font-weight: lighter; color: gray" value="Descrip.: " />
                             </b:column>
                             <b:column span="8">
-                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expediente.descripcion}" />
+                                <b:inputText disabled="true" label="" value="#{mbDeclaraciones.expGen.descripcion}" />
                             </b:column>
                         </b:row>
                     </h:panelGrid>
-                    <b:commandButton action="#{mbDeclaraciones.guardarDtosValidDrp}" look="primary" value="#{mbDeclaraciones.mdGuardarDatosValidDrp}" 
-                                     ajax="true" update="@next,frTabVuelcos,messages" process="@this" style="margin-right: 5px" oncomplete="closeModalValidDrp()" />
-                    <b:commandButton action="#{mbDeclaraciones.limpiarDatosValid}" icon="glyphicon-delete" value="#{mbDeclaraciones.mdLimpiarDatosValidDrp}" 
-                                     look="warning" update="frValidDrp,frTabVuelcos" style="margin-left: 5px" />
+                    <b:commandButton value="Actualizar" icon="glyphicon-refresh" look="success" update="frValidDrp" />
+                    <b:commandButton icon="glyphicon-ok" action="#{mbDeclaraciones.guardarDtosValidDrp}" look="primary" value="#{mbDeclaraciones.mdGuardarDatosValidDrp}" 
+                                     ajax="true" update="@next,frTabVuelcos,messages" process="@this" oncomplete="closeModalValidDrp()" />
+                    <b:commandButton action="#{mbDeclaraciones.limpiarDatosValid}" icon="glyphicon-trash" value="#{mbDeclaraciones.mdLimpiarDatosValidDrp}" 
+                                     look="warning" update="frValidDrp,frTabVuelcos" />
                     <f:facet name="footer">
                         <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
                     </f:facet>
                 </b:panel>
             </h:form>
-        </b:modal>        
-        
+        </b:modal>      
+
         <h:form id="frTabVuelcos" prependId="false">
             <b:panel title="Vuelco" look="info" collapsible="false" style="height: 100%" >
-                
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frTabVuelcos" value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+                <b:row>
+                    <b:column span="12">
+                        <!-- Inicio Formulario de horario de descargas -->
+                        <b:label tooltip="Utilice este formulario para ingresar los días y horarios de descarga, Si corresponde." 
+                                 text="Horario de Descargas" severity="info"/>
+                        <b:panel id="pnFormHorDesc" look="info">
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" 
+                                              label="" caption="Horario de Vuelcos discontinuo" 
+                                              onchange="ajax:mbDeclaraciones.habilitarDiasVuelco()" >
+                                        <p:ajax event="change" update="cmbDiaDes,pnHorIniDesc,pnHorFinDesc,btnAddDiaVlc,btnLimDiaVlc,btnCanDiaVlc"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="6">
+                                    <b:selectOneMenu disabled="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" label="Día" id="cmbDiaDes" value="#{mbDeclaraciones.diaVuelco.codDia}" >
+                                        <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                        <f:selectItems value="#{mbDeclaraciones.mapDiaVuelcoSemana.entrySet()}" var="diaVuelcoSemana" 
+                                                       itemLabel="#{diaVuelcoSemana.value}" itemValue="#{diaVuelcoSemana.key}" />
+                                    </b:selectOneMenu>
+                                </b:column>
+                                <b:column span="3">
+                                    <b:label tooltip="Hora de inicio de la Descarga." text="Inicio Descarga" severity="info"/>
+                                    <b:panel id="pnHorIniDesc" look="info" collapsible="false">
+                                        <b:row>
+                                            <b:column span="6">
+                                                <b:inputText disabled="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" label="Hora" 
+                                                             value="#{mbDeclaraciones.diaVuelco.horasInicDesc}" >
+                                                    <f:validateLongRange minimum="0" maximum="23" />
+                                                </b:inputText>
+                                            </b:column>
+                                            <b:column span="6">
+                                                <b:inputText disabled="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" label="Min" 
+                                                             value="#{mbDeclaraciones.diaVuelco.minInicDesc}" >
+                                                    <f:validateLongRange minimum="0" maximum="59" />
+                                                </b:inputText>
+                                            </b:column>
+                                        </b:row>
+                                    </b:panel>
+                                </b:column>
+                                <b:column span="3">
+                                    <b:label tooltip="Hora de finalización de la Descarga." text="Fin Descarga" severity="info"/>
+                                    <b:panel id="pnHorFinDesc" look="info" collapsible="false">
+                                        <b:row>
+                                            <b:column span="6">
+                                                <b:inputText disabled="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" label="Hora" 
+                                                             value="#{mbDeclaraciones.diaVuelco.horasFinDesc}" >
+                                                    <f:validateLongRange minimum="0" maximum="23" />
+                                                </b:inputText>
+                                            </b:column>
+                                            <b:column span="6">
+                                                <b:inputText disabled="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" label="Min" 
+                                                             value="#{mbDeclaraciones.diaVuelco.minFinDesc}" >
+                                                    <f:validateLongRange minimum="0" maximum="59" />
+                                                </b:inputText>
+                                            </b:column>
+                                        </b:row>
+                                    </b:panel>
+                                </b:column>
+                            </b:row>
+                            <br></br>
+                            <b:row>
+                                <b:column span="12" >
+                                    <b:button title="Breve explicación del proceso de registro de un Día de Descarga" onclick="$('.modalAyudaFrmHorarios').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                                    <b:commandButton id="btnAddDiaVlc" disabled="#{mbDeclaraciones.declaracion.firmante ne null or mbDeclaraciones.vuelco.horarioDiscontinuo}" 
+                                                     icon="glyphicon-ok" title="Agregar el Día nuevo o guardar la actualización de uno existente" 
+                                                     action="#{mbDeclaraciones.addDiaVuelco()}" size="xs" look="primary" 
+                                                     value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frTabVuelcos,messages" />
+                                    <b:commandButton id="btnLimDiaVlc" disabled="#{mbDeclaraciones.declaracion.firmante ne null or mbDeclaraciones.vuelco.horarioDiscontinuo}" 
+                                                     icon="glyphicon-remove-circle" title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                                     size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.limpiarDiaVuelco()}" update="frTabVuelcos" />
+                                    <b:commandButton id="btnCanDiaVlc" disabled="#{mbDeclaraciones.declaracion.firmante ne null or mbDeclaraciones.vuelco.horarioDiscontinuo}" 
+                                                     icon="glyphicon-minus-sign" title="Cancelar la selección del día para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
+                                                     action="#{mbDeclaraciones.cancelarDiaVuelcoSel()}" update="frTabVuelcos" />
+                                </b:column>
+                            </b:row> 
+                            <br></br>
+                            <b:row>
+                                <b:column span="12" >
+                                    <b:dataTable id="dtDiasVuelco" value="#{mbDeclaraciones.lstDiasVuelco}" var="diaVuelco" 
+                                                 styleClass="table table-striped table-bordered" style="font-size: 12px" >
+                                        <h:column>
+                                            <f:facet name="header">
+                                              <h:outputText value="Nombre" />
+                                            </f:facet>
+                                            <h:outputText value="#{diaVuelco.nombre}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                              <h:outputText value="Inicio descarga" />
+                                            </f:facet>
+                                            <h:outputText value="#{diaVuelco.horasInicDesc}:#{diaVuelco.minInicDesc}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                              <h:outputText value="Fin descarga" />
+                                            </f:facet>
+                                            <h:outputText value="#{diaVuelco.horasFinDesc}:#{diaVuelco.minFinDesc}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                              <h:outputText value="Acciones" />
+                                            </f:facet>
+                                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Editar" 
+                                                             look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                             action="#{mbDeclaraciones.editDiaVuelco()}" update="frTabVuelcos" >
+                                                <f:setPropertyActionListener value="#{diaVuelco}" target="#{mbDeclaraciones.diaVuelco}" /> 
+                                                <p:ajax process="@this" />
+                                            </b:commandButton>
+                                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar" 
+                                                             look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                             action="#{mbDeclaraciones.removeDiaVuelco()}" update="frTabVuelcos" >
+                                                <f:setPropertyActionListener value="#{diaVuelco}" target="#{mbDeclaraciones.diaVuelco}" />  
+                                                <p:ajax process="@this" />
+                                            </b:commandButton>
+                                        </h:column>
+                                    </b:dataTable>
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                        <!-- Fin Formulario de horario de descargas -->
+                    </b:column>    
+                </b:row>
                 <b:row>
                     <b:column span="12" >
                         <b:label tooltip="De estar inscripto, obtener los datos desde aquí" text="Inscripción registro MAyDS" severity="info"/>
                         <b:panel collapsible="false" look="info">
-                            <b:button onclick="$('.modalAyudaVuelcoInscrip').modal();return false;" size="xs" look="warning" value="Ayuda" style="margin-bottom: 10px"/>
-                            <b:commandButton title="Validar DRP" oncomplete="$('.modalValidDrp').modal();return false;" 
-                                         size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" style="margin-bottom: 10px" ajax="true" />
-                            <b:commandButton title="Actualizar listado" update="dtSup" ajax="true" size="xs" look="default" 
-                                             value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-bottom: 10px" >
-                                <p:ajax update="frTabVuelcos" />
-                            </b:commandButton> 
+                            <b:row>
+                                <b:column span="12">
+                                    <p:inputTextarea value="#{mbDeclaraciones.vuelco.procProduct}" style="font-weight: lighter; color: gray; font-size: 14px" 
+                                            styleClass="form-control bf-no-message" label="Descripción del proceso productivo" 
+                                            placeholder="En caso de no estar registrado en la DRP, detallar." maxlength="500" 
+                                            disabled="#{mbDeclaraciones.vuelco.inscripto}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="6">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.vuelco.inscripto}" label="" caption="Selec. Establecimiento en DRP" 
+                                              onchange="ajax:mbDeclaraciones.habilitarGenDrp()" >
+                                        <p:ajax event="change" update="frTabVuelcos"/>
+                                    </b:switch>
+                                </b:column>
+                                <b:column span="6">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.vuelco.radioServido}" label="" caption="Radio de servido cloacas AySA" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:button onclick="$('.modalAyudaVuelcoInscrip').modal();return false;" size="xs" look="warning" value="Ayuda" 
+                                              style="margin-bottom: 10px" />
+                                    <b:commandButton id="btnVuelcoValidarDrp" title="Validar DRP" oncomplete="$('.modalValidDrp').modal();return false;" 
+                                                 size="xs" look="primary" value="#{mbDeclaraciones.mdAgregar}" icon="glyphicon-new-window" 
+                                                 style="margin-bottom: 10px" ajax="true" disabled="#{not mbDeclaraciones.vuelco.inscripto or mbDeclaraciones.declaracion.firmante ne null}" />
+                                    <b:commandButton id="btnVuelcoAcutalizarDrp" title="Actualizar listado" update="dtSup" ajax="true" size="xs" look="default" 
+                                                     disabled="#{not mbDeclaraciones.vuelco.inscripto}" 
+                                                     value="#{mbDeclaraciones.mdActualizar}" icon="glyphicon-refresh" style="margin-bottom: 10px" >
+                                        <p:ajax update="frTabVuelcos" />
+                                    </b:commandButton> 
+                                </b:column>
+                            </b:row>
                             
                             <h:panelGrid columns="3" style="width: 100%" rendered="#{mbDeclaraciones.vuelco.expNum gt 0}" >
                                 <b:row>
@@ -219,24 +390,48 @@
                 
                 <b:row>
                     <b:column span="12" >
-                        <b:button onclick="$('.modalAyudaVuelcoBoolean').modal();return false;" size="sm" look="warning" value="Ayuda" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco}" 
+                        <b:label tooltip="Ingrese los datos correspondientes a las distintas autorizaciones del vertido" text="Autorizaciones" severity="info"/>
+                        <b:panel collapsible="false" look="info">
+                            <b:row>
+                                <b:column span="5">
+                                    <b:inputText id="lola" label="Organismo Autorizante" value="#{mbDeclaraciones.vuelco.orgAutorizante}" />
+                                </b:column>
+                                <b:column span="2">
+                                    <b:inputText label="Caudal aut." value="#{mbDeclaraciones.vuelco.caudalAutorizado}" >
+                                        <f:validateDoubleRange />
+                                    </b:inputText>
+                                </b:column>
+                                <b:column span="5">
+                                    <b:inputText label="Calle factibilidad" value="#{mbDeclaraciones.vuelco.calleFactibilidad}" />
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+                
+                <b:row>
+                    <b:column span="12" >
+                        <b:button onclick="$('.modalAyudaVuelcoGral').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" 
+                                         icon="glyphicon-ok" rendered="#{not mbDeclaraciones.datosVuelco}" 
                                          title="Guardar las carcterísticas del vuelco en la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.createVuelcos()}" 
-                                         look="primary" value="#{mbDeclaraciones.vlcGuardar}" ajax="true" update="frValidDrp,frTabVuelcos,messages" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosVuelco}" 
+                                         look="primary" value="#{mbDeclaraciones.vlcGuardar}" ajax="true" 
+                                         update="frNav,frValidDrp,frTabVuelcos,messages" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" 
+                                         rendered="#{not mbDeclaraciones.datosVuelco}" 
                                          title="Limpiar las características del vuelco seleccionados" size="sm" 
                                          action="#{mbDeclaraciones.limpiarVuelco()}" 
                                          look="danger" value="#{mbDeclaraciones.vlcLimpiar}" 
                                          ajax="true" update="@next,frValidDrp,frTabVuelcos,messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" 
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{mbDeclaraciones.datosVuelco}" 
                                          title="Actualizar las caracterísicas del vuelco de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.editVuelcos()}" look="primary" 
                                          value="#{mbDeclaraciones.vlcActualizar}" ajax="true" update="messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosVuelco}" 
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{mbDeclaraciones.datosVuelco}" 
                                          title="Eliminar las características del vuelco de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.deleteVuelco()}" look="danger" 
-                                         value="#{mbDeclaraciones.vlcEliminar}" ajax="true" update="frValidDrp,frTabVuelcos" />
+                                         value="#{mbDeclaraciones.vlcEliminar}" ajax="true" update="frNav,frValidDrp,frTabVuelcos" />
                     </b:column>
                 </b:row>
                 
@@ -328,6 +523,10 @@
                     activeAlcalino = true;
                 }
             }
+        }
+
+        function closeModalValidDrp() {
+            $('.modalValidDrp').modal('hide');
         }
     </script>   
 </html>

@@ -3,25 +3,21 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
- * Clase que encapsula los horarios y turnos de cada día laborable de la semana
+ * Clase que encapsula los datos correspondientes a los días en los que se realizan las descargas, si correspondiera.
+ * Esto información es un atributo del Vuelco
  * @author rincostante
  */
 @Entity
-public class Dia implements Serializable {
+public class DiaVuelco implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +27,7 @@ public class Dia implements Serializable {
      * Campo que guarda la clave del día
      * Con el método getDia, se accede al Día correpondiente a la clave
      */
-    private int codDia;        
+    private int codDia; 
     
     /**
      * Listado para seleccionar los días de la semana
@@ -47,7 +43,7 @@ public class Dia implements Serializable {
        MP_DIAS.put(5, "JUEVES");
        MP_DIAS.put(6, "VIERNES");
        MP_DIAS.put(7, "SABADO");
-    } 
+    }  
     
     /**
      * Campo que guarda la hora de inicio de la descarga del efluente para el día correspondiente
@@ -67,25 +63,27 @@ public class Dia implements Serializable {
     /**
      * Campo que guarda los minutos finalizazión de la descarga del efluente para el día correspondiente
      */
-    private int minFinDesc;    
+    private int minFinDesc;        
     
-    /**
-     * Campo que muestra los turnos de trabajo que componen el día laboral
-     */
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dia_id", referencedColumnName = "id")
-    private List<Turno> turnos;     
-    
-    /*****************
-     ** Constructor **
-     *****************/    
-    public Dia(){
-        turnos = new ArrayList<>();
-    }          
-    
+  
     /**********************
      * Métodos de acceso **
-     **********************/    
+     **********************/   
+    public String getNombre() {
+        return MP_DIAS.get(codDia);
+    } 
+    
+    public static Map<Integer, String> getMP_DIAS() {
+        return MP_DIAS;
+    }        
+    
+    public int getCodDia() {
+        return codDia;
+    }
+
+    public void setCodDia(int codDia) {
+        this.codDia = codDia;
+    }
 
     public int getHorasInicDesc() {
         return horasInicDesc;
@@ -118,33 +116,7 @@ public class Dia implements Serializable {
     public void setMinFinDesc(int minFinDesc) {
         this.minFinDesc = minFinDesc;
     }
-    
-
-    public List<Turno> getTurnos() {
-        return turnos;
-    }
-
-    public void setTurnos(List<Turno> turnos) {
-        this.turnos = turnos;
-    }
-    
-    public static Map<Integer, String> getMP_DIAS() {
-        return MP_DIAS;
-    }     
-    
-    public int getCodDia() {
-        return codDia;
-    }
-
-    public void setCodDia(int codDia) {
-        this.codDia = codDia;
-    }
-    
-
-    public String getNombre() {
-        return MP_DIAS.get(codDia);
-    } 
-        
+      
     public Long getId() {
         return id;
     }
@@ -163,10 +135,10 @@ public class Dia implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Dia)) {
+        if (!(object instanceof DiaVuelco)) {
             return false;
         }
-        Dia other = (Dia) object;
+        DiaVuelco other = (DiaVuelco) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -175,7 +147,7 @@ public class Dia implements Serializable {
 
     @Override
     public String toString() {
-        return "ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Dia[ id=" + id + " ]";
+        return "ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DiaVuelco[ id=" + id + " ]";
     }
     
 }

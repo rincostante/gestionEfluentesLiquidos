@@ -1,0 +1,341 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 80%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaSubirArchivos" title="Registro de DJ - Adjuntar Archvios" styleClass="modalAyudaSubirArchivos" closable="true" >
+                Ayuda selección y subida de Archivos para adjuntar a la Declaración Jurada
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <b:panel title="Documentación a adjuntar" look="info" collapsible="false">
+            <h:form id="frActArch" prependId="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frActArch,frUpBalance,frUpManifYCert,frUpPermisoFact,frUpInicoFact,frUpCroquis,frUpCertRetiroYDispFinal,frUpProtocolo,frUpBotones" 
+                                         value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+            </h:form>  
+            <b:row>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta la copia del balance de masas, ingréselo mediante este formulario." 
+                                     text="Balance de masas" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpBalance" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Puede ingresar por aquí una copia del Balance de Masas en un solo archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaBalanceMasas}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarSubBalances()" >
+                                        <p:ajax event="change" update="frUpBalance"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeBalance or mbDeclaraciones.declaracion.firmante ne null}" fileUploadListener="#{mbDeclaraciones.subirBalance}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar"  />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaBalanceMasas}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeBalance or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta archivo Balance de masas" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpBalance" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeBalance or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Balance de masas subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteBalance}" process="@this" update="frNav,frUpBalance,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta la copia de los Manifiestos y Certificado ambiental, ingréselo mediante este formulario." 
+                                     text="Manifiestos y Certificado ambiental" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpManifYCert" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copias de Manifiestos y Certificado Ambiental, puede ingresarlas por aquí, en un solo archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaManifYCert}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarManifYCert()" >
+                                        <p:ajax event="change" update="frUpManifYCert"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeManifYCert or mbDeclaraciones.declaracion.firmante ne null}" fileUploadListener="#{mbDeclaraciones.subirManifYCert}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaManifYCert}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeManifYCert or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta archivo Manifiestos y Certificado ambiental" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpManifYCert" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeManifYCert or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Manifiestos y Certificado ambiental subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteManifYCert}" process="@this" update="frNav,frUpManifYCert,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta la copia del Permiso de factibilidad, ingréselo mediante este formulario." 
+                                     text="Permiso de factibilidad" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpPermisoFact" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del Permiso de factibilidad, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.subeInicioFact or mbDeclaraciones.declaracion.firmante ne null}" 
+                                              value="#{mbDeclaraciones.declaracion.adjuntaPermisoFact}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarPermisoFact()" >
+                                        <p:ajax event="change" update="frUpPermisoFact,frUpInicoFact"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subePermisoFact or mbDeclaraciones.declaracion.firmante ne null}" fileUploadListener="#{mbDeclaraciones.subirPermisoFact}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaPermisoFact}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subePermisoFact or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta archivo Permiso de factibilidad" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpPermisoFact" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subePermisoFact or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Permiso de factibilidad subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deletePermisoFact}" process="@this" update="frNav,frUpPermisoFact,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta la copia del Inicio de trámite de Factibilidad, ingréselo mediante este formulario." 
+                                     text="Inicio de trámite de Factibilidad" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpInicoFact" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del comprobante de Inicio de trámite de Factibilidad, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.subePermisoFact or mbDeclaraciones.declaracion.firmante ne null}" 
+                                              value="#{mbDeclaraciones.declaracion.adjuntaInicoFact}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarInicoFact()" >
+                                        <p:ajax event="change" update="frUpInicoFact,frUpPermisoFact"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeInicioFact or mbDeclaraciones.subePermisoFact or mbDeclaraciones.declaracion.firmante ne null}" 
+                                                  fileUploadListener="#{mbDeclaraciones.subirInicoFact}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaInicioFact}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeInicioFact or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta archivo de Inicio de trámite de Factibilidad" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpInicoFact" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeInicioFact or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Inicio de trámite de Factibilidad subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteInicioFact()}" process="@this" update="frNav,frUpInicoFact,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta el Croquis de ubicación del Establecimiento, ingréselo mediante este formulario." 
+                                     text="Croquis de ubicación del Establecimiento" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpCroquis" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé Croquis de ubicación del Establecimiento con las respectivas descargas documentadas y la/s calles para las cuales se recibió permiso de factibilidad, puede ingresarlo en un único archivo .pdf, jpg, png o gif</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaCroquis}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarCroquis()" >
+                                        <p:ajax event="change" update="frUpCroquis"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" 
+                                                  fileUploadListener="#{mbDeclaraciones.subirCroquis}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaCroquis}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta Croquis de ubicación del Establecimiento" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpCroquis" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Croquis de ubicación del Establecimiento subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteCroquis}" process="@this" update="frNav,frUpCroquis,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta el Certificado de retiro y disposición final de las descargas, ingréselo mediante este formulario." 
+                                     text="Certificado de retiro y disposición final de las descargas" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpCertRetiroYDispFinal" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia de Certificado de retiro y disposición final de las descargas, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaCertRetiroYDispFinal}" 
+                                              label="" caption="" onchange="ajax:mbDeclaraciones.habilitarCertRetiroYDispFinal()" >
+                                        <p:ajax event="change" update="frUpCertRetiroYDispFinal"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeCertRetiroYDispFinal or mbDeclaraciones.declaracion.firmante ne null}" 
+                                                  fileUploadListener="#{mbDeclaraciones.subirCertRetiroYDispFinal}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaCertRetiroYDispFinal}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCertRetiroYDispFinal or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta del Certificado de retiro y disposición final de las descargas" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpCertRetiroYDispFinal" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCertRetiroYDispFinal or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Certificado de retiro y disposición final de las descargas subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteCertRetiroYDispFinal}" process="@this" update="frNav,frUpCertRetiroYDispFinal,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <b:label tooltip="Si adjunta el Protocolo de caracterización de barros, ingréselo mediante este formulario." 
+                                     text="Protocolo de caracterización de barros" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpProtocolo" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del Protocolo de caracterización de barros, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaProtocolo}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarProtocolo()" >
+                                        <p:ajax event="change" update="frUpProtocolo"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeProtocolo or mbDeclaraciones.declaracion.firmante ne null}" 
+                                                  fileUploadListener="#{mbDeclaraciones.subirProtocolos}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaProtocolo}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeProtocolo or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta del Protocolo de caracterización de barros" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpProtocolo" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeProtocolo or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Protocolo de caracterización de barros subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteProtocolos}" process="@this" update="frNav,frUpProtocolo,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
+                    <h:form id="frUpBotones" enctype="multipart/form-data" prependId="false">
+                        <b:button title="Breve explicación del proceso de adjuntar archivos a la Declaración Jurada" 
+                                  onclick="$('.modalAyudaSubirArchivos').modal();return false;" look="warning" value="Ayuda" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.gralLimpiar}" 
+                                         icon="glyphicon-trash" look="danger" title="Limpiar todos los archivos subidos" 
+                                         update="frNav,frUpBalance,frUpManifYCert,frUpPermisoFact,frUpInicoFact,frUpCroquis,frUpCertRetiroYDispFinal,frUpProtocolo,messages" 
+                                         action="#{mbDeclaraciones.deleteArchivos}" />
+                    </h:form>
+                </b:column>
+            </b:row>
+        </b:panel>
+    </h:body>
+</html>        
+

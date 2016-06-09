@@ -2,11 +2,16 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.srv.BackendSrv;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.modelo.ConsultaCude;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.util.JsfUtil;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.ResourceBundle;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
@@ -20,9 +25,13 @@ public class MbCude implements Serializable{
     private boolean resultado;
     private boolean mostrarResult;
     private ConsultaCude consulta;
-    private String cude;
+    private Establecimiento est;
+    private List<Establecimiento> lstEst;
     
-    // botonos
+    @EJB
+    private BackendSrv backendSrv;    
+    
+    // botones
     private String cmbValidar;
     private String cmbLimpiar;
     
@@ -56,13 +65,29 @@ public class MbCude implements Serializable{
             resultado = false;
             mostrarResult = false;
             consulta = new ConsultaCude();
+            lstEst = new ArrayList<>();
         }
     }
 
     /**********************
      * Métodos de acceso **
-     **********************/
-    
+     **********************/   
+    public Establecimiento getEst() {
+        return est;
+    }
+
+    public void setEst(Establecimiento est) {
+        this.est = est;
+    }
+
+    public List<Establecimiento> getLstEst() {
+        return lstEst;
+    }
+
+    public void setLstEst(List<Establecimiento> lstEst) {
+        this.lstEst = lstEst;
+    }
+   
     public String getCmbValidar() {
         return cmbValidar;
     }
@@ -95,15 +120,6 @@ public class MbCude implements Serializable{
     public void setResultado(boolean resultado) {
         this.resultado = resultado;
     }
-
-    
-    public String getCude() {
-        return cude;
-    }
-
-    public void setCude(String cude) {
-        this.cude = cude;
-    }
     
     public ConsultaCude getConsulta() {
         return consulta;
@@ -112,7 +128,6 @@ public class MbCude implements Serializable{
     public void setConsulta(ConsultaCude consulta) {
         this.consulta = consulta;
     }
-
     
     public boolean isValidado() {
         return validado;
@@ -128,18 +143,19 @@ public class MbCude implements Serializable{
      *****************************/
     
     public void validar(){
-        cude = "";
-        if(consulta.getCuitEstablecimiento().equals(consulta.getCuitFirmante())){
-            resultado = true;
-            cude = "990-19002-01";
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateCudeExito"));
-        }else{
+        lstEst = backendSrv.getEstablecimientosByCuit(consulta.getCuitEstablecimiento());
+        
+        if(lstEst.isEmpty()){
             resultado = false;
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("validateCudeError"));
+            JsfUtil.addErrorMessage("Su consulta no devolvió ningún Establecimiento, esto puede ser por diferentes motivos, "
+                    + "le solicitamos acercarse a nuestras oficinas para realizar el trámtite personalmente. ¡Muchas gracias!");
+        }else{
+            resultado = true;
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateCudeExito"));
         }
         validado = true;
         mostrarResult = true;
-        consulta = null;
+        consulta = new ConsultaCude();
     }
     
     public void limpiar(){

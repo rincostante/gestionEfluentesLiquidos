@@ -23,12 +23,26 @@
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
-     
-        <h:form id="frHorarios" prependId="false">
-            <b:panel title="Horarios" look="info" collapsible="false">
-                <b:label tooltip="Utilice este formulario para ingresar los horarios de cada día laborable de la semana." 
-                         text="Ingreso de Horarios diarios nuevos o edición de existentes" severity="info"/>
-                <b:panel id="pnForm" look="info">
+        <b:modal id="dlgAyudaGestTurnos" title="Registro de DJ - Horario - Turnos" styleClass="modalAyudaGestTurnos"
+            closable="true" >
+                Ayuda para la gestión general de los turnos del Horario de trabajo del Establecimiento
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <b:panel title="Horarios" look="info" collapsible="false">
+            <h:form id="frActHor" prependId="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frActHor,frHorarios,frTurnos,frDtHorarios,frBtHorarios" value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+            </h:form>  
+            <b:label tooltip="Utilice este formulario para ingresar los horarios de cada día laborable de la semana." 
+                     text="Registro y actualización de Horarios" severity="info"/>
+            <b:panel id="pnForm" look="info">
+                <h:form id="frHorarios" prependId="false">
                     <b:row>
                         <b:column span="6">
                             <b:selectOneMenu label="Día" id="cmbDia" value="#{mbDeclaraciones.dia.codDia}" >
@@ -37,47 +51,164 @@
                                                itemLabel="#{diaSemana.value}" itemValue="#{diaSemana.key}" />
                             </b:selectOneMenu>
                         </b:column>
-                        <b:column span="1">
-                            <b:inputText label="Hora" value="#{mbDeclaraciones.dia.horasInicDesc}" >
-                                <f:validateLongRange minimum="0" maximum="23" />
-                            </b:inputText>
+                        <b:column span="3">
+                            <b:label tooltip="Hora de inicio de la jornada laboral." 
+                         text="Inicio jornada" severity="info"/>
+                            <b:panel look="info" collapsible="false">
+                                <b:row>
+                                    <b:column span="6">
+                                        <b:inputText label="Hora" value="#{mbDeclaraciones.dia.horasInicDesc}" >
+                                            <f:validateLongRange minimum="0" maximum="23" />
+                                        </b:inputText>
+                                    </b:column>
+                                    <b:column span="6">
+                                        <b:inputText label="Min" value="#{mbDeclaraciones.dia.minInicDesc}" >
+                                            <f:validateLongRange minimum="0" maximum="59" />
+                                        </b:inputText>
+                                    </b:column>
+                                </b:row>
+                            </b:panel>
                         </b:column>
-                        <b:column span="1">
-                            <b:inputText label="Min" value="#{mbDeclaraciones.dia.minInicDesc}" >
-                                <f:validateLongRange minimum="0" maximum="59" />
-                            </b:inputText>
-                        </b:column>
-                        <b:column span="1">
-                            <b:inputText label="Hora" value="#{mbDeclaraciones.dia.horasFinDesc}" >
-                                <f:validateLongRange minimum="0" maximum="23" />
-                            </b:inputText>
-                        </b:column>
-                        <b:column span="1">
-                            <b:inputText label="Min" value="#{mbDeclaraciones.dia.minFinDesc}" >
-                                <f:validateLongRange minimum="0" maximum="59" />
-                            </b:inputText>
+                        <b:column span="3">
+                            <b:label tooltip="Hora de finalización de la jornada laboral." 
+                         text="Fin jornada" severity="info"/>
+                            <b:panel look="info" collapsible="false">
+                                <b:row>
+                                    <b:column span="6">
+                                        <b:inputText label="Hora" value="#{mbDeclaraciones.dia.horasFinDesc}" >
+                                            <f:validateLongRange minimum="0" maximum="23" />
+                                        </b:inputText>
+                                    </b:column>
+                                    <b:column span="6">
+                                        <b:inputText label="Min" value="#{mbDeclaraciones.dia.minFinDesc}" >
+                                            <f:validateLongRange minimum="0" maximum="59" />
+                                        </b:inputText>
+                                    </b:column>
+                                </b:row>
+                            </b:panel>
                         </b:column>
                     </b:row>
-
                     <br></br>
                     <b:row>
                         <b:column span="12" >
                             <b:button title="Breve explicación del proceso de registro de un Día del horario laboral" onclick="$('.modalAyudaFrm').modal();return false;" size="xs" look="warning" value="Ayuda" />
-                            <b:commandButton title="Agregar el Día nuevo o guardar la actualización de uno existente" 
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                             title="Agregar el Día nuevo o guardar la actualización de uno existente" 
                                              action="#{mbDeclaraciones.addDia()}" size="xs" look="primary" 
-                                             value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frHorarios,messages" />
-                            <b:commandButton title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                             value="#{mbDeclaraciones.gralGuardar}" ajax="true" update="frHorarios,frTurnos,frDtHorarios,messages" />
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-remove-circle" 
+                                             title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
                                              size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
                                              action="#{mbDeclaraciones.limpiarDia()}" update="pnForm" />
-                            <b:commandButton title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-minus-sign" 
+                                             title="Cancelar la selección de la descarga para su actualización" size="xs" value="#{mbDeclaraciones.gralCancelarSel}" 
                                              action="#{mbDeclaraciones.cancelarDiaSel()}" update="pnForm" />
                         </b:column>
-                    </b:row>
+                    </b:row> 
+                </h:form>
+                <br></br>
+                <!-- Formulario Turnos -->
+                <b:label tooltip="Utilice este formulario para ingresar los Turnos que componen cada día de trabajo" 
+                     text="Registro y actualización de Turnos diarios" severity="info"/>
+                <b:panel id="pnTurnos" look="info">
+                    <h:form id="frTurnos" prependId="false">
+                        <b:row>
+                            <b:column span="6">
+                                <b:inputText id="txNumOrden" label="Número de orden" value="#{mbDeclaraciones.turno.numOrden}" />
+                            </b:column>
+                            <b:column span="3">
+                                <b:label tooltip="Hora de inicio del Turno." 
+                             text="Inicio del Turno" severity="info"/>
+                                <b:panel look="info" collapsible="false">
+                                    <b:row>
+                                        <b:column span="6">
+                                            <b:inputText id="txHoraInicio" label="Hora" value="#{mbDeclaraciones.turno.horasInicio}" >
+                                                <f:validateLongRange minimum="0" maximum="23" />
+                                            </b:inputText>
+                                        </b:column>
+                                        <b:column span="6">
+                                            <b:inputText id="txMinInicio" label="Min" value="#{mbDeclaraciones.turno.minInicio}" >
+                                                <f:validateLongRange minimum="0" maximum="59" />
+                                            </b:inputText>
+                                        </b:column>
+                                    </b:row>
+                                </b:panel>
+                            </b:column>
+                            <b:column span="3">
+                                <b:label tooltip="Hora de finalización del Turno." 
+                             text="Fin del Truno" severity="info"/>
+                                <b:panel look="info" collapsible="false">
+                                    <b:row>
+                                        <b:column span="6">
+                                            <b:inputText id="txHoraFin" label="Hora" value="#{mbDeclaraciones.turno.horasFin}" >
+                                                <f:validateLongRange minimum="0" maximum="23" />
+                                            </b:inputText>
+                                        </b:column>
+                                        <b:column span="6">
+                                            <b:inputText id="txMinFin" label="Min" value="#{mbDeclaraciones.turno.minFin}" >
+                                                <f:validateLongRange minimum="0" maximum="59" />
+                                            </b:inputText>
+                                        </b:column>
+                                    </b:row>
+                                </b:panel>
+                            </b:column>
+                        </b:row>
+                        <br></br>
+                        <b:row>
+                            <b:column>
+                                <b:button value="Ayuda" look="warning" onclick="$('.modalAyudaGestTurnos').modal();return false;" size="xs" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                                 action="#{mbDeclaraciones.addTurnos()}" look="primary" value="#{mbDeclaraciones.gralGuardar}" 
+                                                 ajax="true" update="@next,frTurnos,messages" size="xs"  />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" action="#{mbDeclaraciones.removeTurnos()}" 
+                                                 icon="glyphicon-trash" value="#{mbDeclaraciones.mdLimpiarTodo}" 
+                                                 look="danger" process="@this" ajax="true" update="frTurnos" size="xs"  />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-minus-sign" 
+                                                 title="Cancelar la selección del Turno para su actualización" size="xs" 
+                                                 value="#{mbDeclaraciones.gralCancelarSel}" 
+                                                 action="#{mbDeclaraciones.cancelarTurnoSel()}" update="frTurnos" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-remove-circle" 
+                                                 title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                                 size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                                 action="#{mbDeclaraciones.limpiarTurno()}" update="frTurnos" />
+                            </b:column>
+                        </b:row>
+                        <br></br>
+                        <p:dataTable id="dtTurnos" value="#{mbDeclaraciones.dia.turnos}" var="turno" 
+                                     style="font-size: 12px" >
+                            <p:column headerText="Turno" >
+                                <p:outputLabel style="font-weight: lighter" value="#{turno.numOrden}"/>
+                            </p:column>
+                            <p:column headerText="Inicio" >
+                                <p:outputLabel style="font-weight: lighter" value="#{turno.horasInicio}:#{turno.minInicio}"/>
+                            </p:column>
+                            <p:column headerText="Fin" >
+                                <p:outputLabel style="font-weight: lighter" value="#{turno.horasFin}:#{turno.minFin}"/>
+                            </p:column>
+
+                            <p:column width="75" headerText="" >
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" look="warning" ajax="true" 
+                                                 size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editTurno()}" title="Editar" >
+                                    <f:setPropertyActionListener value="#{turno}" target="#{mbDeclaraciones.turno}" />  
+                                    <p:ajax process="@this"  />
+                                </b:commandButton>
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" look="danger" ajax="true" 
+                                                 size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeTurno()}" update="frTurnos" title="Eliminar" >
+                                    <f:setPropertyActionListener value="#{turno}" target="#{mbDeclaraciones.turno}" />  
+                                    <p:ajax process="@this" />
+                                </b:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
                 </b:panel>
+                <!-- FIN Formulario Turnos -->                
                 
-                <b:label tooltip="Podrá seleccionar un Día del listado para su eliminación o edición." 
-                         text="Listado de Días ingresados" severity="info"/>
-                <b:panel id="pnTable" look="info">
+            </b:panel>
+
+            <b:label tooltip="Podrá seleccionar un Día del listado para su eliminación o edición." 
+                     text="Listado de Días ingresados" severity="info"/>
+            <b:panel id="pnTable" look="info">
+                <h:form id="frDtHorarios" prependId="false">
                     <b:row>
                         <b:column span="12" >
                             <b:dataTable id="dtDias" value="#{mbDeclaraciones.lstDias}" var="dia" 
@@ -88,19 +219,31 @@
                                     </f:facet>
                                     <h:outputText value="#{dia.nombre}" />
                                 </h:column>
-
-
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Inicio jornada" />
+                                    </f:facet>
+                                    <h:outputText value="#{dia.horasInicDesc}:#{dia.minInicDesc}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Fin jornada" />
+                                    </f:facet>
+                                    <h:outputText value="#{dia.horasFinDesc}:#{dia.minFinDesc}" />
+                                </h:column>
                                 <h:column>
                                     <f:facet name="header">
                                       <h:outputText value="Acciones" />
                                     </f:facet>
-                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
-                                                     action="#{mbDeclaraciones.editDia()}" >
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Editar" 
+                                                     look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                     action="#{mbDeclaraciones.editDia()}" update="frHorarios,frTurnos" >
                                         <f:setPropertyActionListener value="#{dia}" target="#{mbDeclaraciones.dia}" /> 
                                         <p:ajax process="@this" />
                                     </b:commandButton>
-                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
-                                                     action="#{mbDeclaraciones.removeDia()}" update="frHorarios" >
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar" 
+                                                     look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                     action="#{mbDeclaraciones.removeDia()}" update="frHorarios,frDtHorarios" >
                                         <f:setPropertyActionListener value="#{dia}" target="#{mbDeclaraciones.dia}" />  
                                         <p:ajax process="@this" />
                                     </b:commandButton>
@@ -108,31 +251,35 @@
                             </b:dataTable>
                         </b:column>
                     </b:row>
-                </b:panel>
+                </h:form>
+            </b:panel>
+            <h:form id="frBtHorarios" prependId="false">
                 <b:row>
                     <b:column span="12" >
                         <b:button title="Breve explicación del proceso de configuración de los Dias que componen el Horario laboral del Establecimiento" 
                                   onclick="$('.modalAyudaGestHorario').modal();return false;" size="sm" look="warning" value="Ayuda" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosHorarios}" 
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{not mbDeclaraciones.datosHorarios}" 
                                          title="Guardar Dias que componen el Horario laboral de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.createHorario()}" 
-                                         look="primary" value="#{mbDeclaraciones.pzGuardar}" ajax="true" update="messages,frHorarios" process="@this" />
-                        <b:commandButton rendered="#{not mbDeclaraciones.datosHorarios}" 
+                                         look="primary" value="#{mbDeclaraciones.horarioGuardarDias}" ajax="true" 
+                                         update="frNav,messages,frHorarios,frDtHorarios,frBtHorarios,frTurnos" process="@this" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{not mbDeclaraciones.datosHorarios}" 
                                          title="Limpiar Dias que componen el Horario laboral de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.limpiarHorario()}" process="@this"  
-                                         look="danger" value="#{mbDeclaraciones.pzLimpiar}" ajax="true" update="frHorarios" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosHorarios}" 
+                                         look="danger" value="#{mbDeclaraciones.horarioLimpiarDias}" ajax="true" 
+                                         update="frHorarios,frDtHorarios,frBtHorarios,frTurnos" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{mbDeclaraciones.datosHorarios}" 
                                          title="Actualizar los Dias que componen el Horario laboral de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.editHorario()}" look="primary" process="@this"
-                                         value="#{mbDeclaraciones.pzActualizar}" ajax="true" update="messages" />
-                        <b:commandButton rendered="#{mbDeclaraciones.datosHorarios}" 
+                                         value="#{mbDeclaraciones.horarioActualizarDias}" ajax="true" update="messages" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{mbDeclaraciones.datosHorarios}" 
                                          title="Eliminar los Dias que componen el Horario laboral de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.deleteHorario()}" look="danger" process="@this" 
-                                         value="#{mbDeclaraciones.pzEliminar}" ajax="true" update="frHorarios" />
+                                         value="#{mbDeclaraciones.horarioEliminarDias}" ajax="true" update="frNav,frHorarios,frTurnos,frDtHorarios,frBtHorarios" />
                     </b:column>
                 </b:row>
-            </b:panel>
-        </h:form>
+            </h:form>
+        </b:panel>
     </h:body>
 </html>
 

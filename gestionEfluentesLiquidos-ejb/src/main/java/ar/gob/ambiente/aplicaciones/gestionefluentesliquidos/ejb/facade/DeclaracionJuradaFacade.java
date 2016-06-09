@@ -7,9 +7,12 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.UsuarioExterno;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,16 @@ public class DeclaracionJuradaFacade extends AbstractFacade<DeclaracionJurada> {
         super(DeclaracionJurada.class);
     }
     
+    /**
+     * Método para obtener la ultima Declaración generada 
+     * @param cude: CUDE del Establecimiento asociado a la Declaración
+     * @return 
+     */
+    public Integer getInsertada(String cude){    
+        em = getEntityManager();    
+        String queryString = "SELECT MAX(id) FROM declaracionjurada WHERE cude = ?1"; 
+        Query q = em.createNativeQuery(queryString)
+                .setParameter(1, cude);
+        return (Integer)q.getSingleResult();
+    }
 }

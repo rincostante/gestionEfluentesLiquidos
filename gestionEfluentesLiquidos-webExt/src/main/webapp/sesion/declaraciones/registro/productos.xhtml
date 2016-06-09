@@ -1,12 +1,242 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
-        Productos
-    </h:body>
+        <p:growl id="messages" showDetail="false" />
+        <b:modal id="dlgAyudaFrm" title="Registro de DJ - Productos - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
+                Ayuda registro y edición de Productos elaborados
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaGestProductos" title="Registro de DJ - Productos" styleClass="modalAyudaGestProductos"
+            closable="true" >
+                Ayuda para la gestión general de los Productos elamborados por el Establecimiento
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        <b:modal id="dlgAyudaGestMaterias" title="Registro de DJ - Productos - Materias primas" styleClass="modalAyudaGestMaterias"
+            closable="true" >
+                Ayuda para la gestión general de las Materias primas de los Productos elamborados por el Establecimiento
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
+        
+        <b:panel title="Productos" look="info" collapsible="false">
+            <h:form id="frActProd" prependId="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:commandButton icon="glyphicon-refresh" update="frActProd,frProd,frMat,frDtProd,frBtProd" value="Actualizar" look="success" title="Actualizar para la carga"/>
+                    </b:column>
+                </b:row>
+            </h:form>  
+            <b:label tooltip="Utilice este formulario para ingresar los Productos fabricados." 
+                     text="Registro y actualización de Productos" severity="info"/>
+            <b:panel id="pnForm" look="info">
+                <h:form id="frProd" prependId="false">
+                    <b:row>
+                        <b:column span="6">
+                            <b:inputText id="txDescProd" placeholder="Ingrese la descripción del producto" label="Descripción" value="#{mbDeclaraciones.producto.descripcion}" />
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText id="txCantProd" placeholder="Ingrese la cantidad anual" label="Cantidad anual" value="#{mbDeclaraciones.producto.cantidadAnual}" >
+                                <f:validateDoubleRange />
+                            </b:inputText>
+                        </b:column>
+                        <b:column span="4">
+                            <b:selectOneMenu label="Unidad" id="cmbUnidad" value="#{mbDeclaraciones.producto.unidad}" >
+                                <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.lstUnidades}" var="unidad" 
+                                               itemLabel="#{unidad.nombre}" itemValue="#{unidad}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+
+                    <b:row>
+                        <b:column span="12" >
+                            <b:button title="Breve explicación del proceso de registro de un Producto" 
+                                      onclick="$('.modalAyudaFrm').modal();return false;" size="xs" look="warning" value="Ayuda" />
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                             title="Agregar el Producto nuevo o guardar la actualización de uno existente" 
+                                             action="#{mbDeclaraciones.addProducto()}" size="xs" look="primary" 
+                                             value="#{mbDeclaraciones.prodGuardar}" ajax="true" update="frProd,frDtProd,frMat,messages" />
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-remove-circle" 
+                                             title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                             size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                             action="#{mbDeclaraciones.limpiarProducto()}" update="pnForm" />
+                            <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-minus-sign" 
+                                             title="Cancelar la selección de la descarga para su actualización" size="xs" 
+                                             value="#{mbDeclaraciones.gralCancelarSel}" 
+                                             action="#{mbDeclaraciones.cancelarProductoSel()}" update="pnForm" />
+                        </b:column>
+                    </b:row>
+                </h:form>
+                <br></br>
+                <!-- Formulario Materias -->
+                <b:label tooltip="Utilice este formulario para ingresar las Materias primas para la elaboración del Producto" 
+                     text="Registro y actualización de Materias" severity="info"/>
+                <b:panel id="pnMaterias" look="info">
+                    <h:form id="frMat" prependId="false">
+                        <b:row>
+                            <b:column span="6">
+                                <b:inputText id="txDescMat" placeholder="Ingrese la descripción" label="Descripción" value="#{mbDeclaraciones.materia.descripcion}" />
+                            </b:column>
+                            <b:column span="2">
+                                <b:inputText id="txCamtMat" label="Cantidad" value="#{mbDeclaraciones.materia.cantidadAnual}" >
+                                    <f:validateDoubleRange />
+                                </b:inputText>
+                            </b:column>
+                            <b:column span="4">
+                                <b:selectOneMenu label="Unidad" id="cmbUnidadMat" value="#{mbDeclaraciones.materia.unidad}" >
+                                    <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
+                                    <f:selectItems value="#{mbDeclaraciones.lstUnidades}" var="unidad" 
+                                                   itemLabel="#{unidad.nombre}" itemValue="#{unidad}" />
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column>
+                                <b:button title="Breve explicación del proceso de registro de Materias" size="xs" value="Ayuda" look="warning" 
+                                          onclick="$('.modalAyudaGestMaterias').modal();return false;" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                                 title="Asociar la Mataria prima al Producto o actualizar la seleccionada" size="xs" 
+                                                 action="#{mbDeclaraciones.addMaterias()}" look="primary" value="#{mbDeclaraciones.prodGuardarMat}" 
+                                                 ajax="true" update="@next,frMat,messages" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Vaciar el listado de Materias agregadas al Producto" 
+                                                 size="xs" action="#{mbDeclaraciones.removeMaterias()}" icon="glyphicon-trash" 
+                                                 value="#{mbDeclaraciones.mdLimpiarTodo}" 
+                                                 look="danger" process="@this" ajax="true" update="frMat" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-minus-sign" 
+                                                 title="Cancelar la selección de la descarga para su actualización" size="xs" 
+                                                 value="#{mbDeclaraciones.gralCancelarSel}" 
+                                                 action="#{mbDeclaraciones.cancelarMateriaSel()}" update="frMat" />
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-remove-circle" 
+                                                 title="Limpiar los datos ingresados sin guardar o deshacer los cambios de la acutalización" 
+                                                 size="xs" look="danger" value="#{mbDeclaraciones.mdLimpiar}" 
+                                                 action="#{mbDeclaraciones.limpiarMateria()}" update="frMat" />
+                            </b:column>
+                        </b:row>
+                        <br></br>
+                        <p:dataTable id="dtMaterias" value="#{mbDeclaraciones.producto.materias}" var="mat" 
+                                     style="font-size: 12px" >
+                            <p:column headerText="Descripción" >
+                                <p:outputLabel style="font-weight: lighter" value="#{mat.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Cantidad anual" >
+                                <p:outputLabel style="font-weight: lighter" value="#{mat.cantidadAnual}"/>
+                            </p:column>
+                            <p:column headerText="Unidad" >
+                                <p:outputLabel style="font-weight: lighter" value="#{mat.unidad.nombre}"/>
+                            </p:column>
+
+                            <p:column width="75" headerText="Acciones" >
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" look="warning" 
+                                                 ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editMateria()}" >
+                                    <f:setPropertyActionListener value="#{mat}" target="#{mbDeclaraciones.materia}" />  
+                                    <p:ajax process="@this"  />
+                                </b:commandButton>
+                                <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" look="danger" 
+                                                 ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                 action="#{mbDeclaraciones.removeMateria()}" update="frMat" >
+                                    <f:setPropertyActionListener value="#{mat}" target="#{mbDeclaraciones.materia}" />  
+                                    <p:ajax process="@this" />
+                                </b:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </b:panel>
+                <!-- FIN Formulario Materias -->
+            </b:panel>
+
+            <b:label tooltip="Podrá seleccionar un Producto del listado para su eliminación o edición." 
+                     text="Listado de Productos ingresados" severity="info"/>
+            <b:panel id="pnTable" look="info">
+                <h:form id="frDtProd" prependId="false">
+                    <b:row>
+                        <b:column span="12" >
+                            <b:dataTable id="dtProductos" value="#{mbDeclaraciones.lstProductos}" var="prod" 
+                                         styleClass="table table-striped table-bordered" style="font-size: 12px" >
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Desripción" />
+                                    </f:facet>
+                                    <h:outputText value="#{prod.descripcion}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Cantidad anual" />
+                                    </f:facet>
+                                    <h:outputText value="#{prod.cantidadAnual}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Unidad" />
+                                    </f:facet>
+                                    <h:outputText value="#{prod.unidad.nombre}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                      <h:outputText value="Acciones" />
+                                    </f:facet>
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Editar" 
+                                                     look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" 
+                                                     action="#{mbDeclaraciones.editProducto()}" update="frProd,frMat" >
+                                        <f:setPropertyActionListener value="#{prod}" target="#{mbDeclaraciones.producto}" /> 
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                    <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar" 
+                                                     look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" 
+                                                     action="#{mbDeclaraciones.removeProducto()}" update="frProd,frDtProd" >
+                                        <f:setPropertyActionListener value="#{prod}" target="#{mbDeclaraciones.producto}" />  
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                </h:column>
+                            </b:dataTable>
+                        </b:column>
+                    </b:row>
+                </h:form>
+            </b:panel>
+            <h:form id="frBtProd" prependId="false">
+                <b:row>
+                    <b:column span="12" >
+                        <b:button title="Breve explicación del proceso de configuración de los Productos generados por el Establecimiento" 
+                                  onclick="$('.modalAyudaGestProductos').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                         rendered="#{not mbDeclaraciones.datosProductos}" 
+                                         title="Guardar Productos generados por el Establecimiento" size="sm" 
+                                         action="#{mbDeclaraciones.createProductos()}" 
+                                         look="primary" value="#{mbDeclaraciones.prodGuardarProductos}" ajax="true" 
+                                         update="frNav,messages,frProd,frDtProd,frBtProd,frMat" process="@this" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" 
+                                         rendered="#{not mbDeclaraciones.datosProductos}" 
+                                         title="Limpiar Productos incluidos en la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.limpiarProductos()}" process="@this"  
+                                         look="danger" value="#{mbDeclaraciones.prodLimpiarProductos}" ajax="true" 
+                                         update="frProd,frDtProd,frBtProd,frMat" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" 
+                                         rendered="#{mbDeclaraciones.datosProductos}" 
+                                         title="Actualizar los Productos incluidos en la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.editProductos()}" look="primary" process="@this"
+                                         value="#{mbDeclaraciones.prodActualizarProductos}" ajax="true" update="messages" />
+                        <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" 
+                                         rendered="#{mbDeclaraciones.datosProductos}" 
+                                         title="Eliminar los Productos incluidos en la Declaración" size="sm" 
+                                         action="#{mbDeclaraciones.deleteProductos()}" look="danger" process="@this" 
+                                         value="#{mbDeclaraciones.prodEliminarProductos}" ajax="true" 
+                                         update="frNav,frProd,frDtProd,frBtProd" />
+                    </b:column>
+                </b:row>
+            </h:form>
+        </b:panel>
+    </h:body> 
 </html>
 

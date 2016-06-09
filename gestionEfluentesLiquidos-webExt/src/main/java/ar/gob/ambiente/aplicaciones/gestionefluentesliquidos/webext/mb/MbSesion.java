@@ -272,37 +272,46 @@ public class MbSesion implements Serializable{
         newContrasenia = "";
         clave = "";
         if(recupEnviado){
-            JsfUtil.addErrorMessage("Su solicitud ya fue enviada, por favor, cierre el formulario.");
+            JsfUtil.addErrorMessage("Su solicitud ya fue enviada a su correo electrónico.");
         }else{
             // valido que el CUDE pertenezca a un usuario
             try{
                 usuarioARecuperar = backendSrv.getUsuarioExt(recCude);
                 
-                // creo una nueva contraseña
-                newContrasenia = CriptPass.generar();
-                
-                // encripto la contraseña creada
-                clave = CriptPass.encriptar(newContrasenia);
-                
-                // actualizo los datos del usuario
-                usuarioARecuperar.setClave(clave);
-                
-                // inserto
-                backendSrv.editUsuarioExterno(usuarioARecuperar);
-                
-                // envío las nuevas credenciales al usuario
-                if(!enviarCorreoNuevaPass()){
-                    JsfUtil.addErrorMessage("Hubo un error enviando la nueva contraseña por correo electrónico.");
+                if(usuarioARecuperar != null){
+                    // creo una nueva contraseña
+                    newContrasenia = CriptPass.generar();
+
+                    // encripto la contraseña creada
+                    clave = CriptPass.encriptar(newContrasenia);
+
+                    // actualizo los datos del usuario
+                    usuarioARecuperar.setClave(clave);
+
+                    // inserto
+                    backendSrv.editUsuarioExterno(usuarioARecuperar);
+
+                    // envío las nuevas credenciales al usuario
+                    if(!enviarCorreoNuevaPass()){
+                        JsfUtil.addErrorMessage("Hubo un error enviando la nueva contraseña por correo electrónico.");
+                        recupEnviado = false;
+                    }else{
+                        recupEnviado = true;
+                        JsfUtil.addSuccessMessage("Su solicitud fue enviada con exito. Por favor consulte su cuenta "
+                                + "de correo electrónico, por favor cierre el formulario.");
+                    }
+                }else{
+                    JsfUtil.addErrorMessage("El CUDE ingresado no registra una cuenta vinculada. "
+                            + "Para mayoreres precisiones, le solicitamos contactarse con nosotros "
+                            + "mediante correo electrónico a dpyra@ambiente.gob.ar ¡Muchas gracias!");
                     recupEnviado = false;
                 }
                 
             }catch(Exception ex){
                 JsfUtil.addErrorMessage("Hubo un error recuperando el usuario. " + ex.getMessage());
             }
-                    
-            recupEnviado = true;
-            JsfUtil.addSuccessMessage("Su solicitud fue enviada con exito. Por favor consulte su cuenta de correo electrónico, por favor cierre el formulario.");
         }
+        recCude = "";
     }
     
     public String actualizarContrasenia(){

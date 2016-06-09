@@ -30,7 +30,7 @@
                 </b:modal>
                 <b:modal id="amodal2" title="Codigo de recibo" styleClass="modalRecibo"
                          closable="false" backdrop="false">
-                    <p>#{bundle.modalRecibo}</p>
+                    <p>El Código de recibo de la Declaración Jurada consta de un número de cuatro (4) dígitos para las Declaraciones presentadas en término, o de un número precedido de las letras "FT" cuando la última Declaración fue presentada fuera de término.</p>
                     <f:facet name="footer">
                         <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
                         <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
@@ -82,36 +82,22 @@
                                              requiredMessage="El campo #{bundle.lebelRegCodRecibo} es obligatorio" 
                                              title="Ingrese el Código de recibo de la última Declaración Jurada vigente" >
                                     <f:facet name="prepend">
-                                        <h:outputText value="aa/99" />
+                                        <h:outputText value="9999" />
                                     </f:facet>
                                 </b:inputText>
                                 
-                                <p:outputLabel for="cuitEst" value="#{bundle.lebelRegCuitEst}: " style="margin-bottom: 10px; color: gray"/>
-                                <b:inputText id="cuitEst" value="#{mbRegistro.solicitud.cuitEstablecimiento}"
-                                             placeholder="CUIT Establecimiento"
-                                             converter="#{Integer}"
-                                             required="true" 
-                                             validatorMessage="El campo #{bundle.lebelRegCuitEst} debe tener 11 dígitos"
-                                             requiredMessage="El campo #{bundle.lebelRegCuitEst} es obligatorio" 
-                                             title="Ingrese el CUIT del Establecimiento" >
-                                    <f:facet name="prepend">
-                                        <h:outputText value="sin (-)" />
-                                    </f:facet>
-                                    <f:validateLength maximum="11" minimum="11" />
-                                </b:inputText>
-                                
-                                <p:outputLabel for="cuitFir" value="#{bundle.lebelRegCuitFir}: " style="margin-bottom: 10px; color: gray"/>
+                                <p:outputLabel for="cuitFir" value="DNI Firmante: " style="margin-bottom: 10px; color: gray"/>
                                 <b:inputText id="cuitFir" value="#{mbRegistro.solicitud.cuitFirmante}"
-                                             placeholder="CUIT Firmante"
+                                             placeholder="DNI Firmante"
                                              converter="#{Integer}"
-                                             validatorMessage="El campo #{bundle.lebelRegCuitFir} debe tener 11 dígitos"
+                                             validatorMessage="El campo #{bundle.lebelRegCuitFir} debe tener entre 7 y 8 dígitos"
                                              required="true" 
                                              requiredMessage="El campo #{bundle.lebelRegCuitFir} es obligatorio" 
-                                             title="Ingrese el CUIT del Firmante" >
+                                             title="Ingrese el DNI del Firmante" >
                                     <f:facet name="prepend">
-                                        <h:outputText value="sin (-)" />
+                                        <h:outputText value="sin (.)" />
                                     </f:facet>
-                                    <f:validateLength maximum="11" minimum="11" />
+                                    <f:validateLength maximum="8" minimum="7" />
                                 </b:inputText>
                                 
                                 <p:outputLabel for="correo" value="#{bundle.lebelRegCorreoElectronico}: " style="margin-bottom: 10px; color: gray"/>
@@ -129,7 +115,8 @@
                             </h:panelGrid>
                             <b:row style="margin-top: 5px">
                                 <b:column span="6" >
-                                    <b:commandButton style="margin-right: 5px; width: 100%" id="loginButton" look="primary" ajax="true" value="#{mbRegistro.cmbValidar}" action="#{mbRegistro.solicitar}" update="mensajes,form" />
+                                    <b:commandButton style="margin-right: 5px; width: 100%" id="loginButton" look="primary" ajax="true" 
+                                                     value="#{mbRegistro.cmbValidar}" action="#{mbRegistro.solicitar}" update="mensajes,form" />
                                 </b:column>
                                 <b:column span="6">
                                     <b:button look="warning" value="#{mbRegistro.cmbLimpiar}" style="width: 100%" onclick="reset()" />

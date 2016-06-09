@@ -52,11 +52,83 @@ public class Tratamiento implements Serializable {
        MP_NOMBRES.put(3, "PRIMARIO QUIMICO");
        MP_NOMBRES.put(4, "SECUNDARIO");
        MP_NOMBRES.put(5, "DESINFECCION");
+    }      
+    
+    /**
+     * Listado para seleccionar el tipo de Pretratamiento
+     */
+    @Transient
+    private static final Map<Integer, String> MP_TIPOPRET;
+    static{
+       MP_TIPOPRET = new TreeMap<>();
+       MP_TIPOPRET.put(1, "Rejas");
+       MP_TIPOPRET.put(2, "Tamices");
+       MP_TIPOPRET.put(3, "Desarenador");
+       MP_TIPOPRET.put(4, "Tanque compensación");
+       MP_TIPOPRET.put(5, "Desengrasador");
+       MP_TIPOPRET.put(6, "Otro");
+    }     
+    
+    /**
+     * Listado para seleccionar el tipo de Tratamiento primario físico
+     */
+    @Transient
+    private static final Map<Integer, String> MP_TIPOTRATPRIMFIS;
+    static{
+       MP_TIPOTRATPRIMFIS = new TreeMap<>();
+       MP_TIPOTRATPRIMFIS.put(1, "Sedimentación");
+       MP_TIPOTRATPRIMFIS.put(2, "Flotación");
+       MP_TIPOTRATPRIMFIS.put(3, "Otro");
+    }      
+    
+    /**
+     * Listado para seleccionar el tipo de Tratamiento primario químico
+     */
+    @Transient
+    private static final Map<Integer, String> MP_TIPOTRATPRIMQUIM;
+    static{
+       MP_TIPOTRATPRIMQUIM = new TreeMap<>();
+       MP_TIPOTRATPRIMQUIM.put(1, "Coagulación");
+       MP_TIPOTRATPRIMQUIM.put(2, "Neutralización");
+       MP_TIPOTRATPRIMQUIM.put(3, "Oxidorreducción");
+       MP_TIPOTRATPRIMQUIM.put(4, "Otro");
     }        
+    
+    /**
+     * Listado para seleccionar el tipo de Tratamiento secundario
+     */
+    @Transient
+    private static final Map<Integer, String> MP_TIPOTRATSEC;
+    static{
+       MP_TIPOTRATSEC = new TreeMap<>();
+       MP_TIPOTRATSEC.put(1, "Lecho percolador");
+       MP_TIPOTRATSEC.put(2, "Barro activado");
+       MP_TIPOTRATSEC.put(3, "Zanja de oxidación");
+       MP_TIPOTRATSEC.put(4, "Laguna de estabilización");
+       MP_TIPOTRATSEC.put(5, "Laguna aireada");
+       MP_TIPOTRATSEC.put(6, "Otro");
+    }       
+    
+    /**
+     * Listado para seleccionar el tipo de Desinfección
+     */
+    @Transient
+    private static final Map<Integer, String> MP_TIPODESINF;
+    static{
+       MP_TIPODESINF = new TreeMap<>();
+       MP_TIPODESINF.put(1, "Cloración");
+       MP_TIPODESINF.put(2, "Otro");
+    }       
 
     /**********************
      * Métodos de acceso **
      **********************/   
+    
+    /***** Map nombre del Tratamiento ******
+     * clave: claveNombre
+     * valor: nombre
+     * map: MP_NOMBRES
+     */    
     public String getNombre() {
         return MP_NOMBRES.get(claveNombre);
     }    
@@ -72,7 +144,73 @@ public class Tratamiento implements Serializable {
     public void setClaveNombre(int claveNombre) {
         this.claveNombre = claveNombre;
     }
+    
+    /***** Map Tipo Pretratamiento ******
+     * clave: valor (para todos)
+     * Valor: tipoPretrat
+     * map: MP_TIPOPRET
+     */ 
+    public String getTipoPretrat() {
+        return MP_TIPOPRET.get(valor);
+    }    
+    
+    public static Map<Integer, String> getMP_TIPOPRET() {
+        return MP_TIPOPRET;
+    }  
+    
+    /***** Map Tipo Tratamiento primario físico ******
+     * clave: valor (para todos)
+     * Valor: tipoTratPrimFisico
+     * map: MP_TIPOTRATPRIMFIS
+     */  
+    public String getTipoTratPrimFisico() {
+        return MP_TIPOTRATPRIMFIS.get(valor);
+    }    
+    
+    public static Map<Integer, String> getMP_TIPOTRATPRIMFIS() {
+        return MP_TIPOTRATPRIMFIS;
+    }    
+    
+    /***** Map Tipo Tratamiento primario químico ******
+     * clave: valor (para todos)
+     * Valor: tipoTratPrimQuimico
+     * map: MP_TIPOTRATPRIMQUIM
+     */  
+    public String getTipoTratPrimQuimico() {
+        return MP_TIPOTRATPRIMQUIM.get(valor);
+    }    
+    
+    public static Map<Integer, String> getMP_TIPOTRATPRIMQUIM() {
+        return MP_TIPOTRATPRIMQUIM;
+    }   
+    
+    /***** Map Tipo Tratamiento secundario ******
+     * clave: valor (para todos)
+     * Valor: tipoTratSec
+     * map: MP_TIPOTRATSEC
+     */  
+    public String getTipoTratSec() {
+        return MP_TIPOTRATSEC.get(valor);
+    }    
+    
+    public static Map<Integer, String> getMP_TIPOTRATSEC() {
+        return MP_TIPOTRATSEC;
+    } 
+    
+    /***** Map Tipo Desinfección ******
+     * clave: valor (para todos)
+     * Valor: tipoDesinf
+     * map: MP_TIPODESINF
+     */  
+    public String getTipoDesinf() {
+        return MP_TIPODESINF.get(valor);
+    }    
+    
+    public static Map<Integer, String> getMP_TIPODESINF() {
+        return MP_TIPODESINF;
+    }     
 
+    ///////////////////////////////////////////////////////////////////
     public int getValor() {
         return valor;
     }
@@ -80,6 +218,33 @@ public class Tratamiento implements Serializable {
     public void setValor(int valor) {
         this.valor = valor;
     }
+    
+    /**
+     * Método que devuelve el valor del tratado según el tipo de tratamiento.
+     * @return 
+     */
+    public String getTratado(){
+        String tratado;
+        switch (claveNombre){
+            case 1: 
+                tratado = this.getTipoPretrat();
+                break;
+            case 2:
+                tratado = this.getTipoTratPrimFisico();
+                break;
+            case 3:
+                tratado = this.getTipoTratPrimQuimico();
+                break;
+            case 4:
+                tratado = this.getTipoTratSec();
+                break;
+            default:
+                tratado = this.getTipoDesinf();
+                break;
+        }
+        return tratado;
+    }
+    ///////////////////////////////////////////////////////////////////
     
     public Long getId() {
         return id;
