@@ -46,7 +46,7 @@
                             <b:selectOneMenu label="" id="cmbAct" value="#{mbDeclaraciones.newFirmanteSel}" >
                                 <f:selectItem itemLabel="Seleccione la Actividad a ingresar" itemValue="" noSelectionOption="true" />  
                                 <f:selectItems value="#{mbDeclaraciones.lstFirmantes}" var="fir" 
-                                               itemLabel="#{fir.nombreYApellido} - #{fir.cuit} - #{fir.dni}" itemValue="#{fir}"/>
+                                               itemLabel="#{fir.nombreYApellido} - #{fir.cuit} - #{fir.dni} #{fir.dniLetra}" itemValue="#{fir}"/>
                             </b:selectOneMenu>
                         </b:column>
                     </b:row>
@@ -70,17 +70,20 @@
             <h:form prependId="false" id="frRegNewFirmante">
                 <b:panel id="pnRegNewFirmante" title="Registrar un nuevo Firmante para el Establecimiento" look="info" collapsible="false" >
                     <b:row>
-                        <b:column span="8">
-                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.newFirmanteReg.nombreYApellido}" />
+                        <b:column span="7">
+                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.newFirmanteReg.nombreYApellido}" style="text-transform: uppercase" />
                         </b:column>
-                        <b:column span="4">
-                            <b:inputText label="DNI" value="#{mbDeclaraciones.newFirmanteReg.dni}" />
+                        <b:column span="3">
+                            <b:inputText label="N° DNI" value="#{mbDeclaraciones.newFirmanteReg.dni}" />
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText label="Letra" value="#{mbDeclaraciones.newFirmanteReg.dniLetra}" style="text-transform: uppercase" />
                         </b:column>
                     </b:row>
                     <b:row>
                         <b:column span="12">
                             <b:commandButton value="Actualizar" icon="glyphicon-refresh" look="success" update="frRegNewFirmante" />
-                            <b:commandButton title="Guardar el nuevo firmante" icon="glyphicon-ok" action="#{mbDeclaraciones.editFirmVinculado()}" 
+                            <b:commandButton title="Guardar el nuevo firmante" icon="glyphicon-ok" action="#{mbDeclaraciones.createFirmante()}" 
                                              oncomplete="closeModalRegNewFirmante()" look="primary" value="#{mbDeclaraciones.gralGuardar}" 
                                              ajax="true" update="frFirm,frRegNewFirmante,messages" />
 
@@ -101,14 +104,19 @@
             <h:form prependId="false" id="frRegActFirmanteExist">
                 <b:panel id="pnRegActFirmanteExist" title="Actualizar los datos del Firmante" look="info" collapsible="false" >
                     <b:row>
-                        <b:column span="6">
-                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.upFirmExist.nombreYApellido}" />
+                        <b:column span="12">
+                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.upFirmExist.nombreYApellido}" style="text-transform: uppercase" />
                         </b:column>
-                        <b:column span="3">
+                    </b:row>
+                    <b:row>
+                        <b:column span="5">
                             <b:inputText label="CUIT" value="#{mbDeclaraciones.upFirmExist.cuit}" />
                         </b:column>
-                        <b:column span="3">
-                            <b:inputText label="DNI" value="#{mbDeclaraciones.upFirmExist.dni}" />
+                        <b:column span="5">
+                            <b:inputText label="N° DNI" value="#{mbDeclaraciones.upFirmExist.dni}" />
+                        </b:column>
+                        <b:column span="2">
+                            <b:inputText label="Letra" value="#{mbDeclaraciones.upFirmExist.dniLetra}" style="text-transform: uppercase" />
                         </b:column>
                     </b:row>
                     <b:row>
@@ -146,14 +154,17 @@
             <b:panel id="pnFirm" look="info">
                 <h:form id="frFirm" prependId="false">
                     <b:row>
-                        <b:column span="7">
-                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.firmante.nombreYApellido}" />
+                        <b:column span="6">
+                            <b:inputText label="Apellidos y nombres" value="#{mbDeclaraciones.firmante.nombreYApellido}" style="text-transform: uppercase" />
                         </b:column>
                         <b:column span="3">
                             <b:inputText label="CUIT" value="#{mbDeclaraciones.firmante.cuit}" />
                         </b:column>
                         <b:column span="2">
-                            <b:inputText label="DNI" value="#{mbDeclaraciones.firmante.dni}" />
+                            <b:inputText label="N° DNI" value="#{mbDeclaraciones.firmante.dni}" />
+                        </b:column>
+                        <b:column span="1">
+                            <b:inputText label="Letra" value="#{mbDeclaraciones.firmante.dniLetra}" style="text-transform: uppercase" />
                         </b:column>
                     </b:row>
                     <b:row>
@@ -199,6 +210,23 @@
                 </h:form>
             </b:panel>
             <h:form id="frBtnFirm" prependId="false">
+                
+            <!-- Panel de Observaciones -->
+            <b:label tooltip="Utilice este campo para ingresar las observaciones generales sobre la Declaración que está registrando." 
+                     text="Observaciones generales (500 caracteres)" severity="info"/>
+            <b:panel id="pnObs" look="info">
+                <b:row>
+                    <b:column span="12">
+                        <p:inputTextarea value="#{mbDeclaraciones.declaracion.observaciones}" 
+                                         disabled="#{mbDeclaraciones.declaracion.firmante ne null}"
+                                         style="font-weight: lighter; color: gray; font-size: 14px" 
+                                         styleClass="form-control bf-no-message" label="" 
+                                         placeholder="Ingrese aquí las observaciones si las hubiera." maxlength="500" />
+                    </b:column>
+                </b:row>
+            </b:panel>
+            <!-- Fin panel de Observaciones -->
+            
                 <b:row>
                     <b:column span="12">
                         <b:button title="Breve explicación del proceso de firma de la Declaración" 
@@ -210,12 +238,12 @@
                                          ajax="true" update="frFirm,frNewFirm,frBtnFirm,messages" />
 
                         <b:commandButton title="Firmar la declaración" action="#{mbDeclaraciones.firmarDeclaracion()}" 
-                                         disabled="#{mbDeclaraciones.firmDeshechado || mbDeclaraciones.firmante.id eq 0 || mbDeclaraciones.declaracion.firmante.id gt 0}" icon="glyphicon-ok" 
+                                         disabled="#{mbDeclaraciones.firmDeshechado || mbDeclaraciones.firmante.id eq 0 || mbDeclaraciones.declaracion.firmante.id gt 0 || mbDeclaraciones.declaracion.actividades.size() eq 0}" icon="glyphicon-ok" 
                                          look="primary"  value="#{mbDeclaraciones.firFirmar}" 
-                                         ajax="true" update="frNav,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
+                                         ajax="true" update="frNav,frBtBorr,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
                         <b:commandButton title="Cancelar la firma de la Declaración" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada}"  
                                              icon="glyphicon-minus-sign" action="#{mbDeclaraciones.cancelarFirmaDeclaracion()}"
-                                             value="#{mbDeclaraciones.firCancelar}" ajax="true" update="frNav,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
+                                             value="#{mbDeclaraciones.firCancelar}" ajax="true" update="frNav,frBtBorr,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
                     </b:column>
                 </b:row>
             </h:form>

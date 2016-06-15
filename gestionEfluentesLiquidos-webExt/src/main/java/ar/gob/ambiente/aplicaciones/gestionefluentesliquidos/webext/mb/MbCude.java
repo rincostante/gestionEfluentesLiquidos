@@ -143,19 +143,39 @@ public class MbCude implements Serializable{
      *****************************/
     
     public void validar(){
-        lstEst = backendSrv.getEstablecimientosByCuit(consulta.getCuitEstablecimiento());
+        boolean valida = true;
+        String msgError = "";
         
-        if(lstEst.isEmpty()){
-            resultado = false;
-            JsfUtil.addErrorMessage("Su consulta no devolvió ningún Establecimiento, esto puede ser por diferentes motivos, "
-                    + "le solicitamos acercarse a nuestras oficinas para realizar el trámtite personalmente. ¡Muchas gracias!");
-        }else{
-            resultado = true;
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateCudeExito"));
+        if(consulta.getDniLetra() != null){
+            if(consulta.getDniLetra().length() > 1){
+                valida = false;
+                msgError = msgError + "El DNI solo puede contener una letra.";
+            }else{
+                if(!consulta.getDniLetra().equals("M") && !consulta.getDniLetra().equals("m") 
+                        && !consulta.getDniLetra().equals("F") && !consulta.getDniLetra().equals("f")){
+                    valida = false;
+                    msgError = msgError + "La letra del DNI solo puede ser una 'F' o una 'M'.";
+                }
+            }
         }
-        validado = true;
-        mostrarResult = true;
-        consulta = new ConsultaCude();
+        
+        if(valida){
+            lstEst = backendSrv.getEstablecimientosByCuit(consulta.getCuitEstablecimiento());
+
+            if(lstEst.isEmpty()){
+                resultado = false;
+                JsfUtil.addErrorMessage("Su consulta no devolvió ningún Establecimiento, esto puede ser por diferentes motivos, "
+                        + "le solicitamos acercarse a nuestras oficinas para realizar el trámtite personalmente. ¡Muchas gracias!");
+            }else{
+                resultado = true;
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateCudeExito"));
+            }
+            validado = true;
+            mostrarResult = true;
+            consulta = new ConsultaCude();
+        }else{
+            JsfUtil.addErrorMessage("No se pudieron validar los datos de entrada. " + msgError);
+        }
     }
     
     public void limpiar(){

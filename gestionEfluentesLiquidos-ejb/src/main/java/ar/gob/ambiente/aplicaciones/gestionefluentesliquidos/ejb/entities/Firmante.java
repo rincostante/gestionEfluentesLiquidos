@@ -66,6 +66,11 @@ public class Firmante implements Serializable {
      * Guarda el dni para los casos en que la persona no sea validada en el RUP
      */
     private long dni;
+    
+    /**
+     * Guarda una letra (M o F) si correspondiera
+     */
+    private String dniLetra;
    
     /**
      * Muestra las Declaraciones Juradas vinculadas al Firmante
@@ -86,6 +91,14 @@ public class Firmante implements Serializable {
         establecimientos = new ArrayList<>();
         historialEstablecimientos = new ArrayList<>();
         declaraciones = new ArrayList<>();
+    }
+
+    public String getDniLetra() {
+        return dniLetra;
+    }
+
+    public void setDniLetra(String dniLetra) {
+        this.dniLetra = dniLetra;
     }
 
     public long getDni() {

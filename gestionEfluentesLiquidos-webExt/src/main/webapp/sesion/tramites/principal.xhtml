@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/WEB-INF/facelets/templates/sesionTemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Control de Efluentes líquidos" />
+        </ui:define>
+        <ui:define name="content">      
+            <br/>
+            <b:well>
+                <h3>Guía de trámite</h3>
+            </b:well>
+            <h:form>
+                <b:panel look="primary" title="Panel principal">
+
+                    <b:navLink header="[Guía del trámite con acceso a cada paso]" />
+                    
+                </b:panel>     
+            </h:form>                
+        </ui:define> 
+    </ui:composition>
+</html>

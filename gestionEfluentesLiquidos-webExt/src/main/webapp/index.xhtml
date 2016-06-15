@@ -70,18 +70,18 @@
                 <b:column span="3">
                   <h1>Usuarios registrados</h1>
                   <p>#{bundle.usuariosRegistrados}
-                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/iniciar.xhtml" class="btn btn-primary btn-xs ">Iniciar</a></p>
+                      <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}iniciar.xhtml" class="btn btn-primary btn-xs ">Iniciar</a></p>
                       Si todavía no se encuentra registrado como usuario del sistema, podrá solicitar una cuenta mediante este vínculo
-                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" class="btn btn-primary btn-xs ">Solicitar cuenta</a> 
+                      <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}registro/form.xhtml" class="btn btn-primary btn-xs ">Solicitar cuenta</a> 
                 </b:column>
                 <b:column span="3">
                   <h1>Consultas generales</h1>
                       Todo visitante del sitio, podrá consultar libremente la
-                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml" >Normativa</a>
+                      <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}normativa/principal.xhtml" >Normativa</a>
                       vigente que reglamenta los procesos de control del vertido de efluentes líquidos.
-                      Acceder a una <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml" >Guía de trámite</a>
+                      Acceder a una <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}tramites/principal.xhtml" >Guía de trámite</a>
                       que muestra, paso a paso los procedimientos a seguir para la realización de todos los trámites que el sitio permite.
-                      Ver un listado de <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml" >Preguntas frecuentes</a>
+                      Ver un listado de <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}faq/faq.xhtml" >Preguntas frecuentes</a>
                       que podrán orientarlo brindando las respuestas a la mayoría de inquietudes relativas al uso del sistema.
                 </b:column>
                 <b:column span="3">
@@ -94,7 +94,7 @@
                       Una vez validados estos datos, el sistema devolverá el CUDE correspondiente. 
                       En caso de no validación, el usuario deberá acudir a las oficinas de la DPyRA 
                       para aclarar la situación.
-                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml" class="btn btn-primary btn-xs ">Obtener CUDE</a> 
+                      <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}cude/form.xhtml" class="btn btn-primary btn-xs ">Obtener CUDE</a> 
                 </b:column>
                 <b:column span="3">
                   <h1>Solicitar acceso</h1>
@@ -105,7 +105,7 @@
                       el <a onclick="$('.modalRecibo').modal();return false;" >código de recibo</a> de la última Declaración Jurada vigente,
                       y el DNI correspondiente <a onclick="$('.modalFirmante').modal();return false;" >firmante</a> de la última Declaración Jurada vigente.
                       Con esos datos podrá solicitar una cuenta de acceso al sistema.
-                      <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" class="btn btn-primary btn-xs ">Solicitar cuenta</a> 
+                      <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}registro/form.xhtml" class="btn btn-primary btn-xs ">Solicitar cuenta</a> 
                 </b:column>
             </b:row>    
             <br/>

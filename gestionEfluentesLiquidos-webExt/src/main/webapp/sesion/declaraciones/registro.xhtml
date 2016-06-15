@@ -14,7 +14,7 @@
             <f:metadata>  
                  <f:event listener="#{mbDeclaraciones.iniciar}" type="preRenderView"></f:event>  
             </f:metadata> 
-
+            <p:growl id="mess" showDetail="false" />
             <!-- Tabs -->
             <b:well>
 
@@ -56,6 +56,17 @@
                         <ui:include src="#{mbDeclaraciones.page}" />
                     </b:column>
                 </b:row>
+                <h:form id="frBtBorr">
+                    <b:row>
+                        <b:column span="12" >
+                            <b:commandButton title="Eliminar la Declaración en borrador" action="#{mbDeclaraciones.deleteDeclaracionBorr()}" 
+                                             disabled="#{mbDeclaraciones.declaracion.claveEstado ne 1 or mbDeclaraciones.declaracion.firmante ne null}" 
+                                             icon="glyphicon-ok" update="mess,frBtBorr,frNav"
+                                             look="danger"  value="Eliminar la Declaración" 
+                                             ajax="true"  />
+                        </b:column>
+                    </b:row>
+                </h:form>
             </b:well>
         </ui:define> 
     </ui:composition>

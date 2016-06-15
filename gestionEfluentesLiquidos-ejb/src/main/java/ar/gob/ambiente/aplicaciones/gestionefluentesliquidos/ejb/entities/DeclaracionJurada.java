@@ -5,6 +5,8 @@ package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -41,14 +44,12 @@ public class DeclaracionJurada implements Serializable {
      * Campo que guarda la documentación asociada
      */
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @NotNull(message = "El campo documentacion no puede ser nulo") 
     private DocDec documentacion;     
     
     /**
      * Campo que guarda el vuelco asociado
      */
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @NotNull(message = "El campo vuelco no puede ser nulo") 
     private Vuelco vuelco;     
     
     /**
@@ -90,8 +91,7 @@ public class DeclaracionJurada implements Serializable {
      * Guarda la persona que firma la Declaración Jurada en representación del Establecimiento
      */
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="firmante_id", nullable=false)
-    @NotNull(message = "Debe existir un firmante")
+    @JoinColumn(name="firmante_id")
     private Firmante firmante;
     
     /**
@@ -211,7 +211,32 @@ public class DeclaracionJurada implements Serializable {
      * String (250)
      */
     private String rutaProtocolo;     
+    
+    /**
+     * Observaciones generales de la Declaración
+     * String (500)
+     */
+    private String observaciones;
+    
+    /**
+     * Campo que guarda la clave del Estado de la Declaración.
+     * Con el método getEstado, se accede a la descripción correpondiente a la clave
+     */
+    @Column (nullable=false)
+    @NotNull(message = "El campo claveTipo no puede ser nulo")
+    private int claveEstado;    
 
+    /**
+     * Listado para seleccionar el estado de la Declaración
+     */
+    @Transient
+    private static final Map<Integer, String> MP_ESTADO;
+    static{
+       MP_ESTADO = new TreeMap<>();
+       MP_ESTADO.put(1, "PROVISORIA");
+       MP_ESTADO.put(2, "REGISTRADA");
+       MP_ESTADO.put(3, "VALIDADA");
+    }    
     
     /*****************
      ** Constructor **
@@ -228,6 +253,30 @@ public class DeclaracionJurada implements Serializable {
     /**********************
      * Métodos de acceso **
      **********************/
+    public int getClaveEstado() {
+        return claveEstado;
+    }
+
+    public void setClaveEstado(int claveEstado) {
+        this.claveEstado = claveEstado;
+    }    
+    
+    public String getEstado() {
+        return MP_ESTADO.get(claveEstado);
+    }    
+    
+    public static Map<Integer, String> getMP_ESTADO() {
+        return MP_ESTADO;
+    }      
+    
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     public boolean isAdjuntaBalanceMasas() {
         return adjuntaBalanceMasas;
     }

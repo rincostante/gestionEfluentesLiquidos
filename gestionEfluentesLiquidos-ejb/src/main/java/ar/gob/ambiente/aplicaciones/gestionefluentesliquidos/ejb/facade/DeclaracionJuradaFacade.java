@@ -44,4 +44,25 @@ public class DeclaracionJuradaFacade extends AbstractFacade<DeclaracionJurada> {
                 .setParameter(1, cude);
         return (Integer)q.getSingleResult();
     }
+    
+    /**
+     * Método para obtener Declaración en proceso
+     * @param cude: CUDE del Establecimiento
+     * @return 
+     */
+    public DeclaracionJurada getEnProceso(String cude){
+        List<DeclaracionJurada> lstDec;
+        em = getEntityManager();
+        String queryString = "SELECT dec FROM DeclaracionJurada dec "
+                + "WHERE dec.cude = :cude "
+                + "AND dec.claveEstado = 1";
+        Query q = em.createQuery(queryString)
+                .setParameter("cude", cude);
+        lstDec = q.getResultList();
+        if(lstDec.isEmpty()){
+            return null;
+        }else{
+            return lstDec.get(0);
+        }
+    }
 }

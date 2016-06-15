@@ -53,7 +53,7 @@
                             <a onclick="$('.modalCude').modal();return false;" >CUDE</a> (1), 
                             el <a onclick="$('.modalRecibo').modal();return false;" >código de recibo</a> (2)
                             de la última declaración jurada vigente, el CUIT de la 
-                            Razón social vinculada al Establecimiento (3), el CUIT del 
+                            Razón social vinculada al Establecimiento (3), el DNI del 
                             <a onclick="$('.modalFirmante').modal();return false;" >firmante</a> (4)
                             de la última declaración jurada y una dirección de 
                             correo electrónico válida (5) a la cual pueda acceder donde se le 
@@ -88,16 +88,25 @@
                                 
                                 <p:outputLabel for="cuitFir" value="DNI Firmante: " style="margin-bottom: 10px; color: gray"/>
                                 <b:inputText id="cuitFir" value="#{mbRegistro.solicitud.cuitFirmante}"
-                                             placeholder="DNI Firmante"
+                                             placeholder="N° DNI Firmante"
                                              converter="#{Integer}"
-                                             validatorMessage="El campo #{bundle.lebelRegCuitFir} debe tener entre 7 y 8 dígitos"
+                                             validatorMessage="El campo #{bundle.lebelRegCuitFir} debe tener entre 6 y 8 dígitos"
                                              required="true" 
                                              requiredMessage="El campo #{bundle.lebelRegCuitFir} es obligatorio" 
-                                             title="Ingrese el DNI del Firmante" >
+                                             title="Ingrese el número del DNI del Firmante" >
                                     <f:facet name="prepend">
                                         <h:outputText value="sin (.)" />
                                     </f:facet>
-                                    <f:validateLength maximum="8" minimum="7" />
+                                    <f:validateLength maximum="8" minimum="6" />
+                                </b:inputText>
+                                
+                                <p:outputLabel for="letra" value="Letra DNI Firmante: " style="margin-bottom: 10px; color: gray"/>
+                                <b:inputText id="letra" value="#{mbRegistro.solicitud.dniLetra}"
+                                             placeholder="L"
+                                             title="Ingrese la letra del DNI del Firmante, si correspondiera." style="text-transform: uppercase" >
+                                    <f:facet name="prepend">
+                                        <h:outputText value="F o M" />
+                                    </f:facet>
                                 </b:inputText>
                                 
                                 <p:outputLabel for="correo" value="#{bundle.lebelRegCorreoElectronico}: " style="margin-bottom: 10px; color: gray"/>
@@ -114,12 +123,10 @@
                                 </b:inputText>
                             </h:panelGrid>
                             <b:row style="margin-top: 5px">
-                                <b:column span="6" >
-                                    <b:commandButton style="margin-right: 5px; width: 100%" id="loginButton" look="primary" ajax="true" 
+                                <b:column span="12" >
+                                    <b:commandButton id="loginButton" look="primary" ajax="true" icon="glyphicon-play"
                                                      value="#{mbRegistro.cmbValidar}" action="#{mbRegistro.solicitar}" update="mensajes,form" />
-                                </b:column>
-                                <b:column span="6">
-                                    <b:button look="warning" value="#{mbRegistro.cmbLimpiar}" style="width: 100%" onclick="reset()" />
+                                    <b:button look="warning" value="#{mbRegistro.cmbLimpiar}" onclick="reset()" icon="glyphicon-trash" />
                                 </b:column>
                             </b:row>
                         </b:panel>

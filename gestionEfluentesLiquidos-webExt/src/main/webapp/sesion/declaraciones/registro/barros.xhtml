@@ -436,7 +436,7 @@
                         <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{mbDeclaraciones.datosBarros}" 
                                          title="Eliminar las características de los Barros de la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.deleteBarros()}" look="danger" 
-                                         value="#{mbDeclaraciones.barrEliminar}" ajax="true" update="frNav,frValidTransDrp,frValidOpDrp,frBarrDestinos" />
+                                         value="#{mbDeclaraciones.barrEliminar}" ajax="true" update="frNav,frValidTransDrp,frValidOpDrp,frBarrDestinos,messages" />
                     </b:column>
                 </b:row>
             </h:form>

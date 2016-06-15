@@ -21,17 +21,17 @@
             </b:row>
         </b:container>
         <br/>
-        <b:navBar static="true" brand="Inicio" brandHref="http://localhost:8080/gestionEfluentesLiquidos-webExt" inverse="true" >
+        <b:navBar static="true" brand="Inicio" brandHref="#{bundle.Servidor}#{bundle.RutaAplicacion}" inverse="true" >
             <b:navbarLinks >
                 <b:dropMenu value="Consultas generales">
-                    <b:navLink value="Guía de trámite" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml"></b:navLink>
-                    <b:navLink value="Normativa" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml"></b:navLink>
-                    <b:navLink value="Preguntas frecuentes" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml"></b:navLink>
+                    <b:navLink value="Guía de trámite" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramiteLibre}principal.xhtml"></b:navLink>
+                    <b:navLink value="Normativa" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativaLibre}principal.xhtml"></b:navLink>
+                    <b:navLink value="Preguntas frecuentes" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaqLibre}faq.xhtml"></b:navLink>
                 </b:dropMenu>
                 
-                <b:navLink value="Obteber CUDE" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml"></b:navLink>
-                <b:navLink value="Registrarse" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml"></b:navLink>
-                <b:navLink value="Iniciar Sesión" href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/iniciar.xhtml"></b:navLink>
+                <b:navLink value="Obteber CUDE" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}cude/form.xhtml"></b:navLink>
+                <b:navLink value="Registrarse" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}registro/form.xhtml"></b:navLink>
+                <b:navLink value="Iniciar Sesión" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}iniciar.xhtml"></b:navLink>
             </b:navbarLinks>
         </b:navBar>
         <b:container style="background-color: #e0e4de; border-radius: 10px 10px 10px 10px;
@@ -49,14 +49,13 @@
                 <b:row>
                     <b:column span="3">
                         <span style="color: #f5f5ed" >Menú principal</span><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Inicio</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Declaraciones Juradas</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/" >Establecimientos</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/cude/form.xhtml" >Obtener Cude</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/tramites/principal.xhtml" >Guía de trámite</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/normativa/principal.xhtml" >Normativa</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/faq/faq.xhtml" >Preguntas frecuentes</a><br/>
-                        <a href="http://localhost:8080/gestionEfluentesLiquidos-webExt/faces/libre/registro/form.xhtml" >Registrarse</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}" >Inicio</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramiteLibre}principal.xhtml" >Guía de trámite</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativaLibre}principal.xhtml" >Normativa</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaqLibre}faq.xhtml" >Preguntas frecuentes</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}cude/form.xhtml" >Obtener Cude</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}registro/form.xhtml" >Registrarse</a><br/>
+                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}iniciar.xhtml" >Iniciar sesión</a><br/>
                     </b:column>
                     <b:column style="color: cadetblue" span="6">
                         <span style="color: #f5f5ed" >Contacto</span><br/>
@@ -67,7 +66,7 @@
                         Presidencia de la Nación<br/>
                         AU Ezeiza - Cañuelas, Tramo Jorge Newbery km. 1,620<br/>
                         1804 Ezeiza - Provincia de Buenos Aires<br/>
-                        Teléfono: (54) (11) 4480-4500, int.2497<br/>
+                        Teléfonos: (54) (11) 4480-4500, int.2497, 4480-0745, 4348-8242<br/>
                         Correo electrónico: <a href="mailto:dpyra@ambiente.gob.ar">dpyra@ambiente.gob.ar </a>
                     </b:column>
                     <b:column span="3">

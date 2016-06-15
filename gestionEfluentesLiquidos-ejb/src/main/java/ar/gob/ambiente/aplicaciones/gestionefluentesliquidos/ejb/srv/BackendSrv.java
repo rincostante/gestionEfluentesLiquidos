@@ -808,7 +808,16 @@ public class BackendSrv {
      */
     public DeclaracionJurada getDeclaracionByID(Long id){
         return decFacade.find(id);
-    }    
+    } 
+    
+    /**
+     * Método para obtener la Declaración jurada en proceso de carga según el CUDE
+     * @param cude
+     * @return 
+     */
+    public DeclaracionJurada getDecBorrador(String cude){
+        return decFacade.getEnProceso(cude);
+    }
     
     /**
      * Método para obtener todas las Declaraciones Juradas
@@ -851,5 +860,9 @@ public class BackendSrv {
      */
     public Integer obtenerDeclaReciente(String cude){
         return decFacade.getInsertada(cude);
+    }
+    
+    public void deleteDeclaBorrador(DeclaracionJurada dec){
+        decFacade.remove(dec);
     }
 }

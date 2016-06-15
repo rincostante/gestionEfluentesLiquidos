@@ -70,7 +70,7 @@ public class Descarga implements Serializable {
        MP_TIPODESC = new TreeMap<>();
        MP_TIPODESC.put(1, "CLOACAL");
        MP_TIPODESC.put(2, "INDUSTRIAL");
-       MP_TIPODESC.put(3, "MIXTO");
+       MP_TIPODESC.put(3, "COMBINADO");
     }    
     
     /**

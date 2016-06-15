@@ -171,88 +171,107 @@ public class MbRegistro implements Serializable{
      *****************************/
     
     public void solicitar(){
-        boolean valida = true;
+        mensajeError = "";
+        boolean valida = true, validaLetra = true;
         
-        // obtengo el Establecimiento según el CUDE ingresado
-        String cude = solicitud.getCude();
-        int primerGuion = cude.indexOf("-");
-        int segundoGuion = cude.lastIndexOf("-");
-        Long lPart = Long.valueOf(cude.substring(0, primerGuion));
-        Long lNumEst = Long.valueOf(cude.substring(primerGuion + 1, segundoGuion));
-        int lCrs = Integer.parseInt(cude.substring(segundoGuion + 1, cude.length()));
-
-        est = backendSrv.getEstablecimientoByCude(lPart, lNumEst, lCrs);
-        if(est != null){
-            if(!solicitud.getCodigoRecibo().equals(est.getCodRecibo())){
-                valida = false;
-                mensajeError = "El código de recibo ingresado no corresponde con el último vigente.";
+        // valido la letra, si es que viene
+        if(solicitud.getDniLetra() != null){
+            if(solicitud.getDniLetra().length() > 1){
+                validaLetra = false;
+                mensajeError = mensajeError + "El DNI solo puede contener una letra.";
             }else{
-                // verifico que el esablecimiento no tenga ya una cuenta
-                if(!backendSrv.usrExtNoExiste(cude)){
-                    String email = backendSrv.getUsuarioExt(cude).getEmail();
-                    valida = false;
-                    mensajeError = "El Establecimiento ya tiene una cuenta de usuario vinculada al correo " + email + ".";
+                if(!solicitud.getDniLetra().equals("M") && !solicitud.getDniLetra().equals("m") 
+                        && !solicitud.getDniLetra().equals("F") && !solicitud.getDniLetra().equals("f")){
+                    validaLetra = false;
+                    mensajeError = mensajeError + "La letra del DNI solo puede ser una 'F' o una 'M'.";
                 }
             }
-        }else{
-            valida = false;
-            mensajeError = "El cude ingresado no corresponde a ningún Establecimiento registrado.";
         }
         
-        if(valida){
-            try{
-                // Solo prosigo si validé los procedimientos anteriores
-                // seteo la admin. Primero obtengo el usuario de alta, deberá ser un usuario estandar, por ahora seré yo
-                Date date = new Date(System.currentTimeMillis());
-                AdminEntidad admEnt = new AdminEntidad();
-                usExt = new UsuarioExterno();
-                Usuario usSistema = backendSrv.getUsrByID(Long.valueOf(3));
-                admEnt.setFechaAlta(date);
-                admEnt.setHabilitado(true);
-                admEnt.setUsAlta(usSistema);
-                usExt.setAdmin(admEnt);
-                
-                usExt.setRazonSocial(est.getRazonSocial());
+        if(validaLetra){
+            // obtengo el Establecimiento según el CUDE ingresado
+            String cude = solicitud.getCude();
+            int primerGuion = cude.indexOf("-");
+            int segundoGuion = cude.lastIndexOf("-");
+            Long lPart = Long.valueOf(cude.substring(0, primerGuion));
+            Long lNumEst = Long.valueOf(cude.substring(primerGuion + 1, segundoGuion));
+            int lCrs = Integer.parseInt(cude.substring(segundoGuion + 1, cude.length()));
 
-                // generación de clave
-                clave = CriptPass.generar();
-                String claveEncriptada = CriptPass.encriptar(clave);
-                
-                usExt.setCude(solicitud.getCude());
-                usExt.setClave(claveEncriptada);
-                usExt.setPrimeraVez(true);
-                usExt.setCuit(est.getCuit());
-                usExt.setEmail(solicitud.getCorreoElectronico());
-                
-                usExt.setDomCalle(est.getInmueble().getCalle());
-                usExt.setNumero(est.getInmueble().getNumero());
-                usExt.setLocalidad(est.getInmueble().getLocalidad());
-
-                // inserto
-                backendSrv.createUsuarioExterno(usExt);
-                
-                if(!enviarCorreo(usExt.getEmail(), usExt.getCude(), usExt.getRazonSocial())){
-                    JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("envioCorreoUsError"));
+            est = backendSrv.getEstablecimientoByCude(lPart, lNumEst, lCrs);
+            if(est != null){
+                if(!solicitud.getCodigoRecibo().equals(est.getCodRecibo())){
+                    valida = false;
+                    mensajeError = "El código de recibo ingresado no corresponde con el último vigente.";
                 }else{
-                    JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateRegExito"));
+                    // verifico que el esablecimiento no tenga ya una cuenta
+                    if(!backendSrv.usrExtNoExiste(cude)){
+                        String email = backendSrv.getUsuarioExt(cude).getEmail();
+                        valida = false;
+                        mensajeError = "El Establecimiento ya tiene una cuenta de usuario vinculada al correo " + email + ".";
+                    }
                 }
-                
-                resultado = true;
-                
-            }catch(Exception ex){
-                // muestro un mensaje al usuario
-                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("generarUsError"));
-                // lo escribo en el log del server
-                System.out.println(ResourceBundle.getBundle("/Bundle").getString("generarUsError") + ex.getMessage());
+            }else{
+                valida = false;
+                mensajeError = "El cude ingresado no corresponde a ningún Establecimiento registrado.";
             }
+
+            if(valida){
+                try{
+                    // Solo prosigo si validé los procedimientos anteriores
+                    // seteo la admin. Primero obtengo el usuario de alta, deberá ser un usuario estandar, por ahora seré yo
+                    Date date = new Date(System.currentTimeMillis());
+                    AdminEntidad admEnt = new AdminEntidad();
+                    usExt = new UsuarioExterno();
+                    Usuario usSistema = backendSrv.getUsrByID(Long.valueOf(3));
+                    admEnt.setFechaAlta(date);
+                    admEnt.setHabilitado(true);
+                    admEnt.setUsAlta(usSistema);
+                    usExt.setAdmin(admEnt);
+
+                    usExt.setRazonSocial(est.getRazonSocial());
+
+                    // generación de clave
+                    clave = CriptPass.generar();
+                    String claveEncriptada = CriptPass.encriptar(clave);
+
+                    usExt.setCude(solicitud.getCude());
+                    usExt.setClave(claveEncriptada);
+                    usExt.setPrimeraVez(true);
+                    usExt.setCuit(est.getCuit());
+                    usExt.setEmail(solicitud.getCorreoElectronico());
+
+                    usExt.setDomCalle(est.getInmueble().getCalle());
+                    usExt.setNumero(est.getInmueble().getNumero());
+                    usExt.setLocalidad(est.getInmueble().getLocalidad());
+
+                    // inserto
+                    backendSrv.createUsuarioExterno(usExt);
+
+                    if(!enviarCorreo(usExt.getEmail(), usExt.getCude(), usExt.getRazonSocial())){
+                        JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("envioCorreoUsError"));
+                    }else{
+                        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("validateRegExito"));
+                    }
+
+                    resultado = true;
+
+                }catch(Exception ex){
+                    // muestro un mensaje al usuario
+                    JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("generarUsError"));
+                    // lo escribo en el log del server
+                    System.out.println(ResourceBundle.getBundle("/Bundle").getString("generarUsError") + ex.getMessage());
+                }
+            }else{
+                resultado = false;
+                mensajeError = mensajeError + " No se pudo procesar su solicitud.";
+                JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("panelRegIvalidoMessage_1") + ": " + mensajeError);
+            }
+            solicitado = true;
+            mostrarResult = true;
+            solicitud = new SolicitudCuenta();
         }else{
-            resultado = false;
-            mensajeError = mensajeError + " No se pudo procesar su solicitud.";
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("panelRegIvalidoMessage_1") + ": " + mensajeError);
+            JsfUtil.addErrorMessage("No se pudieron validar los datos ingresados. " + mensajeError);
         }
-        solicitado = true;
-        mostrarResult = true;
-        solicitud = new SolicitudCuenta();;
     }
     
     public void limpiar(){

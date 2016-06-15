@@ -328,6 +328,10 @@
                     <h:form id="frUpBotones" enctype="multipart/form-data" prependId="false">
                         <b:button title="Breve explicación del proceso de adjuntar archivos a la Declaración Jurada" 
                                   onclick="$('.modalAyudaSubirArchivos').modal();return false;" look="warning" value="Ayuda" />
+                        <b:commandButton title="Guardar la Declaración en borrador" action="#{mbDeclaraciones.creatDeclaracionBorr()}" 
+                                         icon="glyphicon-ok" update="messages" disabled="#{mbDeclaraciones.declaracion.actividades.size() eq 0}"
+                                         look="primary"  value="Guardar en borrador" 
+                                         ajax="true"  />
                         <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.gralLimpiar}" 
                                          icon="glyphicon-trash" look="danger" title="Limpiar todos los archivos subidos" 
                                          update="frNav,frUpBalance,frUpManifYCert,frUpPermisoFact,frUpInicoFact,frUpCroquis,frUpCertRetiroYDispFinal,frUpProtocolo,messages" 

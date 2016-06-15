@@ -16,8 +16,17 @@ public class SolicitudCuenta implements Serializable{
         private String cude;
         private String codigoRecibo;
         private Long cuitEstablecimiento;
+        private String dniLetra;
         private Long cuitFirmante;
         private String correoElectronico;
+
+        public String getDniLetra() {
+            return dniLetra;
+        }
+
+        public void setDniLetra(String dniLetra) {
+            this.dniLetra = dniLetra;
+        }
 
         public String getCude() {
             return cude;

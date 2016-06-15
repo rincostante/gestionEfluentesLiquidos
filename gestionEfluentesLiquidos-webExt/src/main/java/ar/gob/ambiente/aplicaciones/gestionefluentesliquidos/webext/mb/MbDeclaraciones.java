@@ -73,6 +73,7 @@ import org.primefaces.model.UploadedFile;
 public class MbDeclaraciones implements Serializable{
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/vmdeswebjava.medioambiente.gov.ar_8080/CuitAfipWs/CuitAfipWs.wsdl")
     private CuitAfipWs_Service service;
+    private DeclaracionJurada declaracion;
     
     // Actividades
     private Actividad actividad;
@@ -86,6 +87,7 @@ public class MbDeclaraciones implements Serializable{
     private boolean presentoDoc;
     private Map<Integer, String> mapTipoVisado;
     private int numero;
+    private List<String> lstVisados;
 
     // Fechas
     private FechaDec fechaDec;
@@ -113,10 +115,7 @@ public class MbDeclaraciones implements Serializable{
     private DiaVuelco diaVuelcoSwap;
     private List<DiaVuelco> lstDiasVuelco;
     private Map<Integer, String> mapDiaVuelcoSemana;    
-    
-    private DeclaracionJurada declaracion;
-    private List<String> lstVisados;
-    
+
     // Descargas
     private Descarga descarga;
     private Descarga descSwap;
@@ -265,7 +264,6 @@ public class MbDeclaraciones implements Serializable{
     private String firVincularSel;
     private String firVincularReg;
   
-    
     // iconos
     private String pulgarComp;
     private String pulgarVuelco;
@@ -277,11 +275,8 @@ public class MbDeclaraciones implements Serializable{
     private String pulgarBarros;
     private String pulgarDocumentos;
     private String pulgarFirma;
-    
-    
-    // flags check vuelco
+
     private boolean activeAlcalino;
-    
     private MbSesion sesion;
     private UsuarioExterno usLogueado;
     private boolean edita;
@@ -296,11 +291,11 @@ public class MbDeclaraciones implements Serializable{
     private boolean datosDescargas;
     private boolean datosPozos;
     private boolean datosAbastos;
-    private boolean datosProd;
     private boolean datosHorarios;
     private boolean datosProductos;
     private boolean datosBarros;
     private boolean decRegistrada;
+    private boolean eliminandoDec;
     
     // indicador de tab de inicio
     private int activeIndex;
@@ -391,47 +386,25 @@ public class MbDeclaraciones implements Serializable{
         firVincularReg = "Vincular registrado";
         
         activeAlcalino = false;
-        
-        pulgarComp = "glyphicon-thumbs-down";
-        pulgarVuelco = "glyphicon-thumbs-down";
-        pulgarDesc = "glyphicon-thumbs-down";
-        pulgarPozos = "glyphicon-thumbs-down";
-        pulgarAbasto = "glyphicon-thumbs-down";
-        pulgarHorario = "glyphicon-thumbs-down";
-        pulgarProductos = "glyphicon-thumbs-down";
-        pulgarBarros = "glyphicon-thumbs-down";
-        pulgarDocumentos = "glyphicon-thumbs-down";
         pulgarFirma = "glyphicon-thumbs-down";
+        
+        setEstablecimiento(usLogueado.getCude());
+        instanciarDeclaracion();
                 
         // flags
         edita = false;
         editaHijo = false;
         removido = false;
-        datosComReg = false;
-        datosVuelco = false;
-        datosDescargas = false;
-        datosPozos = false;
-        datosAbastos = false;
-        datosProd = false;
         presentoDoc = false;
-        datosProductos = false;
         activeIndex = 0;
-        habilitaTransDrp = true;
-        habilitaOpDrp = true;
         habilitaActivo = false;
         otroTratamiento = false;
         otrosMedios = false;
         usoInsumo = false;
         otroDestino = false;
-        subeBalance = false;
-        subeManifYCert = false;
-        subePermisoFact = false;
-        subeInicioFact = false;
-        subeCroquis = false;
-        subeCertRetiroYDispFinal = false;
-        subeProtocolo = false;
         firmDeshechado = false;
         decRegistrada = false;
+        eliminandoDec = false;
 
         // hashmaps
         mapTipoFecha = FechaDec.getMP_TIPO_FECHAS();
@@ -449,36 +422,24 @@ public class MbDeclaraciones implements Serializable{
         mapDiaVuelcoSemana = DiaVuelco.getMP_DIAS();
         
         // entidades y listados de formularios
-        docDec = new DocDec();
-        vuelco = new Vuelco();
         diaVuelco = new DiaVuelco();
-        lstDiasVuelco = new ArrayList<>();
         descarga = new Descarga();   
         tratamiento = new Tratamiento();
-        abastecimiento = new Abastecimiento();
         pozo = new Pozo();
         abasto = new Abasto();
-        lstPozos = new ArrayList<>();
-        lstAbasto = new ArrayList<>();
-        lstDescargas = new ArrayList<>(); 
         lstAforos = backendSrv.getAforosAll();
         lstDestinos = backendSrv.getCursosAll();
         lstTiposAbasto = backendSrv.getTipoAbastoAll();
         lstTiposCaudal = backendSrv.getTipoCaudalAll();
-        horario = new Horario();
         dia = new Dia();
-        lstDias = new ArrayList<>();
         turno = new Turno();
         producto = new Producto();
         productoSwap = new Producto();
-        lstProductos = new ArrayList<>();
         materia  = new Materia();
         materiaSwap = new Materia();
         lstUnidades = backendSrv.getUnidadesAll();
-        barro = new Barro();
         transpDrp = new EstabDrp();
         operadorDrp = new EstabDrp();
-        setEstablecimiento(usLogueado.getCude());
         lstFirmantes = backendSrv.getFirmantesAll();
         firmante = est.getFirmante();
         newFirmanteSel = new Firmante();
@@ -490,7 +451,6 @@ public class MbDeclaraciones implements Serializable{
      * Baja todos los bean que estén en sesión y no sean el de sesión ni el actual
      */
     public void iniciar(){
-        if(declaracion == null) declaracion = new DeclaracionJurada();
         if(lstActividades == null) lstActividades = backendSrv.getActividadAll();
         prepareDatosComp();
         String s;
@@ -1373,14 +1333,6 @@ public class MbDeclaraciones implements Serializable{
 
     public void setDatosAbastos(boolean datosAbastos) {
         this.datosAbastos = datosAbastos;
-    }
-
-    public boolean isDatosProd() {
-        return datosProd;
-    }
-
-    public void setDatosProd(boolean datosProd) {
-        this.datosProd = datosProd;
     }
 
     public boolean isDatosVuelco() {
@@ -2500,6 +2452,7 @@ public class MbDeclaraciones implements Serializable{
         datosComReg = validarDatosComp();
         if(datosComReg){
             agregarDatosComp();
+            creatDeclaracionBorr();
             activeIndex = 2;
             pulgarComp = "glyphicon-thumbs-up";
             JsfUtil.addSuccessMessage("Los Datos Complementarios se agregaron a la Declaración Jurada que está confeccionado.");
@@ -2517,6 +2470,7 @@ public class MbDeclaraciones implements Serializable{
         if(validarDatosComp()){
             agregarDatosComp();
             JsfUtil.addSuccessMessage("Los Datos Complementarios se actualizaron correctamente.");
+            creatDeclaracionBorr();
         }else{
             JsfUtil.addErrorMessage("Los Datos Complementarios no fueron actualizados.");
         }
@@ -2690,6 +2644,7 @@ public class MbDeclaraciones implements Serializable{
         if(validarVuelco()){
             vuelco.setDias(lstDiasVuelco);
             declaracion.setVuelco(vuelco);
+            creatDeclaracionBorr();
             datosVuelco = true;
             activeIndex = 3;
             pulgarVuelco = "glyphicon-thumbs-up";
@@ -2705,7 +2660,9 @@ public class MbDeclaraciones implements Serializable{
     public void editVuelcos(){
         resetEdit();
         if(validarVuelco()){
+            vuelco.setDias(lstDiasVuelco);
             declaracion.setVuelco(vuelco);
+            creatDeclaracionBorr();
             JsfUtil.addSuccessMessage("Las características del Vuelco se actualizaron correctamente.");
         }else{
             JsfUtil.addErrorMessage("Los datos especificados para el Vuelco no se han podido validar. No se actualizarán en la Declaración Jurada.");
@@ -2719,6 +2676,7 @@ public class MbDeclaraciones implements Serializable{
         resetEdit();
         declaracion.setVuelco(null);
         limpiarVuelco();
+        creatDeclaracionBorr();
         datosVuelco = false;
         activeIndex = 1;
         pulgarVuelco = "glyphicon-thumbs-down";
@@ -2731,6 +2689,7 @@ public class MbDeclaraciones implements Serializable{
         resetEdit();
         if(validarBarros()){
             declaracion.setBarro(barro);
+            creatDeclaracionBorr();
             datosBarros = true;
             activeIndex = 9;
             pulgarBarros = "glyphicon-thumbs-up";
@@ -2746,6 +2705,7 @@ public class MbDeclaraciones implements Serializable{
     public void editBaros(){
         resetEdit();
         declaracion.setBarro(barro);
+        creatDeclaracionBorr();
         JsfUtil.addSuccessMessage("Las características del Barro se actualizaron correctamente.");
     }     
     
@@ -2756,6 +2716,7 @@ public class MbDeclaraciones implements Serializable{
         resetEdit();
         declaracion.setBarro(null);
         limpiarBarros();
+        creatDeclaracionBorr();
         datosBarros = false;
         activeIndex = 8;
         pulgarBarros = "glyphicon-thumbs-down";
@@ -2769,6 +2730,7 @@ public class MbDeclaraciones implements Serializable{
             resetEdit();
             if(!lstDescargas.isEmpty()){
                 declaracion.getVuelco().setDescargas(lstDescargas);
+                creatDeclaracionBorr();
                 datosDescargas = true;
                 activeIndex = 4;
                 pulgarDesc = "glyphicon-thumbs-up";
@@ -2791,6 +2753,7 @@ public class MbDeclaraciones implements Serializable{
         if(!lstPozos.isEmpty()){
             abastecimiento.setPozos(lstPozos);
             declaracion.setAbastecimiento(abastecimiento);
+            creatDeclaracionBorr();
             datosPozos = true;
             activeIndex = 5;
             pulgarPozos = "glyphicon-thumbs-up";
@@ -2815,6 +2778,7 @@ public class MbDeclaraciones implements Serializable{
                 abastecimiento.setTieneAbastos(true);
                 declaracion.setAbastecimiento(abastecimiento);
             }
+            creatDeclaracionBorr();
             datosAbastos = true;
             activeIndex = 6;
             pulgarAbasto = "glyphicon-thumbs-up";
@@ -2834,6 +2798,7 @@ public class MbDeclaraciones implements Serializable{
             horario.setDias(lstDias);
             horario.setTieneDias(true);
             declaracion.setHorario(horario);
+            creatDeclaracionBorr();
             datosHorarios = true;
             activeIndex = 7;
             pulgarHorario = "glyphicon-thumbs-up";
@@ -2850,6 +2815,7 @@ public class MbDeclaraciones implements Serializable{
         resetEdit();
         if(!lstProductos.isEmpty()){
             declaracion.setProductos(lstProductos);
+            creatDeclaracionBorr();
             datosProductos = true;
             activeIndex = 8;
             pulgarProductos = "glyphicon-thumbs-up";
@@ -2865,6 +2831,7 @@ public class MbDeclaraciones implements Serializable{
     public void editDescargas(){
         resetEdit();
         declaracion.getVuelco().setDescargas(lstDescargas);
+        creatDeclaracionBorr();
         JsfUtil.addSuccessMessage("Las descargas del vuelco se actualizaron correctamente.");
     }
     
@@ -2874,6 +2841,7 @@ public class MbDeclaraciones implements Serializable{
     public void editPozos(){
         resetEdit();
         declaracion.getAbastecimiento().setPozos(lstPozos);
+        creatDeclaracionBorr();
         JsfUtil.addSuccessMessage("Los Pozos del Abastecimiento se actualizaron correctamente.");
     }
     
@@ -2883,6 +2851,7 @@ public class MbDeclaraciones implements Serializable{
     public void editAbastos(){
         resetEdit();
         declaracion.getAbastecimiento().setAbastos(lstAbasto);
+        creatDeclaracionBorr();
         JsfUtil.addSuccessMessage("Los Abastos del Abastecimiento general de agua se actualizaron correctamente.");
     }
     
@@ -2892,6 +2861,7 @@ public class MbDeclaraciones implements Serializable{
     public void editHorario(){
         resetEdit();
         declaracion.getHorario().setDias(lstDias);
+        creatDeclaracionBorr();
         JsfUtil.addSuccessMessage("Los Días del Horario laborla se actualizaron correctamente.");
     }   
     
@@ -2901,6 +2871,7 @@ public class MbDeclaraciones implements Serializable{
     public void editProductos(){
         resetEdit();
         declaracion.setProductos(lstProductos);
+        creatDeclaracionBorr();
         JsfUtil.addSuccessMessage("Los Productos del listado de la Declaración se actualizaron correctamente.");
     }       
     
@@ -2912,6 +2883,7 @@ public class MbDeclaraciones implements Serializable{
         declaracion.getVuelco().getDescargas().clear();
         lstDescargas.clear();
         descarga = new Descarga();
+        creatDeclaracionBorr();
         datosDescargas = false;
         activeIndex = 3;
         pulgarDesc = "glyphicon-thumbs-down";
@@ -2925,6 +2897,7 @@ public class MbDeclaraciones implements Serializable{
         declaracion.getAbastecimiento().getPozos().clear();
         lstPozos.clear();
         pozo = new Pozo();
+        creatDeclaracionBorr();
         datosPozos = false;
         activeIndex = 4;
         pulgarPozos = "glyphicon-thumbs-down";
@@ -2938,6 +2911,7 @@ public class MbDeclaraciones implements Serializable{
         declaracion.getAbastecimiento().getAbastos().clear();
         lstAbasto.clear();
         abasto = new Abasto();
+        creatDeclaracionBorr();
         datosAbastos = false;
         activeIndex = 4;
         pulgarAbasto = "glyphicon-thumbs-down";
@@ -2951,6 +2925,7 @@ public class MbDeclaraciones implements Serializable{
         declaracion.getHorario().getDias().clear();
         lstDias.clear();
         dia = new Dia();
+        creatDeclaracionBorr();
         datosHorarios = false;
         activeIndex = 6;
         pulgarHorario = "glyphicon-thumbs-down";
@@ -2964,6 +2939,7 @@ public class MbDeclaraciones implements Serializable{
         declaracion.getProductos().clear();
         lstProductos.clear();
         producto = new Producto();
+        creatDeclaracionBorr();
         datosProductos = false;
         activeIndex = 7;
         pulgarProductos = "glyphicon-thumbs-down";
@@ -3302,23 +3278,51 @@ public class MbDeclaraciones implements Serializable{
         valorTipoTrat = 0;
         tratamiento = new Tratamiento();
         editaHijo = false;
-    }         
+    }  
+    
+    /**
+     * Método para el guardado en borrador de la Declaración
+     */
+    public void creatDeclaracionBorr(){
+        try{
+            if(declaracion.getId() != null){
+                // seteo la entidad administrativa      
+                Date date = new Date(System.currentTimeMillis());
+                declaracion.getAdmin().setFechaModif(date);
+                declaracion.getAdmin().setUsExtModif(usLogueado);
+                // actualizo la Declaración
+                backendSrv.editDeclaracion(declaracion);
+            }else{
+                declaracion.setCude(usLogueado.getCude());
+                // agrego la entidad administrativa      
+                Date date = new Date(System.currentTimeMillis());
+                AdminEntidad admEnt = new AdminEntidad();
+                admEnt.setFechaAlta(date);
+                admEnt.setHabilitado(true);
+                admEnt.setUsExtAlta(usLogueado);
+                declaracion.setAdmin(admEnt);
+                // inserto la Declaración, previo asignar estado (1, correspondiente a "PROVISORIA")
+                declaracion.setClaveEstado(1);
+                backendSrv.createDeclaracion(declaracion);
+            }
+
+            JsfUtil.addSuccessMessage("La Declaración Jurada se ha guardado en borrador. Podrá continuar la carga en otra sesión.");
+        }catch(Exception ex){
+            JsfUtil.addErrorMessage("Hubo un error al guardar la Declaración Jurada. " + ex.getMessage());
+        }
+        
+    }
     
     public void createDeclaracion(){
         /**
-         * Ver validaciones y demás, por ahora levantamos el cude del usuario extrno
+         * Ver validaciones y demás, por ahora levantamos el cude del usuario externo
          */
-
+        
+        Date date = new Date(System.currentTimeMillis());
+        
+        // seteo Firmante y CUDE
         declaracion.setFirmante(est.getFirmante());
         declaracion.setCude(usLogueado.getCude());
-        
-        // agrego la entidad administrativa      
-        Date date = new Date(System.currentTimeMillis());
-        AdminEntidad admEnt = new AdminEntidad();
-        admEnt.setFechaAlta(date);
-        admEnt.setHabilitado(true);
-        admEnt.setUsExtAlta(usLogueado);
-        declaracion.setAdmin(admEnt);
         
         // creo el historial para el registro de la Declaración
         HistorialDeclaraciones histDecUltimo = new HistorialDeclaraciones();
@@ -3326,17 +3330,42 @@ public class MbDeclaraciones implements Serializable{
         // leo la última Declaración si la hubiera
         if(backendSrv.getUltimaDeclaracion(est) != null){
             histDecUltimo = backendSrv.getUltimaDeclaracion(est);
-        }
-
+        }        
+        // en cualquier caso actualizo el estado de la Declaración (2, correspondiente a "REGISTRADA") y 
+        declaracion.setClaveEstado(2);
+        
         try{
-            // inserto la Declaración
-            backendSrv.createDeclaracion(declaracion);
-            // obtengo el id de la Declaración insertada
-            Integer idDecla = backendSrv.obtenerDeclaReciente(usLogueado.getCude());
-            // obtengo la Declaración
-            DeclaracionJurada dc = backendSrv.getDeclaracionByID(Long.valueOf(idDecla));
-            // seteo la Declaración y el resto del historial
-            histDecNuevo.setDeclaracion(dc);
+            // verifico si la Declaración está persistida como PROVISORIA
+            if(declaracion.getId() != null){
+                // si está persisitida, actualizo admin
+                declaracion.getAdmin().setFechaModif(date);
+                declaracion.getAdmin().setUsExtModif(usLogueado);
+                
+                // actualizo la Declaración, previo asignar estado (2, correspondiente a "REGISTRADA")
+                backendSrv.editDeclaracion(declaracion);
+                
+                // asigno la Declaración existente al historial
+                histDecNuevo.setDeclaracion(declaracion);
+
+            }else{
+                // si debo insertar agrego la entidad administrativa      
+                AdminEntidad admEnt = new AdminEntidad();
+                admEnt.setFechaAlta(date);
+                admEnt.setHabilitado(true);
+                admEnt.setUsExtAlta(usLogueado);
+                declaracion.setAdmin(admEnt);
+                
+                // inserto la Declaración
+                backendSrv.createDeclaracion(declaracion);
+                // obtengo el id de la Declaración insertada
+                Integer idDecla = backendSrv.obtenerDeclaReciente(usLogueado.getCude());
+                // obtengo la Declaración
+                DeclaracionJurada dc = backendSrv.getDeclaracionByID(Long.valueOf(idDecla));
+                // seteo la Declaración insertada en el historial
+                histDecNuevo.setDeclaracion(dc);
+            }
+            
+            // para cualquier caso completo el seteo del historial
             histDecNuevo.setActiva(true);
             histDecNuevo.setEstablecimiento(est);
             histDecNuevo.setFecha(date);
@@ -3349,13 +3378,35 @@ public class MbDeclaraciones implements Serializable{
             }
             // persisto el historial
             backendSrv.createHisDeclaracion(histDecNuevo);
-            JsfUtil.addSuccessMessage("La Declaración Jurada se ha guardado correctamente. "
+            JsfUtil.addSuccessMessage("La Declaración Jurada se ha registrado correctamente. "
                     + "Para imprimirla, primero deberá generar e imprimir el recibo. ¡Muchas gracias!");
             decRegistrada = true;
         }catch(Exception ex){
-            histDecUltimo = null;
-            histDecNuevo = null;
-            JsfUtil.addErrorMessage("Hubo un error al guardar la Declaración Jurada. " + ex.getMessage());
+            JsfUtil.addErrorMessage("Hubo un error al registrar la Declaración Jurada. " + ex.getMessage());
+        }
+    }
+    
+    public void deleteDeclaracionBorr(){
+        if(declaracion.getId() != null){
+            try{
+                backendSrv.deleteDeclaBorrador(declaracion);
+                eliminandoDec = true;
+                instanciarDeclaracion();
+                limpiarDatosComp();
+                limpiarVuelco();
+                limpiarDescargas();
+                limpiarPozos();
+                limpiarAbastos();
+                limpiarHorario();
+                limpiarProductos();
+                limpiarBarros();
+                deleteArchivos();
+                JsfUtil.addSuccessMessage("La Declaración provisoria ha sido eliminada.");
+            }catch(Exception ex){
+                JsfUtil.addErrorMessage("Hubo un error al eliminar la Declaración Jurada provisoria. " + ex.getMessage());
+            }
+        }else{
+            JsfUtil.addErrorMessage("La Declaración a eliminar debe estar en estado 'PROVISORIA'");
         }
     }
 
@@ -4006,6 +4057,8 @@ public class MbDeclaraciones implements Serializable{
         if(declaracion.getRutaManifYCert() != null) deleteManifYCert();
         if(declaracion.getRutaPermisoFact() != null) deletePermisoFact();
         if(declaracion.getRutaProtocolo() != null) deleteProtocolos();
+        if(!eliminandoDec && declaracion.getActividades().size() > 0) creatDeclaracionBorr();
+        else eliminandoDec = false;
         pulgarDocumentos = "glyphicon-thumbs-down";
         activeIndex = 9;
         JsfUtil.addSuccessMessage("Todos los archivos subidos se han eliminado.");
@@ -4021,6 +4074,7 @@ public class MbDeclaraciones implements Serializable{
         if(firmante.getId() != null) firmanteSwap.setId(firmante.getId());
         if(firmante.getCuit() != 0) firmanteSwap.setCuit(firmante.getCuit());
         if(firmante.getDni() != 0) firmanteSwap.setDni(firmante.getDni());
+        if(firmante.getDniLetra() != null) firmanteSwap.setDniLetra(firmante.getDniLetra());
         if(firmante.getIdRupFis() != null) firmanteSwap.setIdRupFis(firmante.getIdRupFis());
         firmanteSwap.setNombreYApellido(firmante.getNombreYApellido());
         // limpio el firmante vinculado
@@ -4041,6 +4095,7 @@ public class MbDeclaraciones implements Serializable{
         if(firmanteSwap.getId() != null) firmante.setId(firmanteSwap.getId());
         if(firmanteSwap.getCuit() != 0) firmante.setCuit(firmanteSwap.getCuit());
         if(firmanteSwap.getDni() != 0) firmante.setDni(firmanteSwap.getDni());
+        if(firmanteSwap.getDniLetra() != null) firmante.setDniLetra(firmanteSwap.getDniLetra());
         if(firmanteSwap.getIdRupFis() != null) firmante.setIdRupFis(firmanteSwap.getIdRupFis());
         firmante.setNombreYApellido(firmanteSwap.getNombreYApellido());
         // actualizo
@@ -4053,23 +4108,51 @@ public class MbDeclaraciones implements Serializable{
      * Método para actualizar los datos del firmante vinculado
      */
     public void editFirmVinculado(){
-        // valido que no esté repitiendo cuit o dni
-        boolean valida = true;
-        if(!backendSrv.firXDniNoExiste(upFirmExist.getDni()) && est.getFirmante().getDni() != upFirmExist.getDni()) valida = false;
-        if(!backendSrv.firXCuitNoExiste(upFirmExist.getCuit()) && est.getFirmante().getCuit() != upFirmExist.getCuit()) valida = false;
-        if(valida){
-            try{
-                // actualizo la entidad administrativa    
-                Date date = new Date(System.currentTimeMillis());
-                upFirmExist.getAdmin().setFechaModif(date);
-                upFirmExist.getAdmin().setUsExtModif(usLogueado);
-                // actualizo
-                backendSrv.editFirmante(upFirmExist);
-            }catch(Exception ex){
-                JsfUtil.addErrorMessage("Hubo un error actualizando los datos del Firmante. " + ex.getMessage());
+        boolean validaLetra = true;
+        String mensajeError = "";
+        
+        // valido la letra del DNI si corresponde
+        if(upFirmExist.getDniLetra() != null){
+            if(upFirmExist.getDniLetra().length() > 1){
+                validaLetra = false;
+                mensajeError = mensajeError + "El DNI solo puede contener una letra.";
+            }else{
+                if(!upFirmExist.getDniLetra().equals("M") && !upFirmExist.getDniLetra().equals("m") 
+                        && !upFirmExist.getDniLetra().equals("F") && !upFirmExist.getDniLetra().equals("f")){
+                    validaLetra = false;
+                    mensajeError = mensajeError + "La letra del DNI solo puede ser una 'F' o una 'M'.";
+                }
+            }
+        }
+        
+        if(validaLetra){
+            // valido que no esté repitiendo cuit o dni
+            boolean valida = true;
+            if(upFirmExist.getDni() > 0){
+                if(!backendSrv.firXDniNoExiste(upFirmExist.getDni()) && est.getFirmante().getDni() != upFirmExist.getDni()) valida = false;
+            }else{
+                if(!backendSrv.firXCuitNoExiste(upFirmExist.getCuit()) && est.getFirmante().getCuit() != upFirmExist.getCuit()) valida = false;
+            }
+            
+            if(valida){
+                try{
+                    // actualizo la entidad administrativa    
+                    Date date = new Date(System.currentTimeMillis());
+                    upFirmExist.getAdmin().setFechaModif(date);
+                    upFirmExist.getAdmin().setUsExtModif(usLogueado);
+                    // paso a mayúsculas el nombre y apellido
+                    String tmpNombre = upFirmExist.getNombreYApellido();
+                    upFirmExist.setNombreYApellido(tmpNombre.toUpperCase());
+                    // actualizo
+                    backendSrv.editFirmante(upFirmExist);
+                }catch(Exception ex){
+                    JsfUtil.addErrorMessage("Hubo un error actualizando los datos del Firmante. " + ex.getMessage());
+                }
+            }else{
+                JsfUtil.addErrorMessage("El cuit o el dni del Firmante ya se encuentra registrado.");
             }
         }else{
-            JsfUtil.addErrorMessage("El cuit o el dni del Firmante ya se encuentra registrado.");
+            JsfUtil.addErrorMessage("No se pudieron validar los datos ingresados. " + mensajeError);
         }
     }  
     
@@ -4082,6 +4165,7 @@ public class MbDeclaraciones implements Serializable{
         if(newFirmanteSel.getId() != null) firmante.setId(newFirmanteSel.getId());
         if(newFirmanteSel.getCuit() != 0) firmante.setCuit(newFirmanteSel.getCuit());
         if(newFirmanteSel.getDni() != 0) firmante.setDni(newFirmanteSel.getDni());
+        if(newFirmanteSel.getDniLetra() != null) firmante.setDniLetra(newFirmanteSel.getDniLetra());
         if(newFirmanteSel.getIdRupFis() != null) firmante.setIdRupFis(newFirmanteSel.getIdRupFis());
         firmante.setNombreYApellido(newFirmanteSel.getNombreYApellido());
         newFirmanteSel = new Firmante();
@@ -4100,33 +4184,61 @@ public class MbDeclaraciones implements Serializable{
      * No se validará en el RUP.
      */
     public void createFirmante(){
-        // valido que no esté repitiendo cuit o dni
-        boolean valida = true;
-        if(!backendSrv.firXDniNoExiste(newFirmanteReg.getDni())) valida = false;
-        if(!backendSrv.firXCuitNoExiste(newFirmanteReg.getCuit())) valida = false;
-        if(valida){
-            try{
-                // agrego la entidad administrativa      
-                Date date = new Date(System.currentTimeMillis());
-                AdminEntidad admEnt = new AdminEntidad();
-                admEnt.setFechaAlta(date);
-                admEnt.setHabilitado(true);
-                admEnt.setUsExtAlta(usLogueado);
-                newFirmanteReg.setAdmin(admEnt);
-                // persisto
-                backendSrv.createFirmante(newFirmanteReg);
-                // vinculo al Establecimiento
-                if(newFirmanteReg.getCuit() > 0) firmante = backendSrv.getFirmanteByCuit(newFirmanteReg.getCuit());
-                else firmante = backendSrv.getFirmanteByDni(newFirmanteReg.getDni());
-                est.setFirmante(firmante);
-                newFirmanteReg = new Firmante();
-                lstFirmantes = backendSrv.getFirmantesAll();
-                JsfUtil.addSuccessMessage("Se creó el Firmante.");
-            }catch(Exception ex){
-                JsfUtil.addErrorMessage("Hubo un error insertando el nuevo Firmante. " + ex.getMessage());
+        boolean validaLetra = true;
+        String mensajeError = "";
+        
+        // valido la letra del DNI si corresponde
+        if(newFirmanteReg.getDniLetra() != null){
+            if(newFirmanteReg.getDniLetra().length() > 1){
+                validaLetra = false;
+                mensajeError = mensajeError + "El DNI solo puede contener una letra.";
+            }else{
+                if(!newFirmanteReg.getDniLetra().equals("M") && !newFirmanteReg.getDniLetra().equals("m") 
+                        && !newFirmanteReg.getDniLetra().equals("F") && !newFirmanteReg.getDniLetra().equals("f")){
+                    validaLetra = false;
+                    mensajeError = mensajeError + "La letra del DNI solo puede ser una 'F' o una 'M'.";
+                }
+            }
+        }
+        
+        if(validaLetra){
+            // valido que no esté repitiendo cuit o dni
+            boolean valida = true;
+            if(newFirmanteReg.getDni() >= 0){
+                if(!backendSrv.firXDniNoExiste(newFirmanteReg.getDni())) valida = false;
+            }else{
+                if(!backendSrv.firXCuitNoExiste(newFirmanteReg.getCuit())) valida = false;
+            }
+            
+            if(valida){
+                try{
+                    // agrego la entidad administrativa      
+                    Date date = new Date(System.currentTimeMillis());
+                    AdminEntidad admEnt = new AdminEntidad();
+                    admEnt.setFechaAlta(date);
+                    admEnt.setHabilitado(true);
+                    admEnt.setUsExtAlta(usLogueado);
+                    newFirmanteReg.setAdmin(admEnt);
+                    // paso a mayúsculas el nombre y apellido
+                    String tmpNombre = newFirmanteReg.getNombreYApellido();
+                    newFirmanteReg.setNombreYApellido(tmpNombre.toUpperCase());
+                    // persisto
+                    backendSrv.createFirmante(newFirmanteReg);
+                    // vinculo al Establecimiento
+                    if(newFirmanteReg.getCuit() > 0) firmante = backendSrv.getFirmanteByCuit(newFirmanteReg.getCuit());
+                    else firmante = backendSrv.getFirmanteByDni(newFirmanteReg.getDni());
+                    est.setFirmante(firmante);
+                    newFirmanteReg = new Firmante();
+                    lstFirmantes = backendSrv.getFirmantesAll();
+                    JsfUtil.addSuccessMessage("Se creó el Firmante.");
+                }catch(Exception ex){
+                    JsfUtil.addErrorMessage("Hubo un error insertando el nuevo Firmante. " + ex.getMessage());
+                }
+            }else{
+                JsfUtil.addErrorMessage("Ya existe un Firmante registrado con el CUIT o el DNI que intenta registrar.");
             }
         }else{
-            JsfUtil.addErrorMessage("Ya existe un Firmante registrado con el CUIT o el DNI que intenta registrar.");
+            JsfUtil.addErrorMessage("No se pudieron validar los datos ingresados. " + mensajeError);
         }
     }
     
@@ -4926,6 +5038,170 @@ public class MbDeclaraciones implements Serializable{
             }
         }
         return result;
+    }
+
+    private void instanciarDeclaracion() {
+        // verifico si no tiene una Declaración en borrador
+        DeclaracionJurada dec = backendSrv.getDecBorrador(est.getCude());
+        if(dec != null){
+            declaracion = dec;
+            // seteo datos complementarios
+            datosComReg = true;
+            pulgarComp = "glyphicon-thumbs-up";
+            docDec = declaracion.getDocumentacion();
+            lstActDec = declaracion.getActividades();
+            lstFechaDec = declaracion.getFechasDeclaracion();
+            lstCantPers = declaracion.getCantPersonal();
+            lstSupDec = declaracion.getSuperficies();
+            if(declaracion.getVuelco() != null){
+                datosVuelco = true;
+                pulgarVuelco = "glyphicon-thumbs-up";
+                vuelco = declaracion.getVuelco();
+                if(!vuelco.getDias().isEmpty()) lstDiasVuelco = vuelco.getDias();
+                else lstDiasVuelco = new ArrayList<>();
+                lstDescargas = vuelco.getDescargas();
+                if(lstDescargas.isEmpty()){
+                    datosDescargas = false;
+                    pulgarDesc = "glyphicon-thumbs-down";
+                }
+                else{
+                    datosDescargas = true;
+                    pulgarDesc = "glyphicon-thumbs-up";
+                }
+            }
+            else{
+                datosVuelco = false;
+                pulgarVuelco = "glyphicon-thumbs-down";
+                datosDescargas = false;
+                pulgarDesc = "glyphicon-thumbs-down";
+                vuelco = new Vuelco();
+                lstDiasVuelco = new ArrayList<>();
+                lstDescargas = new ArrayList<>(); 
+            }
+            if(declaracion.getAbastecimiento() != null){
+                if(!declaracion.getAbastecimiento().getPozos().isEmpty()){
+                    lstPozos = declaracion.getAbastecimiento().getPozos();
+                    datosPozos = true;
+                    pulgarPozos = "glyphicon-thumbs-up";
+                }else{
+                    lstPozos = new ArrayList<>();
+                    datosPozos = false;
+                    pulgarPozos = "glyphicon-thumbs-down";
+                }
+                if(!declaracion.getAbastecimiento().getAbastos().isEmpty()){
+                    lstAbasto = declaracion.getAbastecimiento().getAbastos();
+                    datosAbastos = true;
+                    pulgarAbasto = "glyphicon-thumbs-up";
+                }else{
+                    lstAbasto = new ArrayList<>();
+                    datosAbastos = false;
+                    pulgarAbasto = "glyphicon-thumbs-down";
+                }
+            }else{
+                abastecimiento = new Abastecimiento();
+                lstPozos = new ArrayList<>();
+                datosPozos = false;
+                pulgarPozos = "glyphicon-thumbs-down";
+                lstAbasto = new ArrayList<>();
+                datosAbastos = false;
+                pulgarAbasto = "glyphicon-thumbs-down";
+            }
+            if(declaracion.getHorario() != null){
+                if(!declaracion.getHorario().getDias().isEmpty()){
+                    lstDias = declaracion.getHorario().getDias();
+                    datosHorarios = true;
+                    pulgarHorario = "glyphicon-thumbs-up";
+                }
+            }else{
+                horario = new Horario();
+                lstDias = new ArrayList<>();
+                datosHorarios = false;
+                pulgarHorario = "glyphicon-thumbs-down";
+            }
+            if(!declaracion.getProductos().isEmpty()){
+                lstProductos = declaracion.getProductos();
+                datosProductos = true;
+                pulgarProductos = "glyphicon-thumbs-up";
+            }else{
+                lstProductos = new ArrayList<>();
+                datosProductos = false;
+                pulgarProductos = "glyphicon-thumbs-down";
+            }
+            if(declaracion.getBarro() != null){
+                barro = declaracion.getBarro();
+                if(barro.isRetiraTransDrp()) habilitaTransDrp = false;
+                else habilitaTransDrp = true;
+                if(barro.isTrataOpDrp()) habilitaOpDrp = false;
+                else habilitaOpDrp = true;
+                datosBarros = true;
+                pulgarBarros = "glyphicon-thumbs-up";
+            }else{
+                barro = new Barro();
+                datosBarros = false;
+                habilitaTransDrp = true;
+                habilitaOpDrp = true;
+                pulgarBarros = "glyphicon-thumbs-down";
+            }
+            if(declaracion.isAdjuntaBalanceMasas() || declaracion.isAdjuntaCertRetiroYDispFinal() || declaracion.isAdjuntaCroquis()
+                    || declaracion.isAdjuntaInicoFact() || declaracion.isAdjuntaManifYCert() || declaracion.isAdjuntaPermisoFact() || declaracion.isAdjuntaProtocolo()){
+                subeBalance = declaracion.isAdjuntaBalanceMasas();
+                subeCertRetiroYDispFinal = declaracion.isAdjuntaCertRetiroYDispFinal();
+                subeManifYCert = declaracion.isAdjuntaManifYCert();
+                subePermisoFact = declaracion.isAdjuntaPermisoFact();
+                subeInicioFact = declaracion.isAdjuntaInicoFact();
+                subeCroquis = declaracion.isAdjuntaCroquis();
+                subeProtocolo = declaracion.isAdjuntaProtocolo();
+                pulgarDocumentos = "glyphicon-thumbs-up";
+            }else{
+                subeBalance = false;
+                subeManifYCert = false;
+                subePermisoFact = false;
+                subeInicioFact = false;
+                subeCroquis = false;
+                subeCertRetiroYDispFinal = false;
+                subeProtocolo = false;
+                pulgarDocumentos = "glyphicon-thumbs-down";
+            }
+        }else{
+            declaracion = new DeclaracionJurada();
+            datosComReg = false;
+            pulgarComp = "glyphicon-thumbs-down";
+            docDec = new DocDec();
+            vuelco = new Vuelco();
+            lstDiasVuelco = new ArrayList<>();
+            pulgarVuelco = "glyphicon-thumbs-down";
+            datosVuelco = false;
+            lstDescargas = new ArrayList<>();
+            datosDescargas = false;
+            pulgarDesc = "glyphicon-thumbs-down";
+            abastecimiento = new Abastecimiento();
+            lstPozos = new ArrayList<>();
+            datosPozos = false;
+            pulgarPozos = "glyphicon-thumbs-down";
+            lstAbasto = new ArrayList<>();
+            datosAbastos = false;
+            pulgarAbasto = "glyphicon-thumbs-down";
+            horario = new Horario();
+            lstDias = new ArrayList<>();
+            datosHorarios = false;
+            pulgarHorario = "glyphicon-thumbs-down";
+            lstProductos = new ArrayList<>();
+            datosProductos = false;
+            pulgarProductos = "glyphicon-thumbs-down";
+            barro = new Barro();
+            datosBarros = false;
+            pulgarBarros = "glyphicon-thumbs-down";
+            pulgarDocumentos = "glyphicon-thumbs-down";
+            habilitaTransDrp = true;
+            habilitaOpDrp = true;
+            subeBalance = false;
+            subeManifYCert = false;
+            subePermisoFact = false;
+            subeInicioFact = false;
+            subeCroquis = false;
+            subeCertRetiroYDispFinal = false;
+            subeProtocolo = false;
+        }
     }
 
     

@@ -48,6 +48,13 @@
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
+        <b:modal id="dlgAyudaCompGral" title="Registro de DJ - Datos Complementarios" styleClass="modalAyudaCompGral"
+            closable="true" >
+                Ayuda general del formulario de Datos complementarios.
+            <f:facet name="footer">
+                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
+            </f:facet>
+        </b:modal>
         
         <!-- Formulario Actividades -->
         <b:modal id="dlgAct" styleClass="modalFrmAct" closable="true" >
@@ -89,44 +96,57 @@
         <b:modal id="dlgFechas" styleClass="modalFrmFechas" closable="true" >
             <h:form prependId="false" id="frModFechas">
                 <b:panel id="pnAddFechas" title="Agregar Fechas de actualización" look="info" collapsible="false" >
-                    <b:selectOneMenu required="true" label="" id="cmbTipoFechas" value="#{mbDeclaraciones.fechaDec.tipoFecha}" >
-                        <f:selectItem itemLabel="Seleccione el tipo de fecha a ingresar" itemValue="" noSelectionOption="true" />  
-                        <f:selectItems value="#{mbDeclaraciones.mapTipoFecha.entrySet()}" var="tipoFecha" 
-                                       itemLabel="#{tipoFecha.value}" itemValue="#{tipoFecha.key}" />
-                    </b:selectOneMenu>
-                    
-                    <p:inputText style="font-size: 12px;font-weight: lighter" label="Fecha: " placeholder="dd/mm/aaaa" id="dtpFecha" 
-                                 value="#{mbDeclaraciones.fechaDec.fecha}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </p:inputText>                    
-
-
-                    <br></br><br></br>
-                    <p:dataTable id="dtFechas" value="#{mbDeclaraciones.lstFechaDec}" var="fecha" 
-                                 style="font-size: 12px" >
-                        <p:column headerText="Tipo" >
-                            <p:outputLabel style="font-weight: lighter" value="#{fecha.descripcion}"/>
-                        </p:column>
-                        <p:column width="100" headerText="Fecha" >
-                            <p:outputLabel style="font-weight: lighter" value="#{fecha.fecha}" >
-                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                            </p:outputLabel>
-                        </p:column>
-                        <p:column width="75" headerText="" >
-                            <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editFecha()}" >
-                                <f:setPropertyActionListener value="#{fecha}" target="#{mbDeclaraciones.fechaDecSelected}" />  
-                                <p:ajax process="@this"  />
-                            </b:commandButton>
-                            <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeFecha()}" >
-                                <f:setPropertyActionListener value="#{fecha}" target="#{mbDeclaraciones.fechaDecSelected}" />  
-                                <p:ajax process="@this" />
-                            </b:commandButton>
-                        </p:column>
-                    </p:dataTable>
+                    <b:row>
+                        <b:column span="12">
+                            <b:selectOneMenu required="true" label="" id="cmbTipoFechas" value="#{mbDeclaraciones.fechaDec.tipoFecha}" >
+                                <f:selectItem itemLabel="Seleccione el tipo de fecha a ingresar" itemValue="" noSelectionOption="true" />  
+                                <f:selectItems value="#{mbDeclaraciones.mapTipoFecha.entrySet()}" var="tipoFecha" 
+                                               itemLabel="#{tipoFecha.value}" itemValue="#{tipoFecha.key}" />
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+                    <b:row>
+                        <b:column span="4">
+                            <p:inputText style="font-size: 12px;font-weight: lighter" placeholder="aaaa-mm-dd" label="Fecha: " id="dtpFecha" 
+                                         value="#{mbDeclaraciones.fechaDec.fecha}">
+                                <f:convertDateTime pattern="yyyy-MM-dd" />
+                            </p:inputText> 
+                        </b:column>
+                    </b:row>
                     <br></br>
-                    <b:commandButton icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" look="success" update="cmbTipoFechas,dtpFecha,dtFechas" />
-                    <b:commandButton icon="glyphicon-ok" action="#{mbDeclaraciones.addFechas()}" look="primary" value="#{mbDeclaraciones.mdAgregarFecha}" 
-                                     ajax="true" update="cmbTipoFechas,messages,dtFechas,dtpFecha" />
+                    <b:row>
+                        <b:column span="12">
+                            <p:dataTable id="dtFechas" value="#{mbDeclaraciones.lstFechaDec}" var="fecha" 
+                                         style="font-size: 12px" >
+                                <p:column headerText="Tipo" >
+                                    <p:outputLabel style="font-weight: lighter" value="#{fecha.descripcion}"/>
+                                </p:column>
+                                <p:column width="100" headerText="Fecha" >
+                                    <p:outputLabel style="font-weight: lighter" value="#{fecha.fecha}" >
+                                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                                    </p:outputLabel>
+                                </p:column>
+                                <p:column width="75" headerText="" >
+                                    <b:commandButton title="Editar" look="warning" ajax="true" size="xs" value="" icon="glyphicon-pencil" action="#{mbDeclaraciones.editFecha()}" >
+                                        <f:setPropertyActionListener value="#{fecha}" target="#{mbDeclaraciones.fechaDecSelected}" />  
+                                        <p:ajax process="@this"  />
+                                    </b:commandButton>
+                                    <b:commandButton title="Eliminar" look="danger" ajax="true" size="xs" value="" icon="glyphicon-trash" action="#{mbDeclaraciones.removeFecha()}" >
+                                        <f:setPropertyActionListener value="#{fecha}" target="#{mbDeclaraciones.fechaDecSelected}" />  
+                                        <p:ajax process="@this" />
+                                    </b:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </b:column>
+                    </b:row>
+                    <br></br>
+                    <b:row>
+                        <b:column span="12">
+                            <b:commandButton icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" look="success" update="cmbTipoFechas,dtpFecha,dtFechas" />
+                            <b:commandButton icon="glyphicon-ok" action="#{mbDeclaraciones.addFechas()}" look="primary" value="#{mbDeclaraciones.mdAgregarFecha}" 
+                                             ajax="true" update="cmbTipoFechas,messages,dtFechas,dtpFecha" />
+                        </b:column>
+                    </b:row>
                     <f:facet name="footer">
                         <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
                     </f:facet>
@@ -341,10 +361,11 @@
 
                 <b:row>
                     <b:column span="12" >
+                        <b:button size="sm" onclick="$('.modalAyudaCompGral').modal();return false;" look="warning" value="Ayuda" />
                         <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-ok" rendered="#{not mbDeclaraciones.datosComReg}" 
                                          title="Guardar los datos complementarios en la Declaración" size="sm" 
                                          action="#{mbDeclaraciones.createDatosCmplementarios()}" ajax="true" 
-                                         look="primary" value="#{mbDeclaraciones.compGuardar}" update="frNav,messages,frTabDatosComp" />
+                                         look="primary" value="#{mbDeclaraciones.compGuardar}" update="frNav,messages,frTabDatosComp,frBtBorr" />
                         <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" icon="glyphicon-trash" rendered="#{not mbDeclaraciones.datosComReg}" 
                                          title="Limpiar los datos complementarios seleccionados" size="sm" 
                                          action="#{mbDeclaraciones.limpiarDatosComp()}" look="danger" value="#{mbDeclaraciones.compLimpiar}" 

@@ -11,6 +11,15 @@ import java.io.Serializable;
 public class ConsultaCude implements Serializable{
     private Long cuitEstablecimiento;
     private Long cuitFirmante;
+    private String dniLetra;
+
+    public String getDniLetra() {
+        return dniLetra;
+    }
+
+    public void setDniLetra(String dniLetra) {
+        this.dniLetra = dniLetra;
+    }
 
     public Long getCuitEstablecimiento() {
         return cuitEstablecimiento;
