@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:h="http://xmlns.jcp.org/jsf/html">
+    
+    <ui:define name="content">
+        <h:form id="frmRolView">
+            <p:panel id="pnView" header="Detalle del Firmante" style="margin-bottom:10px;">
+                <p:messages id="messages" />
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Nombre y Apellido: "/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.nombreYApellido}" />
+
+                    <h:outputLabel value="#{bundle.UsuarioAlta}"/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.usAlta.nombreCompleto}" title="#{bundle.UsuarioAlta}"/>                        
+
+                    <h:outputLabel value="#{bundle.FechaAlta}"/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.strFechaAlta}" title="#{bundle.FechaAlta}"/>                         
+
+                    <h:outputLabel value="#{bundle.UsuarioModifica}"/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.usModif}" title="#{bundle.UsuarioModifica}"/>                        
+
+                    <h:outputLabel value="#{bundle.FechaModifica}"/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.strFechaModif}" title="#{bundle.FechaModifica}"/>                          
+
+                    <h:outputLabel value="#{bundle.UsuarioBaja}"/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.usBaja}" title="#{bundle.UsuarioBaja}"/>                        
+
+                    <h:outputLabel value="#{bundle.FechaBaja}"/>
+                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.strFechaBaja}" title="#{bundle.FechaBaja}"/>  
+
+                    <h:outputLabel value="Establecimientos representados" />
+                    <p:commandButton value="Ver" type="button" onclick="PF('Est').show();" actionListener="#{mbFirmantes.firmanteSelected.establecimientos}" />      
+                </h:panelGrid>   
+                
+                <p:dialog style="font-size: 80%" 
+                          header="Listado de Establecimientos asociados al Firmante" 
+                          widgetVar="Est" 
+                          showEffect="fade" 
+                          hideEffect="fade" 
+                          width="70%">
+                    <p:dataTable value="#{mbFirmantes.firmanteSelected.establecimientos}" var="est" id="estList" filteredValue="#{mbFirmantes.listEstFilter}" >
+                        <p:column headerText="CUDE" filterMatchMode="contains" filterBy="#{est.cude}" sortBy="#{est.cude}" >
+                            <p:outputLabel value="#{est.cude}"/> 
+                        </p:column>   
+                        <p:column headerText="Razón social" filterMatchMode="contains" filterBy="#{est.razonSocial}" sortBy="#{est.razonSocial}" >
+                            <p:outputLabel value="#{est.razonSocial}"/> 
+                        </p:column>  
+                        <p:column headerText="CUIT" filterMatchMode="contains" filterBy="#{est.cuit}" sortBy="#{est.cuit}" >
+                            <p:outputLabel value="#{est.cuit}"/> 
+                        </p:column>  
+                        <p:column headerText="Detalle" filterMatchMode="contains" filterBy="#{est.procProduct}" sortBy="#{est.procProduct}" >
+                            <p:outputLabel value="#{est.procProduct}"/> 
+                        </p:column>  
+                        <p:column headerText="Calle" filterMatchMode="contains" filterBy="#{est.inmueble.calle}" sortBy="#{est.inmueble.calle}" >
+                            <p:outputLabel value="#{est.inmueble.calle}"/> 
+                        </p:column>  
+                        <p:column headerText="N°" filterMatchMode="contains" filterBy="#{est.inmueble.numero}" sortBy="#{est.inmueble.numero}" >
+                            <p:outputLabel value="#{est.inmueble.numero}"/> 
+                        </p:column>  
+                        <p:column headerText="Localidad" filterMatchMode="contains" filterBy="#{est.inmueble.localidad}" sortBy="#{est.inmueble.localidad}" >
+                            <p:outputLabel value="#{est.inmueble.localidad}"/> 
+                        </p:column>  
+                    </p:dataTable>
+                </p:dialog>
+            </p:panel>
+
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton icon="ui-icon-refresh" action="#{mbFirmantes.prepareList}" value="Volver" ajax="false"/>
+                </f:facet>
+            </p:toolbar>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+
+

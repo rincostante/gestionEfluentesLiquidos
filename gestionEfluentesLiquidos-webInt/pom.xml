@@ -152,6 +152,21 @@
                         <id>wsimport-generate-AccesoAppWebService</id>
                         <phase>generate-sources</phase>
                     </execution>
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>localhost_8080/PersonasWebService/PersonasWebService.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <packageName>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.wsExt</packageName>
+                            <wsdlLocation>http://localhost:8080/PersonasWebService/PersonasWebService?WSDL</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/PersonasWebService.stale</staleFile>
+                        </configuration>
+                        <id>wsimport-generate-PersonasWebService</id>
+                        <phase>generate-sources</phase>
+                    </execution>
                 </executions>
                 <dependencies>
                     <dependency>

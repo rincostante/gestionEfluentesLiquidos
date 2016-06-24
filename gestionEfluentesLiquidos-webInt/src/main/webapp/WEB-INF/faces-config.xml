@@ -32,4 +32,14 @@
         <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb.MbLogin</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>mbFirmantes</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb.MbFirmantes</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>mbEstablecimientos</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb.MbEstablecimientos</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 </faces-config>

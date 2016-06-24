@@ -33,6 +33,11 @@
                         <p:menuitem value="Inicio" 
                                     url="#{bundle.Servidor}#{bundle.RutaAplicacion}" /> 
                         
+                        <p:submenu label="Administración" >
+                            <p:menuitem value="Firmantes" 
+                                        url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizFirmante}/list.xhtml"/>
+                        </p:submenu>
+                        
                         <p:submenu label="Seguridad" rendered="#{mbLogin.ambito == 'Seguridad'}">
                             <p:menuitem value="Usuarios" 
                                         url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizUsuario}/list.xhtml"/>
