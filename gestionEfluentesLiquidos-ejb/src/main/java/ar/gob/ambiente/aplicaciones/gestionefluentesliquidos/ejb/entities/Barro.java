@@ -129,7 +129,7 @@ public class Barro implements Serializable {
     private boolean contieneElemAnexoD;
     
     /**
-     * Campo que especifica si se adjunta copia de protocolo
+     * Campo que especifica si No se retiraron barros durante el período declarado
      */
     private boolean adjuntaProtocolo;
     
@@ -141,12 +141,40 @@ public class Barro implements Serializable {
     /**
      * Campo que especifica si los barros son tratados por un Operador registrado en la DRP
      */
-    private boolean trataOpDrp;       
+    private boolean trataOpDrp;    
+    
+    /**
+     * Campo que especifica los datos del Transportista, en caso de utilizarlo y que el mismo no esté registrado en la DRP
+     * size = 100
+     */
+    private String datosTranspNoDrp;
+    
+    /**
+     * Campo que especifica los datos del Operador, en caso de utilizarlo y que el mismo no esté registrado en la DRP
+     * size = 100
+     */
+    private String datosOperadorNoDrp;
     
     
     /***********************
      ** Métodos de acceso **
      ***********************/
+    public String getDatosTranspNoDrp() {
+        return datosTranspNoDrp;
+    }
+
+    public void setDatosTranspNoDrp(String datosTranspNoDrp) {
+        this.datosTranspNoDrp = datosTranspNoDrp;
+    }
+
+    public String getDatosOperadorNoDrp() {
+        return datosOperadorNoDrp;
+    }
+
+    public void setDatosOperadorNoDrp(String datosOperadorNoDrp) {
+        this.datosOperadorNoDrp = datosOperadorNoDrp;
+    }
+
     public boolean isRetiraOtrosMedios() {
         return retiraOtrosMedios;
     }
