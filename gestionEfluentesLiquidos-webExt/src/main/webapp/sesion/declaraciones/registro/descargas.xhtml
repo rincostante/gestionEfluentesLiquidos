@@ -94,8 +94,8 @@
                     <b:row>
                         <b:column span="12">
                             <p:inputTextarea id="txMotAnulado" value="#{mbDeclaraciones.descarga.motivoAnulado}" style="font-weight: lighter; color: gray"
-                                             styleClass="form-control bf-no-message" label="Motivo de anulación" 
-                                             placeholder="En caso de estar anulada, explique el motivo brevemente." maxlength="500" />
+                                             styleClass="form-control bf-no-message" label="Motivo de anulación/líquidos acumulados o retirados." 
+                                             placeholder="Detalle brevemento los motivos de la anulación, si existieran y los líquidos acumulados o retirados en caso de corresponder." maxlength="500" />
                         </b:column>
                     </b:row>
                     <br></br>
@@ -131,7 +131,7 @@
                                 </b:selectOneMenu>
                             </b:column>
                             <b:column span="6">
-                                <b:selectOneMenu label="Tipo de tratado" id="cmbValorTipoTrat" value="#{mbDeclaraciones.valorTipoTrat}" >
+                                <b:selectOneMenu label="Tipo de tratamiento" id="cmbValorTipoTrat" value="#{mbDeclaraciones.valorTipoTrat}" >
                                     <f:selectItem itemLabel="(Seleccionar)" itemValue="" noSelectionOption="true" />  
                                     <f:selectItems value="#{mbDeclaraciones.mapValoresTrat.entrySet()}" var="valTrat" 
                                                    itemLabel="#{valTrat.value}" itemValue="#{valTrat.key}" />

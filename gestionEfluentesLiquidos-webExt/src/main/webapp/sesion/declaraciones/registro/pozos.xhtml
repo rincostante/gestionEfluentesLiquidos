@@ -25,7 +25,7 @@
         </b:modal>
      
         <h:form id="frPozos" prependId="false">
-            <b:panel title="Pozos de captación de agua" look="info" collapsible="false">
+            <b:panel title="Pozos de captación de agua subterránea" look="info" collapsible="false">
                 <b:row>
                     <b:column span="12" >
                         <b:commandButton icon="glyphicon-refresh" update="frPozos" value="Actualizar" look="success" title="Actualizar para la carga"/>
@@ -76,7 +76,7 @@
                             </b:selectOneMenu>
                         </b:column>
                         <b:column span="4">
-                            <b:inputText label="Ptencia (HP)" value="#{mbDeclaraciones.pozo.potenciaBomba}" >
+                            <b:inputText label="Potencia (HP)" value="#{mbDeclaraciones.pozo.potenciaBomba}" >
                                 <f:validateDoubleRange />
                             </b:inputText>
                         </b:column>

@@ -260,12 +260,18 @@
                                 </b:column>
                                 <b:column span="6" >
                                     <b:row>
+                                        <b:column span="12">
+                                            <b:inputText id="txtTranspNoDrp" placeholder="Ingrese los datos del Transportista no reg. en DRP" label="Datos Transportista no registrado:" 
+                                                         value="#{mbDeclaraciones.barro.datosTranspNoDrp}" disabled="#{not mbDeclaraciones.habilitaTransDrp}" />
+                                        </b:column>
+                                    </b:row>
+                                    <b:row>
                                         <b:column span="6">
-                                            <b:inputText label="Volumen (m3/día): " value="#{mbDeclaraciones.barro.volumen}" >
+                                            <b:inputText label="Volumen (m3/día): " value="#{mbDeclaraciones.barro.volumen}" disabled="#{not mbDeclaraciones.habilitaTransDrp}" >
                                             </b:inputText>
                                         </b:column>
                                         <b:column span="6">
-                                            <b:inputText label="Humedad (%): " value="#{mbDeclaraciones.barro.porcentaje}" >
+                                            <b:inputText label="Humedad (%): " value="#{mbDeclaraciones.barro.porcentaje}" disabled="#{not mbDeclaraciones.habilitaTransDrp}" >
                                             </b:inputText>
                                         </b:column>
                                     </b:row>
@@ -360,6 +366,12 @@
                                 </b:column>
                                 <b:column span="6" >
                                     <b:row>
+                                        <b:column span="12">
+                                            <b:inputText id="txtOpNoDrp" placeholder="Ingrese los datos del Operador no reg. en DRP" label="Datos Operador no registrado:" 
+                                                         value="#{mbDeclaraciones.barro.datosOperadorNoDrp}" disabled="#{not mbDeclaraciones.habilitaOpDrp}" />
+                                        </b:column>
+                                    </b:row>
+                                    <b:row>
                                         <b:column span="6" >
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.destLandFarming}" label="" 
                                                 caption="Landfarming" disabled="#{not mbDeclaraciones.habilitaOpDrp}"/>
@@ -406,11 +418,11 @@
                             <b:row>
                                 <b:column span="6" >
                                     <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.contieneElemAnexoD}" label="" 
-                                                             caption="Indicar si los barros contienen los compuestos o las características de origen listados en las Tablas Nº 1 y Nº 2 del Anexo I de la Resolución MDSMA Nº 097/2001 – Ver Anexo D del Instructivo" />
+                                                             caption="Indicar si los barros contienen los compuestos o las características de origen listados en las Tablas Nº 1 y Nº 2 del Anexo I de la Resolución MDSMA Nº 097/2001" />
                                 </b:column>
                                 <b:column span="6" >
                                     <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.adjuntaProtocolo}" label="" 
-                                                             caption="CARACTERIZACIÓN DE BARROS: ADJUNTA COPIA DE PROTOCOLO" />
+                                                             caption="No se retiraron barros durante el período declarado" />
                                 </b:column>
                             </b:row>
                         </b:panel>

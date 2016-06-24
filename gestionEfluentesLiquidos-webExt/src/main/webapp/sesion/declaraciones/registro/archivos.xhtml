@@ -32,6 +32,48 @@
             </h:form>  
             <b:row>
                 <b:column span="12">
+                    <b:label tooltip="Adjuntar croquis de ubicación del Establecimiento con las respectivas descargas declaradas." 
+                                     text="Croquis de ubicación del Establecimiento" severity="info"/>
+                    <b:panel collapsible="false" look="info">
+                        <h:form id="frUpCroquis" enctype="multipart/form-data" prependId="false">
+                            <b:row>
+                                <b:column span="12">
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé Croquis de ubicación del Establecimiento con las respectivas descargas documentadas y la/s calles para las cuales se recibió permiso de factibilidad, puede ingresarlo en un único archivo .pdf, jpg, png o gif</p>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaCroquis}" label="" caption="" 
+                                              onchange="ajax:mbDeclaraciones.habilitarCroquis()" >
+                                        <p:ajax event="change" update="frUpCroquis"/>
+                                    </b:switch>
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" 
+                                                  fileUploadListener="#{mbDeclaraciones.subirCroquis}" mode="advanced" dragDropSupport="false" 
+                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
+                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaCroquis}" />
+                                </b:column>
+                            </b:row>
+                            <b:row>
+                                <b:column span="12">
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta Croquis de ubicación del Establecimiento" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
+                                                     update="frUpCroquis" size="xs"  />
+                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Croquis de ubicación del Establecimiento subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
+                                                     action="#{mbDeclaraciones.deleteCroquis}" process="@this" update="frNav,frUpCroquis,messages" size="xs"  />
+                                </b:column>
+                            </b:row>
+                        </h:form>
+                    </b:panel>
+                </b:column>
+                <b:column span="12">
                     <b:label tooltip="Si adjunta la copia del balance de masas, ingréselo mediante este formulario." 
                                      text="Balance de masas" severity="info"/>
                     <b:panel collapsible="false" look="info">
@@ -73,8 +115,8 @@
                     </b:panel>
                 </b:column>
                 <b:column span="12">
-                    <b:label tooltip="Si adjunta la copia de los Manifiestos y Certificado ambiental, ingréselo mediante este formulario." 
-                                     text="Manifiestos y Certificado ambiental" severity="info"/>
+                    <b:label tooltip="Si adjunta la copia de los Manifiestos y y/o Certificados de retiro y diposición de líquidos y/o barros, ingréselo mediante este formulario." 
+                                     text="Manifiestos y/o Certificados de retiro y diposición de líquidos y/o barros" severity="info"/>
                     <b:panel collapsible="false" look="info">
                         <h:form id="frUpManifYCert" enctype="multipart/form-data" prependId="false">
                             <b:row>
@@ -193,48 +235,6 @@
                                                      update="frUpInicoFact" size="xs"  />
                                     <b:commandButton disabled="#{not mbDeclaraciones.subeInicioFact or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Inicio de trámite de Factibilidad subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
                                                      action="#{mbDeclaraciones.deleteInicioFact()}" process="@this" update="frNav,frUpInicoFact,messages" size="xs"  />
-                                </b:column>
-                            </b:row>
-                        </h:form>
-                    </b:panel>
-                </b:column>
-                <b:column span="12">
-                    <b:label tooltip="Si adjunta el Croquis de ubicación del Establecimiento, ingréselo mediante este formulario." 
-                                     text="Croquis de ubicación del Establecimiento" severity="info"/>
-                    <b:panel collapsible="false" look="info">
-                        <h:form id="frUpCroquis" enctype="multipart/form-data" prependId="false">
-                            <b:row>
-                                <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé Croquis de ubicación del Establecimiento con las respectivas descargas documentadas y la/s calles para las cuales se recibió permiso de factibilidad, puede ingresarlo en un único archivo .pdf, jpg, png o gif</p>
-                                </b:column>
-                            </b:row>
-                            <b:row>
-                                <b:column span="12">
-                                    <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.declaracion.adjuntaCroquis}" label="" caption="" 
-                                              onchange="ajax:mbDeclaraciones.habilitarCroquis()" >
-                                        <p:ajax event="change" update="frUpCroquis"/>
-                                    </b:switch>
-                                </b:column>
-                            </b:row>
-                            <b:row>
-                                <b:column span="12">
-                                    <p:fileUpload disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" 
-                                                  fileUploadListener="#{mbDeclaraciones.subirCroquis}" mode="advanced" dragDropSupport="false" 
-                                        update="frNav,messages" sizeLimit="2000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|rtf|doc|docx)$/" 
-                                        label="Buscar" uploadLabel="Subir" cancelLabel="Cancelar" />
-                                </b:column>
-                            </b:row>
-                            <b:row>
-                                <b:column span="12">
-                                    <b:inputText disabled="true" label="" value="#{mbDeclaraciones.declaracion.rutaCroquis}" />
-                                </b:column>
-                            </b:row>
-                            <b:row>
-                                <b:column span="12">
-                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" title="Actualizar ruta Croquis de ubicación del Establecimiento" icon="glyphicon-refresh" value="#{mbDeclaraciones.mdActualizar}" process="@this" 
-                                                     update="frUpCroquis" size="xs"  />
-                                    <b:commandButton disabled="#{not mbDeclaraciones.subeCroquis or mbDeclaraciones.declaracion.firmante ne null}" title="Eliminar Croquis de ubicación del Establecimiento subido" look="danger" icon="glyphicon-trash"  value="#{mbDeclaraciones.mdLimpiar}" 
-                                                     action="#{mbDeclaraciones.deleteCroquis}" process="@this" update="frNav,frUpCroquis,messages" size="xs"  />
                                 </b:column>
                             </b:row>
                         </h:form>

@@ -132,7 +132,7 @@
                             <b:row>
                                 <b:column span="12">
                                     <b:switch disabled="#{mbDeclaraciones.declaracion.firmante ne null}" value="#{mbDeclaraciones.vuelco.horarioDiscontinuo}" 
-                                              label="" caption="Horario de Vuelcos discontinuo" 
+                                              label="" caption="Horario de Vuelcos" 
                                               onchange="ajax:mbDeclaraciones.habilitarDiasVuelco()" >
                                         <p:ajax event="change" update="cmbDiaDes,pnHorIniDesc,pnHorFinDesc,btnAddDiaVlc,btnLimDiaVlc,btnCanDiaVlc"/>
                                     </b:switch>
@@ -257,8 +257,7 @@
                                 <b:column span="12">
                                     <p:inputTextarea value="#{mbDeclaraciones.vuelco.procProduct}" style="font-weight: lighter; color: gray; font-size: 14px" 
                                             styleClass="form-control bf-no-message" label="Descripción del proceso productivo" 
-                                            placeholder="En caso de no estar registrado en la DRP, detallar." maxlength="500" 
-                                            disabled="#{mbDeclaraciones.vuelco.inscripto}" />
+                                            placeholder="Detallar aquí el proceso productivo del Establecimiento." maxlength="500" />
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -317,7 +316,7 @@
                 <b:row>
                     <!-- Circuitos -->
                     <b:column span="5" >
-                        <b:label tooltip="Indique las características de los diferentes circuitos de agua" text="Características de los circuitos" severity="info"/>
+                        <b:label tooltip="Indique las características de los diferentes circuitos de agua, previo al tratamiento." text="Características de los circuitos" severity="info"/>
                         <b:panel collapsible="false" look="info">
                             <b:row>
                                 <b:column span="12" >
@@ -335,7 +334,7 @@
                     </b:column>
                     <!-- Calidad afluente -->
                     <b:column span="7" >
-                        <b:label tooltip="Indique si el líquido residual crudo contiene alguna de estas sustancias" text="Calidad del Afluente" severity="info"/>
+                        <b:label tooltip="Indique si el líquido residual crudo contiene alguna de estas sustancias, previo al tratamiento." text="Calidad del Afluente" severity="info"/>
                         <b:panel collapsible="false" look="info">
                             <b:row>
                                 <b:column span="6" >
@@ -365,7 +364,7 @@
                 <!-- Características afluente -->
                 <b:row>
                     <b:column span="12" >
-                        <b:label tooltip="Indique el grado de acidez del afluente" text="Carcaterística del Afluente" severity="info"/>
+                        <b:label tooltip="Indique el grado de acidez del afluente, previo al tratamiento." text="Carcaterística del Afluente" severity="info"/>
                         <b:panel collapsible="false" look="info">
                             <b:row>
                                 <b:column span="4" >

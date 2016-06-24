@@ -61,12 +61,12 @@
                     </b:row>
                     <b:row>
                         <b:column span="2">
-                            <b:inputText label="Caudal (m3/h)" value="#{mbDeclaraciones.abasto.caudal}" >
+                            <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.abasto.caudal}" >
                                 <f:validateDoubleRange />
                             </b:inputText>
                         </b:column>
                         <b:column span="2">
-                            <b:inputText label="Purga (m3/h)" value="#{mbDeclaraciones.abasto.purga}" >
+                            <b:inputText label="Purga (m3/día)" value="#{mbDeclaraciones.abasto.purga}" >
                                 <f:validateDoubleRange />
                             </b:inputText>
                         </b:column>
@@ -88,8 +88,8 @@
                     <b:row>
                         <b:column span="12">
                             <p:inputTextarea value="#{mbDeclaraciones.abasto.descOtraFuente}" style="font-weight: lighter; color: gray; font-size: 14px" 
-                                            styleClass="form-control bf-no-message" label="Descripción de otra fuente" 
-                                            placeholder="Descripción de las características de la fuente si la hubiera." maxlength="250" />
+                                            styleClass="form-control bf-no-message" label="Descripción de otra fuente o información complementaria" 
+                                            placeholder="Descripción de las características de la otra fuente si la hubiera, y de cualquier información complementaria (250 carct.)" maxlength="250" />
                         </b:column>
                     </b:row>
                     <br></br>

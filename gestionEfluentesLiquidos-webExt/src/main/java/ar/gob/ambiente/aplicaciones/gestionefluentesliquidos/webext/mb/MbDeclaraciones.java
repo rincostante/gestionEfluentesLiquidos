@@ -374,7 +374,7 @@ public class MbDeclaraciones implements Serializable{
         prodGuardarMat = "Guardar Materia";
         barrGuardar = "Guardar Barros";
         barrLimpiar = "Limpiar Barros";
-        barrActualizar = "Actualizar Barros registradoe";
+        barrActualizar = "Actualizar Barros registrados";
         barrEliminar = "Eliminar Barros registrados";
         firAgregarExistente = "Agregar existente";
         firRegistarNuevo = "Registrar nuevo";
@@ -2704,9 +2704,13 @@ public class MbDeclaraciones implements Serializable{
      */
     public void editBaros(){
         resetEdit();
-        declaracion.setBarro(barro);
-        creatDeclaracionBorr();
-        JsfUtil.addSuccessMessage("Las características del Barro se actualizaron correctamente.");
+        if(validarBarros()){
+            declaracion.setBarro(barro);
+            creatDeclaracionBorr();
+            JsfUtil.addSuccessMessage("Las características del Barro se actualizaron correctamente.");
+        }else{
+            JsfUtil.addErrorMessage("No se pudieron validar los datos del Barro a actualizar.");
+        }
     }     
     
     /**
@@ -4934,6 +4938,9 @@ public class MbDeclaraciones implements Serializable{
         barro.setRetiraOtrosMedios(false);
         barro.setDescOtroTratamiento("");
         barro.setDescOtrosMedios("");
+        barro.setVolumen(0);
+        barro.setPorcentaje(0);
+        barro.setDatosTranspNoDrp("");
     }
 
     /**
@@ -4946,6 +4953,7 @@ public class MbDeclaraciones implements Serializable{
         barro.setDestOtros(false);
         barro.setUsoComoInsumo("");
         barro.setEspecifOtroDestino("");
+        barro.setDatosOperadorNoDrp("");
     }
 
     private boolean validarVuelco() {
@@ -4953,7 +4961,7 @@ public class MbDeclaraciones implements Serializable{
         if(vuelco.isHorarioDiscontinuo()){
             if(!lstDiasVuelco.isEmpty()){
                 valida = false;
-                JsfUtil.addErrorMessage("Ha seleccionado horario de Vuelco discontinuo, no debe asingar días de Vuelco.");
+                JsfUtil.addErrorMessage("Debe seleccionar 'Horario de Vuelco' para ingresar días.");
             }
         }
         
@@ -4968,6 +4976,7 @@ public class MbDeclaraciones implements Serializable{
             }
         }
         
+        /*
         if(vuelco.getOrgAutorizante() == null || vuelco.getOrgAutorizante().equals("")){
             valida = false;
             JsfUtil.addErrorMessage("Debe especificar el Organismo autorizante.");
@@ -4982,6 +4991,7 @@ public class MbDeclaraciones implements Serializable{
             valida = false;
             JsfUtil.addErrorMessage("El caudal autorizado debe ser mayor que 0.");
         }
+        */
         
         return valida;
     }
