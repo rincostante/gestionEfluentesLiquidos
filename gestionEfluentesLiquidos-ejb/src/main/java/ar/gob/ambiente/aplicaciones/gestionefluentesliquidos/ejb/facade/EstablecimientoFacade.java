@@ -70,4 +70,16 @@ public class EstablecimientoFacade extends AbstractFacade<Establecimiento> {
                 .setParameter("cuit", cuit);
         return q.getResultList();
     }
+    
+    /**
+     * Método que devuelve todos los Establecimientos habilitados
+     * @return 
+     */
+    public List<Establecimiento> getHabilitados(){
+        em = getEntityManager();
+        String queryString = "SELECT est FROM Establecimiento est "
+                + "WHERE est.admin.habilitado = true"; 
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }    
 }

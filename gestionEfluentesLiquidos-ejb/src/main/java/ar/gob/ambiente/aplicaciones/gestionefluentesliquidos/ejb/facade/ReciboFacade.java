@@ -7,9 +7,11 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Recibo;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,28 @@ public class ReciboFacade extends AbstractFacade<Recibo> {
         super(Recibo.class);
     }
     
+    public Integer getUltimo(){
+        em = getEntityManager();    
+        String queryString = "SELECT MAX(id) FROM recibo";
+        Query q = em.createNativeQuery(queryString);
+        if((Integer)q.getSingleResult() != null){
+            return (Integer)q.getSingleResult();
+        }
+        return null;
+    }
+    
+    public Recibo getByCodigo(String codigo){
+        List<Recibo> listRec;
+        em = getEntityManager();    
+        String queryString = "SELECT rec FROM Recibo rec "
+                + "WHERE rec.codigo = :codigo";  
+        Query q = em.createQuery(queryString)
+                .setParameter("codigo", codigo);
+        listRec = q.getResultList();
+        if(!listRec.isEmpty()){
+            return listRec.get(0);
+        }else{
+            return null;
+        } 
+    }    
 }

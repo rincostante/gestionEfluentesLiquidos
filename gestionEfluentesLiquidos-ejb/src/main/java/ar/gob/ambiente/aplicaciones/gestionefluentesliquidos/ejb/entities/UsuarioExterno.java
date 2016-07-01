@@ -41,7 +41,7 @@ public class UsuarioExterno implements Serializable {
     /**
      * Contraseña que deberá cambiarse al iniciar sesión por primera vez
      */
-    @Column (nullable=false, length=100, unique=true)
+    @Column (nullable=false, length=100)
     @NotNull(message = "El campo clave no puede ser nulo")
     @Size(message = "el campo clave no puede tener más de 100 caracteres", min = 1, max = 100)
     private String clave;

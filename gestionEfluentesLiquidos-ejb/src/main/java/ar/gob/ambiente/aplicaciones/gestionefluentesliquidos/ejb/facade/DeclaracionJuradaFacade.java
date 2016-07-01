@@ -65,4 +65,24 @@ public class DeclaracionJuradaFacade extends AbstractFacade<DeclaracionJurada> {
             return lstDec.get(0);
         }
     }
+    
+    /**
+     * Método para obtener una Declaración según el CUDE, más allá de su estado
+     * @param cude
+     * @return 
+     */
+    public DeclaracionJurada getByCude(String cude){    
+        List<DeclaracionJurada> lstDec;
+        em = getEntityManager();
+        String queryString = "SELECT dec FROM DeclaracionJurada dec "
+                + "WHERE dec.cude = :cude";
+        Query q = em.createQuery(queryString)
+                .setParameter("cude", cude);
+        lstDec = q.getResultList();
+        if(lstDec.isEmpty()){
+            return null;
+        }else{
+            return lstDec.get(0);
+        }
+    }
 }

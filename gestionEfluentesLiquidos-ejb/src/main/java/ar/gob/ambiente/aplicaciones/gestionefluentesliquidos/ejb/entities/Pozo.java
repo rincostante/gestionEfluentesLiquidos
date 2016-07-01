@@ -87,8 +87,12 @@ public class Pozo implements Serializable {
     private static final Map<Integer, String> MP_TIPO_BOMBA;
     static{
        MP_TIPO_BOMBA = new TreeMap<>();
-       MP_TIPO_BOMBA.put(1, "CENTRIFUGA");
-       MP_TIPO_BOMBA.put(2, "MOTOR SUMERGIDO");
+       MP_TIPO_BOMBA.put(1, "De Eje Vertical");
+       MP_TIPO_BOMBA.put(2, "A Motor Sumergido");
+       MP_TIPO_BOMBA.put(3, "Con Inyección");
+       MP_TIPO_BOMBA.put(4, "A Cilindro");
+       MP_TIPO_BOMBA.put(5, "Centrífuga");
+       MP_TIPO_BOMBA.put(6, "Otra");
     }     
 
     

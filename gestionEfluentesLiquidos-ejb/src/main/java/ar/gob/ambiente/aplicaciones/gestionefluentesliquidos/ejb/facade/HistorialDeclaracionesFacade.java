@@ -6,6 +6,7 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialDeclaraciones;
 import java.util.List;
@@ -52,4 +53,25 @@ public class HistorialDeclaracionesFacade extends AbstractFacade<HistorialDeclar
             return null;
         }        
     }    
+    
+    /**
+     * Método para obtener el Historial de la Declaración activa según la declaración
+     * @param dec
+     * @return 
+     */
+    public HistorialDeclaraciones getByDeclaracion(DeclaracionJurada dec){
+        List<HistorialDeclaraciones> listHisDec;
+        em = getEntityManager();    
+        String queryString = "SELECT hd FROM HistorialDeclaraciones hd "
+                + "WHERE hd.declaracion = :dec "
+                + "AND hd.activa = true";  
+        Query q = em.createQuery(queryString)
+                .setParameter("dec", dec);
+        listHisDec = q.getResultList();
+        if(!listHisDec.isEmpty()){
+            return listHisDec.get(0);
+        }else{
+            return null;
+        } 
+    }
 }

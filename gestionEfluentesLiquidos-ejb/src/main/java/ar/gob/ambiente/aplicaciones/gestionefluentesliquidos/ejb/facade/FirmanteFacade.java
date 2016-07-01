@@ -127,5 +127,13 @@ public class FirmanteFacade extends AbstractFacade<Firmante> {
             return null;
         }
     }
+    
+    public List<Firmante> getByOrder(){
+        em = getEntityManager();
+        String queryString = "SELECT fir FROM Firmante fir "
+                + "ORDER BY fir.nombreYApellido";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }        
 }
 

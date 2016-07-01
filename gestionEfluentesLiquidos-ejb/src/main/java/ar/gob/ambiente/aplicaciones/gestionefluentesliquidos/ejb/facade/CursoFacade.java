@@ -7,9 +7,11 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Curso;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,11 @@ public class CursoFacade extends AbstractFacade<Curso> {
         super(Curso.class);
     }
     
+    public List<Curso> getByOrder(){
+        em = getEntityManager();
+        String queryString = "SELECT cur FROM Curso cur "
+                + "ORDER BY cur.nombre";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }    
 }

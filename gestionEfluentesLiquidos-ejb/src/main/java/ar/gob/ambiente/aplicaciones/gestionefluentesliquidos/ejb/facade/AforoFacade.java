@@ -7,9 +7,11 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Aforo;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,11 @@ public class AforoFacade extends AbstractFacade<Aforo> {
         super(Aforo.class);
     }
     
+    public List<Aforo> getByOrder(){
+        em = getEntityManager();
+        String queryString = "SELECT af FROM Aforo af "
+                + "ORDER BY af.nombre";
+        Query q = em.createQuery(queryString);
+        return q.getResultList();
+    }
 }

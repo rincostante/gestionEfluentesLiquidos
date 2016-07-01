@@ -16,6 +16,7 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Histor
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialFirmantes;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Operador;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Partido;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Recibo;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Rol;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.TipoAbasto;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.TipoCaudal;
@@ -38,6 +39,7 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.PartidoF
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.TipoAbastoFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.TipoCaudalFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.UnidadFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.ReciboFacade;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -83,6 +85,9 @@ public class BackendSrv {
     private HistorialFirmantesFacade historialFirmFacade;
     @EJB
     private HistorialDeclaracionesFacade historialDeclaFacade;
+    
+    @EJB
+    private ReciboFacade reciboFacade;
 
     /******************************
      * Métodos para los Usuarios **
@@ -464,7 +469,7 @@ public class BackendSrv {
      * @return 
      */
     public List<Firmante> getFirmantesAll(){
-        return firmanteFacade.findAll();
+        return firmanteFacade.getByOrder();
     }     
     
     
@@ -508,6 +513,18 @@ public class BackendSrv {
         return estFacade.getByCuit(cuit);
     }
     
+    /**
+     * Método que devuelve todos los Establecimientos habilitados
+     * @return 
+     */
+    public List<Establecimiento> getEstablecimientos(){
+        return estFacade.getHabilitados();
+    }
+    
+    public Establecimiento getEstablecimientoById(Long id){
+        return estFacade.find(id);
+    }    
+    
     
     /************************************
      * Métodos para los Cursos de agua **
@@ -543,7 +560,7 @@ public class BackendSrv {
      * @return 
      */
     public List<Curso> getCursosAll(){
-        return cursoFacade.findAll();
+        return cursoFacade.getByOrder();
     } 
     
     
@@ -660,7 +677,7 @@ public class BackendSrv {
      * @return 
      */
     public List<Aforo> getAforosAll(){
-        return aforoFacade.findAll();
+        return aforoFacade.getByOrder();
     }    
     
     
@@ -820,6 +837,15 @@ public class BackendSrv {
     }
     
     /**
+     * Metodo para obteber la Declaración jurada del CUDE
+     * @param cude
+     * @return 
+     */
+    public DeclaracionJurada getDeclaracionByCude(String cude){
+        return decFacade.getByCude(cude);
+    }
+    
+    /**
      * Método para obtener todas las Declaraciones Juradas
      * Se implementa para poder exponerlo como servicio.
      * @return 
@@ -835,6 +861,15 @@ public class BackendSrv {
      */
     public HistorialDeclaraciones getUltimaDeclaracion(Establecimiento est){
         return historialDeclaFacade.getUltimoActivo(est);
+    }
+    
+    /**
+     * Método para obtener el Historial de la Declaración activa según la declaración
+     * @param dec
+     * @return 
+     */
+    public HistorialDeclaraciones getHistorialDecByDec(DeclaracionJurada dec){
+        return historialDeclaFacade.getByDeclaracion(dec);
     }
     
     /**
@@ -864,5 +899,17 @@ public class BackendSrv {
     
     public void deleteDeclaBorrador(DeclaracionJurada dec){
         decFacade.remove(dec);
+    }
+    
+    public Integer getUltimoIdRecibo(){
+        return reciboFacade.getUltimo();
+    }
+    
+    public Recibo getReciboByCodigo(String codigo){
+        return reciboFacade.getByCodigo(codigo);
+    }
+    
+    public void createRecibo(Recibo rec){
+        reciboFacade.create(rec);
     }
 }
