@@ -12,26 +12,15 @@
         </ui:define>
         <ui:define name="content">    
             <f:metadata>  
-                 <f:event listener="#{mbDeclaraciones.iniciar}" type="preRenderView"></f:event>  
+                 <f:event listener="#{mbRecibo.iniciar}" type="preRenderView"></f:event>  
             </f:metadata> 
             
             <b:well>
                 <h2>Imprimir Recibo</h2>
-                <p style="color: gray; font-weight: normal; font-size: 12px">#{bundle.instruccionesReciboDj}</p>
-                <h4>La presente Declaración ha sido firmada por #{mbDeclaraciones.declaracion.firmante.nombreYApellido} - DNI: #{mbDeclaraciones.declaracion.firmante.dni}</h4>
-                <p style="color: gray; font-weight: normal; font-size: 12px">Los datos correspondientes deberán ser validados ante personal de la DPyRA</p>
-                <h:form id="frBtnImprimirRecibo" prependId="false">
-                    <b:panel collapsible="false">
-                        <b:row>
-                            <b:column span="12" >
-                                <b:commandButton title="Imprimir Recibo" action="#" 
-                                                 icon="glyphicon-ok" disabled="#{not mbDeclaraciones.decRegistrada}"
-                                                 look="primary"  value="Imprimir" 
-                                                 ajax="true"  />
-                            </b:column>
-                        </b:row>  
-                    </b:panel>  
-                </h:form>
+                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado lt 2}" style="color: gray; font-weight: normal; font-size: 12px" value="El Establecimiento aún no ha registrado su Declaración Jurada. De realizar el registro correspondiente para poder imprimir el comprobante." /></p>
+                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" style="color: gray; font-weight: normal; font-size: 12px" value="#{bundle.instruccionesReciboDj}" /></p>
+                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" style="font-size: 25px" value="La presente Declaración ha sido registrada y firmada por #{mbDeclaraciones.declaracion.firmante.nombreYApellido} - DNI: #{mbDeclaraciones.declaracion.firmante.dni}" /></p>
+                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" style="color: gray; font-weight: normal; font-size: 12px" value="Los datos correspondientes deberán ser validados posteriormente ante personal de la DPyRA" /></p>
             </b:well>
         </ui:define> 
     </ui:composition>

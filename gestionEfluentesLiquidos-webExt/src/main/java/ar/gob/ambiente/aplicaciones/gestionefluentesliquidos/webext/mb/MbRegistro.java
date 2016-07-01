@@ -67,6 +67,7 @@ public class MbRegistro implements Serializable{
     @PostConstruct
     public void init(){
         iniciado = true;
+        solicitud = new SolicitudCuenta();
     }
     
     public void iniciar(){
@@ -75,8 +76,7 @@ public class MbRegistro implements Serializable{
         }else{
             resultado = false;
             mostrarResult = false;
-            solicitud = new SolicitudCuenta();
-            
+
             cmbValidar = "Validar";
             cmbLimpiar = "Limpiar";            
         }
@@ -174,6 +174,7 @@ public class MbRegistro implements Serializable{
         mensajeError = "";
         boolean valida = true, validaLetra = true;
         
+        /*
         // valido la letra, si es que viene
         if(solicitud.getDniLetra() != null){
             if(solicitud.getDniLetra().length() > 1){
@@ -187,7 +188,7 @@ public class MbRegistro implements Serializable{
                 }
             }
         }
-        
+        */
         if(validaLetra){
             // obtengo el Establecimiento según el CUDE ingresado
             String cude = solicitud.getCude();
@@ -203,12 +204,14 @@ public class MbRegistro implements Serializable{
                     valida = false;
                     mensajeError = "El código de recibo ingresado no corresponde con el último vigente.";
                 }else{
+
                     // verifico que el esablecimiento no tenga ya una cuenta
                     if(!backendSrv.usrExtNoExiste(cude)){
                         String email = backendSrv.getUsuarioExt(cude).getEmail();
                         valida = false;
                         mensajeError = "El Establecimiento ya tiene una cuenta de usuario vinculada al correo " + email + ".";
                     }
+
                 }
             }else{
                 valida = false;
@@ -309,7 +312,7 @@ public class MbRegistro implements Serializable{
         
         try{
             mensaje.setRecipient(Message.RecipientType.TO, new InternetAddress(correo));
-            mensaje.setSubject("Sistema de Gestión de Efluentes líquidos - Credenciales de acceso");
+            mensaje.setSubject("Sistema de Gestión de Efluentes líquidos - CUDE: " + cude + " - Credenciales de acceso" );
             mensaje.setContent(bodyMessage, "text/html; charset=utf-8");
             
             Date timeStamp = new Date();

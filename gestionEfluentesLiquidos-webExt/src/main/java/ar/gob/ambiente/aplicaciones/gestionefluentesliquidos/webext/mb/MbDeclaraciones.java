@@ -3319,74 +3319,80 @@ public class MbDeclaraciones implements Serializable{
     
     public void createDeclaracion(){
         /**
-         * Ver validaciones y demás, por ahora levantamos el cude del usuario externo
-         */
-        
-        Date date = new Date(System.currentTimeMillis());
-        
-        // seteo Firmante y CUDE
-        declaracion.setFirmante(est.getFirmante());
-        declaracion.setCude(usLogueado.getCude());
-        
-        // creo el historial para el registro de la Declaración
-        HistorialDeclaraciones histDecUltimo = new HistorialDeclaraciones();
-        HistorialDeclaraciones histDecNuevo = new HistorialDeclaraciones();
-        // leo la última Declaración si la hubiera
-        if(backendSrv.getUltimaDeclaracion(est) != null){
-            histDecUltimo = backendSrv.getUltimaDeclaracion(est);
-        }        
-        // en cualquier caso actualizo el estado de la Declaración (2, correspondiente a "REGISTRADA") y 
-        declaracion.setClaveEstado(2);
-        
-        try{
-            // verifico si la Declaración está persistida como PROVISORIA
-            if(declaracion.getId() != null){
-                // si está persisitida, actualizo admin
-                declaracion.getAdmin().setFechaModif(date);
-                declaracion.getAdmin().setUsExtModif(usLogueado);
-                
-                // actualizo la Declaración, previo asignar estado (2, correspondiente a "REGISTRADA")
-                backendSrv.editDeclaracion(declaracion);
-                
-                // asigno la Declaración existente al historial
-                histDecNuevo.setDeclaracion(declaracion);
+         * valido el último dígito del cuit.
+         * del 0 al 4 registran en Julio.
+         * del 5 al 9 registran en Agosto.
+         */ 
+        if(validarUltimoDigito()){
+            Date date = new Date(System.currentTimeMillis());
 
-            }else{
-                // si debo insertar agrego la entidad administrativa      
-                AdminEntidad admEnt = new AdminEntidad();
-                admEnt.setFechaAlta(date);
-                admEnt.setHabilitado(true);
-                admEnt.setUsExtAlta(usLogueado);
-                declaracion.setAdmin(admEnt);
-                
-                // inserto la Declaración
-                backendSrv.createDeclaracion(declaracion);
-                // obtengo el id de la Declaración insertada
-                Integer idDecla = backendSrv.obtenerDeclaReciente(usLogueado.getCude());
-                // obtengo la Declaración
-                DeclaracionJurada dc = backendSrv.getDeclaracionByID(Long.valueOf(idDecla));
-                // seteo la Declaración insertada en el historial
-                histDecNuevo.setDeclaracion(dc);
+            // seteo Firmante y CUDE
+            declaracion.setFirmante(est.getFirmante()); 
+            declaracion.setCude(usLogueado.getCude());
+
+            // creo el historial para el registro de la Declaración
+            HistorialDeclaraciones histDecUltimo = new HistorialDeclaraciones();
+            HistorialDeclaraciones histDecNuevo = new HistorialDeclaraciones();
+            // leo la última Declaración si la hubiera
+            if(backendSrv.getUltimaDeclaracion(est) != null){
+                histDecUltimo = backendSrv.getUltimaDeclaracion(est);
+            }        
+            // en cualquier caso actualizo el estado de la Declaración (2, correspondiente a "REGISTRADA") y 
+            declaracion.setClaveEstado(2);
+
+            try{
+                // verifico si la Declaración está persistida como PROVISORIA
+                if(declaracion.getId() != null){
+                    // si está persisitida, actualizo admin
+                    declaracion.getAdmin().setFechaModif(date);
+                    declaracion.getAdmin().setUsExtModif(usLogueado);
+
+                    // actualizo la Declaración, previo asignar estado (2, correspondiente a "REGISTRADA")
+                    backendSrv.editDeclaracion(declaracion);
+
+                    // asigno la Declaración existente al historial
+                    histDecNuevo.setDeclaracion(declaracion);
+
+                }else{
+                    // si debo insertar agrego la entidad administrativa      
+                    AdminEntidad admEnt = new AdminEntidad();
+                    admEnt.setFechaAlta(date);
+                    admEnt.setHabilitado(true);
+                    admEnt.setUsExtAlta(usLogueado);
+                    declaracion.setAdmin(admEnt);
+
+                    // inserto la Declaración
+                    backendSrv.createDeclaracion(declaracion);
+                    // obtengo el id de la Declaración insertada
+                    Integer idDecla = backendSrv.obtenerDeclaReciente(usLogueado.getCude());
+                    // obtengo la Declaración
+                    DeclaracionJurada dc = backendSrv.getDeclaracionByID(Long.valueOf(idDecla));
+                    // seteo la Declaración insertada en el historial
+                    histDecNuevo.setDeclaracion(dc);
+                }
+
+                // para cualquier caso completo el seteo del historial
+                histDecNuevo.setActiva(true);
+                histDecNuevo.setEstablecimiento(est);
+                histDecNuevo.setFecha(date);
+                histDecNuevo.setUsuario(usLogueado);
+                // si hubo una anterior la apago y seteo la Declaración anterior
+                if(histDecUltimo.getId() != null){
+                    histDecNuevo.setDecAnterior(histDecUltimo.getDeclaracion());
+                    histDecUltimo.setActiva(false);
+                    backendSrv.editHisDeclaracion(histDecUltimo);
+                }
+                // persisto el historial
+                backendSrv.createHisDeclaracion(histDecNuevo);
+                JsfUtil.addSuccessMessage("La Declaración Jurada se ha registrado correctamente. "
+                        + "Puede imprimir el recibo. ¡Muchas gracias!");
+                decRegistrada = true;
+            }catch(Exception ex){
+                JsfUtil.addErrorMessage("Según el último dígito del CUIT del Establecimiento, la Declaración jurada solo podrá "
+                        + "registrarse a partir del 1° de Agosto. Los datos consignados permanecerán en estado provisorio.");
             }
+        }else{
             
-            // para cualquier caso completo el seteo del historial
-            histDecNuevo.setActiva(true);
-            histDecNuevo.setEstablecimiento(est);
-            histDecNuevo.setFecha(date);
-            histDecNuevo.setUsuario(usLogueado);
-            // si hubo una anterior la apago y seteo la Declaración anterior
-            if(histDecUltimo.getId() != null){
-                histDecNuevo.setDecAnterior(histDecUltimo.getDeclaracion());
-                histDecUltimo.setActiva(false);
-                backendSrv.editHisDeclaracion(histDecUltimo);
-            }
-            // persisto el historial
-            backendSrv.createHisDeclaracion(histDecNuevo);
-            JsfUtil.addSuccessMessage("La Declaración Jurada se ha registrado correctamente. "
-                    + "Para imprimirla, primero deberá generar e imprimir el recibo. ¡Muchas gracias!");
-            decRegistrada = true;
-        }catch(Exception ex){
-            JsfUtil.addErrorMessage("Hubo un error al registrar la Declaración Jurada. " + ex.getMessage());
         }
     }
     
@@ -3720,6 +3726,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + fileBalMasas.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaBalanceMasas(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -3742,6 +3749,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaBalanceMasas(null);
             subeBalance = false;
             declaracion.setAdjuntaBalanceMasas(subeBalance);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia de Balance de masas ha sido eliminada");
@@ -3770,6 +3778,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + fileManifYCert.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaManifYCert(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -3792,6 +3801,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaManifYCert(null);
             subeManifYCert = false;
             declaracion.setAdjuntaManifYCert(subeManifYCert);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia de Manifiestos y Certificados de disposición final ha sido eliminados.");
@@ -3820,6 +3830,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + filePermisosFact.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaPermisoFact(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -3842,6 +3853,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaPermisoFact(null);
             subePermisoFact = false;
             declaracion.setAdjuntaPermisoFact(subePermisoFact);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia de Permiso de factibilidad ha sido eliminada.");
@@ -3870,6 +3882,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + filePermisosFact.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaInicioFact(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -3892,6 +3905,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaInicioFact(null);
             subeInicioFact = false;
             declaracion.setAdjuntaInicoFact(subeInicioFact);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia de Inicio de trámite de Factibilidad ha sido eliminada.");
@@ -3920,6 +3934,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + filePermisosFact.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaCroquis(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -3942,6 +3957,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaCroquis(null);
             subeCroquis = false;
             declaracion.setAdjuntaCroquis(subeCroquis);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia del Croquis ha sido eliminada.");
@@ -3970,6 +3986,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + filePermisosFact.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaCertRetiroYDispFinal(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -3992,6 +4009,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaCertRetiroYDispFinal(null);
             subeCertRetiroYDispFinal = false;
             declaracion.setAdjuntaCertRetiroYDispFinal(subeCertRetiroYDispFinal);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia del Certificado de retiro y disposición final de las descargas.");
@@ -4020,6 +4038,7 @@ public class MbDeclaraciones implements Serializable{
                         JsfUtil.addSuccessMessage("El archivo " + filePermisosFact.getFileName() + " se ha subido al servidor con el nombre " + nombreArchivo + ". "
                                 + "Por favor, actualice el campo de texto para ver la ruta completa");
                         declaracion.setRutaProtocolo(destino + nombreArchivo);
+                        creatDeclaracionBorr();
                         if(pulgarDocumentos.equals("glyphicon-thumbs-down")) pulgarDocumentos = "glyphicon-thumbs-up";
                         activeIndex = 10;
                     }
@@ -4042,6 +4061,7 @@ public class MbDeclaraciones implements Serializable{
             declaracion.setRutaProtocolo(null);
             subeProtocolo = false;
             declaracion.setAdjuntaProtocolo(subeProtocolo);
+            creatDeclaracionBorr();
             if(pulgarDocumentos.equals("glyphicon-thumbs-up")) pulgarDocumentos = "glyphicon-thumbs-down";
             activeIndex = 9;
             JsfUtil.addSuccessMessage("La copia del Protocolo de caracterización de barros.");
@@ -4308,11 +4328,16 @@ public class MbDeclaraciones implements Serializable{
      * Método para asignar el Firmante (ya vinculado al Esteblacimiento) a la declaración
      */
     public void firmarDeclaracion(){
-        declaracion.setFirmante(firmante);
-        pulgarFirma = "glyphicon-thumbs-up";
-        activeIndex = 11;
-        JsfUtil.addSuccessMessage("La Declaración Jurada ha sido firmada por " + declaracion.getFirmante().getNombreYApellido() + ", podrá "
-                + "cancelar la firma si lo desea con el botón correspondiente.");
+        if(validarPasos()){
+            declaracion.setFirmante(firmante);
+            pulgarFirma = "glyphicon-thumbs-up";
+            activeIndex = 11;
+            JsfUtil.addSuccessMessage("La Declaración Jurada ha sido firmada por " + declaracion.getFirmante().getNombreYApellido() + ", podrá "
+                    + "cancelar la firma si lo desea con el botón correspondiente.");
+        }else{
+            JsfUtil.addErrorMessage("No se pudo firmar la Declaración debido a que no se pudieron validar los pasos obligatorios");
+        }
+
     }
     
     /**
@@ -5052,7 +5077,7 @@ public class MbDeclaraciones implements Serializable{
 
     private void instanciarDeclaracion() {
         // verifico si no tiene una Declaración en borrador
-        DeclaracionJurada dec = backendSrv.getDecBorrador(est.getCude());
+        DeclaracionJurada dec = backendSrv.getDeclaracionByCude(est.getCude());
         if(dec != null){
             declaracion = dec;
             // seteo datos complementarios
@@ -5172,6 +5197,7 @@ public class MbDeclaraciones implements Serializable{
                 subeProtocolo = false;
                 pulgarDocumentos = "glyphicon-thumbs-down";
             }
+            if(declaracion.getClaveEstado() == 2) pulgarFirma = "glyphicon-thumbs-up";
         }else{
             declaracion = new DeclaracionJurada();
             datosComReg = false;
@@ -5212,6 +5238,44 @@ public class MbDeclaraciones implements Serializable{
             subeCertRetiroYDispFinal = false;
             subeProtocolo = false;
         }
+    }
+
+    private boolean validarPasos() {
+        boolean result = true;
+        if(!datosComReg){
+            result = false;
+            JsfUtil.addErrorMessage("Debe consignar los Datos Complementarios - Paso 1.");
+        }
+        if(!datosDescargas){
+            result = false;
+            JsfUtil.addErrorMessage("Debe consignar al menos una Descarga - Paso 3.");
+        }
+        if(!datosPozos && !datosAbastos){
+            result = false;
+            JsfUtil.addErrorMessage("Debe consignar algún tipo de Abastecimiento de agua, sea de redo o Pozo - Pasos 4 o 5.");
+        }
+        if(!datosHorarios){
+            result = false;
+            JsfUtil.addErrorMessage("Debe consignar los Horarios de trabajo - Paso 6.");
+        }
+        if(!datosProductos){
+            result = false;
+            JsfUtil.addErrorMessage("Debe consignar los Productos elaborados - Paso 7.");
+        }    
+        if(declaracion.getRutaCroquis() == null || declaracion.getRutaCroquis().equals("")){
+            result = false;
+            JsfUtil.addErrorMessage("Debe adjuntar al menos el Croquis de ubicación del Establecimiento con la/s descarga/s - Paso 9."); 
+        }
+        
+        return result;
+    }
+
+    private boolean validarUltimoDigito() {
+        String strCuit = String.valueOf(est.getCuit());
+        String ultimo = strCuit.substring(strCuit.length() - 1);
+        Integer iUltimo = Integer.valueOf(ultimo);
+        if(iUltimo > 4) return false;
+        else return true;
     }
 
     

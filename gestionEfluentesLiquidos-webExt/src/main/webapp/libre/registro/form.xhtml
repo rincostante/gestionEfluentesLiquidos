@@ -100,14 +100,6 @@
                                     <f:validateLength maximum="8" minimum="6" />
                                 </b:inputText>
                                 
-                                <p:outputLabel for="letra" value="Letra DNI Firmante: " style="margin-bottom: 10px; color: gray"/>
-                                <b:inputText id="letra" value="#{mbRegistro.solicitud.dniLetra}"
-                                             placeholder="L"
-                                             title="Ingrese la letra del DNI del Firmante, si correspondiera." style="text-transform: uppercase" >
-                                    <f:facet name="prepend">
-                                        <h:outputText value="F o M" />
-                                    </f:facet>
-                                </b:inputText>
                                 
                                 <p:outputLabel for="correo" value="#{bundle.lebelRegCorreoElectronico}: " style="margin-bottom: 10px; color: gray"/>
                                 <b:inputText id="correo" value="#{mbRegistro.solicitud.correoElectronico}"
@@ -124,9 +116,9 @@
                             </h:panelGrid>
                             <b:row style="margin-top: 5px">
                                 <b:column span="12" >
-                                    <b:commandButton id="loginButton" look="primary" ajax="true" icon="glyphicon-play"
-                                                     value="#{mbRegistro.cmbValidar}" action="#{mbRegistro.solicitar}" update="mensajes,form" />
-                                    <b:button look="warning" value="#{mbRegistro.cmbLimpiar}" onclick="reset()" icon="glyphicon-trash" />
+                                    <b:commandButton id="loginButton" look="primary" ajax="true" 
+                                                     value="Validar" action="#{mbRegistro.solicitar}" update="mensajes,form" />
+                                    <b:button look="warning" value="Limpiar" onclick="reset()" />
                                 </b:column>
                             </b:row>
                         </b:panel>

@@ -15,42 +15,61 @@
         <!-- Ayudas -->
         <b:modal id="dlgAyudaCompDoc" title="Registro de DJ - Datos Complementarios - Documentación presentada" styleClass="modalAyudaCompDoc"
             closable="true" >
-                Ayuda datos comp Documentación presentada
+                Seleccionar del menú desplegable el estado de la Documentación Técnica presentada y completar el número otorgado a la Carpeta Técnica.
+                Completar en con el número de Carpeta otorgado por la DPyRA. Los establecimientos que a la fecha no hayan cumplimentado la Documentación 
+                Técnica exigida por el Decreto PEN N° 776/1992 y descripta en la Resolución SAyDS 555/2012 deberán presentarla en la Dirección de 
+                Prevención y Recomposición Ambiental, avalada por representante técnico conforme lo establecido por la Resolución INA 121/1999.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaCompAct" title="Registro de DJ - Datos Complementarios - Actividades" styleClass="modalAyudaDatosCompAct"
             closable="true" >
-                Ayuda datos comp Actividades
+                Hacer clic en el botón verde para Actualizar la información. Elegir una actividad del menú desplegable. 
+                Si la actividad del establecimiento no coincide con ninguna de las codificadas 
+                en el menú, se debe elegir en listado aquella que resulte más cercana a su actividad real. En el apartado correspondiente 
+                a la descripción del proceso productivo se podrá efectuar la descripción literal y exacta de la actividad.
+                Deberá al menos ingresar una Actividad relacionada al Establecimiento.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaCompFech" title="Registro de DJ - Datos Complementarios - Fechas" styleClass="modalAyudaDatosCompFech"
             closable="true" >
-                Ayuda datos comp Fechas
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Fecha de Instalación del establecimiento: Se consignará la fecha de instalación inicial de la empresa.
+                                  Este dato es olbigatorio."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Fecha de Cambio de Razón Social: En caso de haberse producido un cambio de razón social y/o 
+                                  transferencia del establecimiento, dentro del período en consideración, debe señalarse la fecha a 
+                                  partir de la cual se produjo tal cambio."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Fecha de Cesación de Actividades del Establecimiento: En caso de haberse producido
+                                  el cese de actividades del Establecimiento, deberá consignar la fecha."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaCompPersonal" title="Registro de DJ - Datos Complementarios - Asignación de personal" styleClass="modalAyudaDatosCompPers"
             closable="true" >
-                Ayuda datos comp Personal
+                Introducir el número total de empleados, distinguiendo entre los de oficina y fábrica. Al menos uno de los items es obligatorio.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaCompSup" title="Registro de DJ - Datos Complementarios - Superficies edilicias" styleClass="modalAyudaDatosCompSup"
             closable="true" >
-                Ayuda datos Superficies edilicias
+                Debe estar consignada en m2, distinguiendo entre superficie cubierta y libre. Al menos la superficie cubierta es obligatoria.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaCompGral" title="Registro de DJ - Datos Complementarios" styleClass="modalAyudaCompGral"
             closable="true" >
-                Ayuda general del formulario de Datos complementarios.
+                Ayuda general del formulario. Actualizar mediante el botón verde del vértice superior izquierdo para comenzar la carga. 
+                Deberá consignar al menos una Actividad, la fecha de instalación del Establecimiento, el personal asignado y la superficie
+                cubierta de del Establecimiento. Al guardar los datos mediante el botón azul de la parte inferior del formulario
+                se guardará también la Declaración en estado de borrador, podrá continuar la carga en otro momento, más allá de finalizada la sesión.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>

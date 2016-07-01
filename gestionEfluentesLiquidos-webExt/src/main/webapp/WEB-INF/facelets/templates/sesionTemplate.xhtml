@@ -108,8 +108,7 @@
                 <b:navbarLinks >
                     <b:dropMenu value="Declaraciones Juradas">
                         <b:navLink value="Registrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registro.xhtml"></b:navLink>
-                        <b:navLink value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml"></b:navLink>
-                        <b:navLink value="Imprimir DJ" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimir.xhtml"></b:navLink>
+                        <b:navLink rendered="#{mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}" value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml"></b:navLink>
                     </b:dropMenu>
                     
                     <b:navLink value="Ubicación" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
@@ -122,8 +121,6 @@
 
                     <b:dropMenu value="Sesión">
                         <b:navCommandLink action="#{mbSesion.logout()}" value="Cerrar" />
-
-                        <b:navLink value="Cambiar contraseña" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizLibre}iniciar.xhtml"></b:navLink>
                     </b:dropMenu>
                 </b:navbarLinks>
             </b:navBar>
@@ -182,6 +179,9 @@
                     </b:column>
                     <b:column span="3">
                         <img src="#{request.contextPath}/resources/image/Log_Presidencia_MinisterioAmbiente.gif" width="271" height="53" />
+                        <br></br><br></br>
+                        
+                        <h:outputLabel value="Indicado para navegadores Mozilla Firefox" style="color: darkgrey; font-size: 12px; font-weight: lighter" />
                     </b:column>
                 </b:row>
                 <br/>

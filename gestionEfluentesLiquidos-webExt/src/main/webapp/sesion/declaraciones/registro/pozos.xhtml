@@ -10,15 +10,30 @@
     </h:head>
     <h:body>
         <p:growl id="messages" showDetail="false" />
-        <b:modal id="dlgAyudaFrm" title="Registro de DJ - Pozos - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
-                Ayuda registro y edición de pozos de captación de agua
-            <f:facet name="footer">
-                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
-            </f:facet>
-        </b:modal>
         <b:modal id="dlgAyudaGestPozos" title="Registro de DJ - Pozos" styleClass="modalAyudaGestPozos"
             closable="true" >
-                Ayuda para la gestión general de pozos de captación de agua
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Hacer click en el botón verde 'Actualizar' 
+                              antes de iniciar el ingreso de datos. La consignación de Pozos es opcional."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Los pozos consignados y guardados se 
+                              muestran en una lista al final del formulario, existiendo la opción de editar o borrar la información 
+                              individualmente. Al finalizar la carga de información, hacer click el botón Guardar Pozos para guardar los 
+                              datos del formulario o el botón Limpiar Pozos para borrar la lista de pozos y sus datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al guardar los datos del Formulario se 
+                              actualiza la Declaración en borrador. Los datos podrán actualizarse aún guardados mientras no se haya firmado 
+                              la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="N°: Indicar en números correlativos 
+                              comenzando por 1, lo que servirá para diferenciar los pozos en caso de poseer más de uno.."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Profundidad (mts): Indicar en metros, 
+                              utilizando un punto en caso de decimales. "/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Horas diarias: Indicar la cantidad 
+                              de horas diarias de funcionamiento."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Días x sem.: Indicar cuántos días a la semana se trabaja."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Rendimiento (m3/h): Indicar el caudal 
+                              por unidad de tiempo, documentado por ensayo de bombeo bajo las condiciones normales de operación caudal – altura/presión de bombeo 
+                              de la bomba instalada en cada pozo de suministro de agua subterránea."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Tipo de Bomba: Seleccionar en el menú desplegable 
+                              el tipo de bomba utilizada en dicho pozo."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Potencia (HP): Indicar la potencia de la bomba utilizada."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>

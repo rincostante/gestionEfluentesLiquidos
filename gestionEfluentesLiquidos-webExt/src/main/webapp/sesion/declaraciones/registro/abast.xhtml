@@ -10,15 +10,48 @@
     </h:head>
     <h:body>
         <p:growl id="messages" showDetail="false" />
-        <b:modal id="dlgAyudaFrm" title="Registro de DJ - Abastos - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
-                Ayuda registro y edición de Abastecimientos de agua
-            <f:facet name="footer">
-                <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
-            </f:facet>
-        </b:modal>
-        <b:modal id="dlgAyudaGestAbastos" title="Registro de DJ - Abastos" styleClass="modalAyudaGestAbastos"
+        <b:modal id="dlgAyudaGestAbastos" title="Registro de DJ - Abastecimientos" styleClass="modalAyudaGestAbastos"
             closable="true" >
-                Ayuda para la gestión general de Abastecimientos de agua
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos. 
+                              Debe consignar al menos un abastecimiento de agua."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Los Abastecimientos consignados y guardados se 
+                              muestran en una lista al final del formulario, existiendo la opción de editar o borrar la información 
+                              individualmente. Al finalizar la carga de información, hacer click el botón Guardar Abastos para guardar los 
+                              datos del formulario o el botón Limpiar Abastos para borrar la lista de Abastecimientos y sus datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al guardar los datos del Formulario se 
+                              actualiza la Declaración en borrador. Los datos podrán actualizarse aún guardados mientras no se haya firmado 
+                              la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Tipo: Para cada forma de abastecimiento que se utilice, seleccionar del menú desplegable el tipo y 
+                              completar la información antes de guardar."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Origen: Indicar el origen del abastecimiento declarado."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Circuito: Seleccionar del menú desplegable el que corresponda al abastecimiento declarado."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Caudal (m3/h):  Indicar el caudal utilizado, ya sea para circuitos abiertos o cerrados. 
+                              Utilizar punto para incluir decimales."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Purga (m3/h ): Indicar el caudal de purga sólo en caso de utilización de agua para caldera e 
+                              industrial de recirculación. Utilizar punto para incluir decimales."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Tipo caudal: Recirculación, Circulación, Reposición."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Fuente: Seleccionar del menú desplegable lo que corresponda."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Para el caso de emplearse circuitos cerrados deberán figurar los caudales de circulación y reposición. "/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Si se emplea circuitos abiertos deberá indicarse el caudal de circulación."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Agua para caldera: Se deberá identificar la fuente, que podrá ser subterránea 
+                              (agua de pozo), superficial (agua de río), u otra, marcando en el casillero correspondiente. 
+                              Se indicará el caudal de reposición y el caudal de purga. "/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Industrial de recirculación: Se especificará el caudal de recirculación para uso industrial, 
+                              (no de refrigeración). Asimismo se especificará el caudal de reposición y el caudal de purga. 
+                              Industrial (agua incorporada): Corresponde al agua incorporada al producto terminado. "/></p>
+            
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -61,12 +94,12 @@
                     </b:row>
                     <b:row>
                         <b:column span="2">
-                            <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.abasto.caudal}" >
+                            <b:inputText label="Caudal (m3/d)" value="#{mbDeclaraciones.abasto.caudal}" >
                                 <f:validateDoubleRange />
                             </b:inputText>
                         </b:column>
                         <b:column span="2">
-                            <b:inputText label="Purga (m3/día)" value="#{mbDeclaraciones.abasto.purga}" >
+                            <b:inputText label="Purga (m3/d)" value="#{mbDeclaraciones.abasto.purga}" >
                                 <f:validateDoubleRange />
                             </b:inputText>
                         </b:column>

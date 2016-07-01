@@ -104,12 +104,12 @@
 
                             <b:row style="margin-top: 5px">
                                 <b:column span="6" >
-                                    <b:commandButton style="margin-right: 5px; width: 100%" icon="glyphicon-play"
+                                    <b:commandButton style="margin-right: 5px; width: 100%" 
                                                      look="primary" ajax="true" value="#{mbSesion.cmbValidar}" 
                                                      action="#{mbSesion.login}" update="mensajes,loginForm" />
                                 </b:column>
                                 <b:column span="6">
-                                    <b:button look="danger" icon="glyphicon-trash" value="#{mbSesion.cmbLimpiar}" style="width: 100%" 
+                                    <b:button look="danger" value="#{mbSesion.cmbLimpiar}" style="width: 100%" 
                                               onclick="resetLogin()" />
                                 </b:column>
                             </b:row>

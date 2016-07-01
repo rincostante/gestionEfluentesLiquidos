@@ -11,9 +11,19 @@
         <p:growl id="messages" showDetail="false" />
         
         <!-- Modal ayuda actualización -->
-        <b:modal id="dlgAyudaActFirmante" title="Registro de DJ - Firma - Actulización de Firmant" styleClass="modalAyudaActFirmante"
+        <b:modal id="dlgAyudaActFirmante" title="Registro de DJ - Firma - Actulización de Firmante" styleClass="modalAyudaActFirmante"
             closable="true" >
-                Ayuda sobre la convalidación de los datos del Firmante
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Podrá actualizar los datos del Firmante mediante el botón azul 'Actualizar', esto abrirá una 
+                              ventana que le permitirá realizar las modificaciones necesarias. Los campos CUIT y DNI será solo 
+                              numéricos, sin guines ni puntos"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Podrá deshechar el Firmante vinculado mediante el botón rojo 'Deshechar', esto habilitará 
+                              los botones para la asignación de un nuevo Firmante. En caso de cancelar la desvinculación la misma podrá 
+                              realizarse mediante el botón 'Cancelar, teniendo la precaución de ingresar cualquier caracter en el campo 
+                              'Apellidos y nombres' antes de cancelar, para obtener la validación."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="No se podrá firmar la Declaración miestras no haya un Firmante vinculado."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -22,7 +32,20 @@
         <!-- Modal ayuda nuevo firmante -->
         <b:modal id="dlgAyudaNewFirmante" title="Registro de DJ - Firma - Asignación de nuevo Firmante" styleClass="modalAyudaNewFirmante"
             closable="true" >
-                Ayuda sobre la selección de un Firmante registrado o el registro de uno nuevo
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Desvinculado el Firmante, podrá seleccionar uno existente mediante el botón 'Agregar existente'. 
+                              Esto abrirá una ventana que le permitirá seleccionar el Firmante registrado que desée. Para completar 
+                              la operación deberá vincular al Firmante mediante el botón 'Vincular seleccionado'. Esto le permitirá firmar la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Si no estuviera registrado el Firmante deseado, podrá hacerlo mediante el botón verde 'Registrar nuevo'. 
+                              Deberá ingresar los datos correspondientes y guardarlos. Como en el caso de la selección, deberá vincular al 
+                              Firmante definitivamente mediante el botón 'Vincular seleccionado', esto le permitirá firmar la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Para los casos que el Firmante sea modificado respecto del registrado de la Declaración anterior, 
+                              deberá posteriormente, validar sus datos en las oficians de la DPyRA, sin perjuicio del registro válido de 
+                              la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -31,7 +54,19 @@
         <!-- Modal ayuda general -->
         <b:modal id="dlgAyudaFirma" title="Registro de DJ - Firma" styleClass="modalAyudaFirma"
             closable="true" >
-                Ayuda sobre el proceso de firma de la Declaración
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Este el paso previo antes del registro 
+                              de la Declaración. Por defecto aparecerán los datos del Firmante de la ultima Declaración presentada. No obstante 
+                              se podran actualizar sus datos, cambiarlo por otro Firmante registrado o registrarlo como nuevo Firmante"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Una vez definido el Firmante de la 
+                              Declaración, se podrá firmar la misma mediante el botón azul 'Firmar'. Una vez firmada la Declaración solo podrá 
+                              realizar cambios cancelando la firma mediante el botón gris 'Cancelar.'. La firma no se guara en borrador, al cabo 
+                              de la misma deberá Registrar la Declaración para realizar el guardado definitivo, acción que registrará la fecha de 
+                              entrega de la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="En el campo de texto 'Observaciones' podrá consignar las observaciones que crea conveniente, 
+                              la misma se guardará al firmar la Declaración."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -241,7 +276,7 @@
                                          disabled="#{mbDeclaraciones.firmDeshechado || mbDeclaraciones.firmante.id eq 0 || mbDeclaraciones.declaracion.firmante.id gt 0 || mbDeclaraciones.declaracion.actividades.size() eq 0}" icon="glyphicon-ok" 
                                          look="primary"  value="#{mbDeclaraciones.firFirmar}" 
                                          ajax="true" update="frNav,frBtBorr,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
-                        <b:commandButton title="Cancelar la firma de la Declaración" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada}"  
+                        <b:commandButton title="Cancelar la firma de la Declaración" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}"  
                                              icon="glyphicon-minus-sign" action="#{mbDeclaraciones.cancelarFirmaDeclaracion()}"
                                              value="#{mbDeclaraciones.firCancelar}" ajax="true" update="frNav,frBtBorr,frBtnRegistroDec,frFirm,frNewFirm,frBtnFirm,messages" />
                     </b:column>
@@ -250,10 +285,10 @@
         </b:panel>
         
         <h:form id="frBtnRegistroDec" prependId="false">
-            <b:panel rendered="#{mbDeclaraciones.decRegistrada}" look="success" title="Resultado del proceso de Registro" collapsible="false">
+            <b:panel rendered="#{mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}" look="success" title="Resultado del proceso de Registro" collapsible="false">
                 <h:panelGrid columns="3" cellpadding="1" >
                     <p style="color: darkcyan; font-size: 18px">La Declaración Jurada se ha guardado correctamente.</p>
-                    <p style="color: darkcyan; font-size: 18px">Para imprimirla, primero deberá generar e 
+                    <p style="color: darkcyan; font-size: 18px">Puede
                         <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml" class="btn btn-success">Imprimir</a>  
                         el Recibo correspondiente.</p>
                     <p style="color: darkcyan; font-size: 18px">¡Muchas gracias!</p>
@@ -263,7 +298,7 @@
                 <b:row>
                     <b:column span="12" >
                         <b:commandButton title="Registrar la Declaración" action="#{mbDeclaraciones.createDeclaracion()}" 
-                                         icon="glyphicon-ok" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada}"
+                                         icon="glyphicon-ok" disabled="#{mbDeclaraciones.declaracion.firmante eq null or mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}"
                                          look="primary"  value="#{mbDeclaraciones.gralRegistrar}" update="frBtnRegistroDec,frBtnFirm,messages" 
                                          ajax="true"  />
                     </b:column>

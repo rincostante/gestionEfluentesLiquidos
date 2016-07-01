@@ -9,23 +9,76 @@
     </h:head>
     <h:body>
         <p:growl id="messages" showDetail="false" />
-        <b:modal id="dlgAyudaGrales" title="Registro de DJ - Datos Generales" styleClass="modalAyudaDatosGrales"
+        <b:modal id="dlgAyudaGrales" title="Registro de DJ - Descargas" styleClass="modalAyudaDatosGrales"
             closable="true" >
-                #{bundle.ayudaDatosGrales}
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Hacer click en el botón verde 'Actualizar' 
+                              antes de iniciar el ingreso de datos. Debe consignar al menos una descarga."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Los establecimientos industriales o 
+                              especiales que generan efluentes en sus procesos pero no producen ningún vuelco, ya sea porque acumulan los 
+                              líquidos para su retiro mediante un Operador habilitado, u otros motivos, deberán adjuntar (en el ítem Adjuntar 
+                              Documentos) el balance de masas correspondiente. Los establecimientos que sólo produzcan efluentes cloacales 
+                              no necesitan adjuntar balance de masas."/></p>
+            Las descargas declaradas y guardadas se muestran en una lista al final del formulario, 
+            existiendo la opción de editarlas o borrarlas individualmente. Al finalizar la carga de información, 
+            clickear el botón Guardar Descarga para guardar los datos del formulario o el botón Limpiar 
+            Descargas para borrar la lista de descargas y sus datos. Para deshacer una selección del menú 
+            desplegable usar el botón Cancelar selección. Una vez guardadas, podrá editarlas mientras la Declaración
+            no esté firmada. Para guardar estos datos, primero deberá guardar los Datos complementarios.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaRegDesc" title="Registro de DJ - Descargas - Registro/Edición" styleClass="modalAyudaRegDesc"
             closable="true" >
-                Ayuda descargas, registro sobre el registros de descargas nuevas y/o edición de descargas ya creadas.
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Tipo de Descarga: Seleccionar en el menú desplegable el tipo de descarga que efectúa el 
+                                  establecimiento, ya sea cloacal, industrial o combinado (mixto) y completar la información 
+                                  sobre la misma. Repetir el proceso tantas veces como descargas se efectúen, mediante el botón 
+                                  Guardar Descarga. Las descargas ingresadas se mostrarán en una lista al final del formulario."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Caudal: Se calcula el caudal diario del vertido de cada una de las descargas de la siguiente 
+                                  manera: El volumen total evacuado anualmente se divide por el número de días trabajados en dicho 
+                                  período. Debe ser expresado en m³/día, utilizando un punto en caso de haber decimales."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Destino: Seleccionar el destino de cada descarga en el menú desplegable. Se identificará 
+                                  expresamente en el croquis (en el ítem Adjuntar Documentos) la vía y destino final/cuerpo receptor 
+                                  de la descarga de tipo industrial (coincidente con el permiso de vuelco en caso de poseer)."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="N° de Conexión: Indicar con números sucesivos y correlativos comenzando por el 1 hasta 
+                                  completar el número de descargas que posea el establecimiento."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Mayor de 5 km: Marcar sólo en el caso de efectuar la descarga en un curso de agua, y 
+                                  que la misma se encuentre a una distancia mayor a 5 km."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Anulado: Marcar sólo en el caso que alguno de los desagües informados anteriormente 
+                                  haya sido anulado, cortado o desafectado."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="CTM y MC reg.: Marcar sólo en caso de poseer Cámara de Toma de Muestras y Medición de 
+                                  Caudales conforme lo normado en la Resolución SAyDS N° 607/2012. "/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Tipo de Aforo: Seleccionar en el menú desplegable el tipo de aforo utilizado para medir 
+                                  el caudal de cada descarga."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Motivo de Anulación: En caso de haber marcado como “Anulado” alguna de las descargas 
+                                  declaradas, explicar el motivo, indicando la fecha y el organismo interviniente, en caso de corresponder."/></p>
+
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
-        <b:modal id="dlgAyudaDescListado" title="Registro de DJ - Descargas -Listado" styleClass="modalAyudaDescListado"
+        <b:modal id="dlgAyudaDescListado" title="Registro de DJ - Descargas - Tratamientos" styleClass="modalAyudaDescListado"
             closable="true" >
-                Ayuda descargas, listado de descargas vinculadas al vuelco
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Tratamiento: Seleccionar del menú desplegable el tipo de tratamiento 
+                                  general aplicado a cada una de las descargas declaradas."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Tipo de Tratamiento: Seleccionar del menú desplegable el tipo de 
+                                  tratamiento específico aplicado según corresponda."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                                  value="Se podrán agregar y/o editar Tratamientos a las Descargas tanto durante su 
+                                  registro como durante su edición. Para ver los tratamientos vinculados a una descarga, 
+                                  deberá seleccionarse la misma. El guardado de los tratamientos deberá ser previo al 
+                                  guardado de cada descarga."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -140,7 +193,7 @@
                         </b:row>
                         <b:row>
                             <b:column>
-                                <b:button title="Breve explicación del proceso de registro de Tratamientos" size="xs" value="Ayuda" look="warning" onclick="ayudaTrat()" />
+                                <b:button title="Breve explicación del proceso de registro de Tratamientos" size="xs" value="Ayuda" look="warning" onclick="$('.modalAyudaDescListado').modal();return false;" />
                                 <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" title="Guardar el Tratamiento definido" 
                                                  icon="glyphicon-ok" action="#{mbDeclaraciones.addTratamientos}" look="primary" 
                                                  value="#{mbDeclaraciones.vlcGuardarTrat}" ajax="true" size="xs"
@@ -270,7 +323,7 @@
                 <b:row>
                     <b:column span="12" >
                         <b:button title="Breve explicación del proceso de configuración de las descargas del Vuelco del Establecimiento" 
-                                  onclick="$('.modalAyudaDescListado').modal();return false;" size="sm" look="warning" value="Ayuda" />
+                                  onclick="$('.modalAyudaDatosGrales').modal();return false;" size="sm" look="warning" value="Ayuda" />
                         <b:commandButton disabled="#{mbDeclaraciones.declaracion.firmante ne null}" rendered="#{not mbDeclaraciones.datosDescargas}" 
                                          title="Guardar las descargas configuradas en el Vuelco de la Declaración" size="sm" 
                                          icon="glyphicon-ok" action="#{mbDeclaraciones.createDescargas()}" 

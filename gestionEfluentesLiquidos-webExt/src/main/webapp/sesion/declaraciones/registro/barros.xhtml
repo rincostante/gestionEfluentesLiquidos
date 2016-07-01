@@ -12,21 +12,70 @@
         <p:growl id="messages" showDetail="false" />
         <b:modal id="dlgAyudaBarros" title="Registro de DJ - Barros" styleClass="modalAyudaBarros"
             closable="true" >
-                Ayuda Barros, proceso general de registro de los datos correspondientes a los Barros generados
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al finalizar la carga de información, 
+                              hacer click el botón Guardar Barros para guardar los Barros del formulario o el botón Limpiar Barros 
+                              para borrar la lista de Barros registrados y sus datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al guardar los datos del Formulario se 
+                              actualiza la Declaración en borrador. Los datos podrán actualizarse aún guardados mientras no se haya firmado 
+                              la Declaración."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaBarrCaracTrat" title="Registro de DJ - Barros - Características y Tratamientos" styleClass="modalAyudaBarrCaracTrat"
             closable="true" >
-                Ayuda Barros, características y tratamientos.
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Seleccionar transportista DRP: Al seleccionar ON se entiende que su transportista se encuentra 
+                              registrado en la Dirección de Residuos Peligrosos (DRP) del Ministerio de Ambiente y Desarrollo Sustentable 
+                              de la Nación. En tal caso, deberá clickear en el botón Agregar/Editar y validar los datos del registro en 
+                              la DRP en la ventana emergente. Actualizar antes de cargar los datos y Guardar los datos validados antes de 
+                              Cerrar la ventana emergente. También se puede borrar esta información con el botón Limpiar los datos validados. 
+                              Actualizar al finalizar la carga. Al indicar OFF se entiende que el transportista no se encuentra inscripto 
+                              en el registro de la DRP o no se conoce esta información, en cuyo caso se debe completar el campo de Datos del 
+                              Transportista. En caso de haber trabajado con más de un transportista durante el periodo declarado, sólo consignar el último."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Volumen: Indicar en m3/día. Utilizar punto para introducir decimales."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Tratamiento: Seleccionar lo que corresponda para el caso en que los barros reciban algún tipo de 
+                              tratamiento por parte del generador. Si el tipo de tratamiento no responde a ninguna de las categorías 
+                              enunciadas se deberá marcar la casilla de “Otro tratamiento” y mencionarlo en el apartado “Detalle otro tratamiento”."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Medios de retiro: Seleccionar lo que corresponda para el caso en que los barros hayan sido retirados. 
+                              Si el retiro lo efectuó el propio generador debe indicar que “retira medios propios”. Si retiró los barros por 
+                              un tercero, debe indicar que “retira otros medios” y especificar en el apartado “Detalle otros medios de retiro”."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaBarrDestinos" title="Registro de DJ - Barros - Destino final" styleClass="modalAyudaBarrDestinos"
             closable="true" >
-                Ayuda Barros, destino final de los Barros
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Seleccionar Operador DRP: Al seleccionar 
+                              ON se entiende que su operador se encuentra registrado en la Dirección de Residuos Peligrosos (DRP) del Ministerio 
+                              de Ambiente y Desarrollo Sustentable de la Nación. En tal caso, deberá clickear en el botón Agregar/Editar y validar 
+                              los datos del registro en la DRP en la ventana emergente. Actualizar antes de cargar los datos y Guardar los datos 
+                              validados antes de Cerrar la ventana emergente. También se puede borrar esta información con el botón Limpiar los 
+                              datos validados. Actualizar al finalizar la carga."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al indicar OFF se entiende que el operador 
+                              no se encuentra inscripto en el registro de la DRP o no se conoce esta información, en cuyo caso se debe completar 
+                              el campo de Datos del Operador. caso de haber trabajado con más de un operador durante el periodo declarado, 
+                              sólo consignar el último."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Destino final: Seleccionar la modalidad 
+                              empleada. En caso de seleccionar “Uso como insumo” deberá especificar tal uso en el apartado correspondiente. Si 
+                              el destino de los barros no responde a ninguna de las categorías enunciadas se deberá marcar la casilla de “Otros” 
+                              y especificar en el apartado “Detalle otros”."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="-	Indicar sólo si los barros generados 
+                              contienen los compuestos o las características de origen listados en las Tablas Nº 1 y Nº 2 del Anexo I de la 
+                              Resolución MDSMA Nº 097/2001."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="-	Indicar si se han generado barros en 
+                              el periodo declarado pero no han sido retirados durante dicho periodo."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Marcar las casillas sólo en caso que las 
+                              sentencias resulten afirmativas."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="En caso de poseer un protocolo de análisis 
+                              de barros generados y analizados en el periodo declarado, deberá adjuntarlo en el ítem correspondiente del apartado 
+                              “Adjuntar documentos”. En caso de poseer más de uno, sólo adjuntar el último."/></p>
+            
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -261,39 +310,39 @@
                                 <b:column span="6" >
                                     <b:row>
                                         <b:column span="12">
-                                            <b:inputText id="txtTranspNoDrp" placeholder="Ingrese los datos del Transportista no reg. en DRP" label="Datos Transportista no registrado:" 
-                                                         value="#{mbDeclaraciones.barro.datosTranspNoDrp}" disabled="#{not mbDeclaraciones.habilitaTransDrp}" />
+                                            <b:inputText id="txtTranspNoDrp" placeholder="Ingrese los datos del Transportista no reg. en DRP" label="Datos Transportista:" 
+                                                         value="#{mbDeclaraciones.barro.datosTranspNoDrp}" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" />
                                         </b:column>
                                     </b:row>
                                     <b:row>
                                         <b:column span="6">
-                                            <b:inputText label="Volumen (m3/día): " value="#{mbDeclaraciones.barro.volumen}" disabled="#{not mbDeclaraciones.habilitaTransDrp}" >
+                                            <b:inputText label="Volumen (m3/día): " value="#{mbDeclaraciones.barro.volumen}" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" >
                                             </b:inputText>
                                         </b:column>
                                         <b:column span="6">
-                                            <b:inputText label="Humedad (%): " value="#{mbDeclaraciones.barro.porcentaje}" disabled="#{not mbDeclaraciones.habilitaTransDrp}" >
+                                            <b:inputText label="Humedad (%): " value="#{mbDeclaraciones.barro.porcentaje}" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" >
                                             </b:inputText>
                                         </b:column>
                                     </b:row>
                                     <b:row>
                                         <b:column span="6">
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.deshidratacion}" label="" 
-                                                caption="Deshidratación" disabled="#{not mbDeclaraciones.habilitaTransDrp}"/>
+                                                caption="Deshidratación" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"/>
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.estabilizacion}" label="" 
-                                                caption="Estabilización" disabled="#{not mbDeclaraciones.habilitaTransDrp}"/>
+                                                caption="Estabilización" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"/>
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.desinfeccion}" label="" 
-                                                caption="Desinfección" disabled="#{not mbDeclaraciones.habilitaTransDrp}"/>
+                                                caption="Desinfección" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"/>
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.otrosTratamiento}" label="" 
-                                                caption="Otro tratamiento" disabled="#{not mbDeclaraciones.habilitaTransDrp}" 
+                                                caption="Otro tratamiento" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" 
                                                 onchange="ajax:mbDeclaraciones.habilitarOtroTrat()" >
                                                 <p:ajax event="change" update="txtBarrDetOtroTrat"/>
                                             </b:selectBooleanCheckbox>
                                         </b:column>
                                         <b:column span="6">
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.retiraMediosPropios}" label="" 
-                                                caption="Retira med. propios" disabled="#{not mbDeclaraciones.habilitaTransDrp}"/>
+                                                caption="Retira med. propios" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" />
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.retiraOtrosMedios}" label="" 
-                                                caption="Retira otros medios" disabled="#{not mbDeclaraciones.habilitaTransDrp}" 
+                                                caption="Retira otros medios" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"  
                                                 onchange="ajax:mbDeclaraciones.habilitarOtrosMedios()" >
                                                 <p:ajax event="change" update="txtBarrDetOtrosMedios"/>
                                             </b:selectBooleanCheckbox>
@@ -302,9 +351,9 @@
                                     <b:row>
                                         <b:column span="12" >
                                             <b:inputText id="txtBarrDetOtroTrat" placeholder="Detallar otros tratamientos" label="Detalle otro tratamiento:" 
-                                                         value="#{mbDeclaraciones.barro.descOtroTratamiento}" disabled="#{not mbDeclaraciones.otroTratamiento}" />
+                                                         value="#{mbDeclaraciones.barro.descOtroTratamiento}" disabled="#{not mbDeclaraciones.otroTratamiento or mbDeclaraciones.declaracion.firmante ne null}" />
                                             <b:inputText id="txtBarrDetOtrosMedios" placeholder="Especificar otros medios de retiro" label="Detalle otros medios de retiro" 
-                                                         value="#{mbDeclaraciones.barro.descOtrosMedios}" disabled="#{not mbDeclaraciones.otrosMedios}" />
+                                                         value="#{mbDeclaraciones.barro.descOtrosMedios}" disabled="#{not mbDeclaraciones.otrosMedios or mbDeclaraciones.declaracion.firmante ne null}" />
                                         </b:column>
                                     </b:row>
                                 </b:column>
@@ -367,25 +416,25 @@
                                 <b:column span="6" >
                                     <b:row>
                                         <b:column span="12">
-                                            <b:inputText id="txtOpNoDrp" placeholder="Ingrese los datos del Operador no reg. en DRP" label="Datos Operador no registrado:" 
-                                                         value="#{mbDeclaraciones.barro.datosOperadorNoDrp}" disabled="#{not mbDeclaraciones.habilitaOpDrp}" />
+                                            <b:inputText id="txtOpNoDrp" placeholder="Ingrese los datos del Operador no reg. en DRP" label="Datos Operador:" 
+                                                         value="#{mbDeclaraciones.barro.datosOperadorNoDrp}" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" />
                                         </b:column>
                                     </b:row>
                                     <b:row>
                                         <b:column span="6" >
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.destLandFarming}" label="" 
-                                                caption="Landfarming" disabled="#{not mbDeclaraciones.habilitaOpDrp}"/>
+                                                caption="Landfarming" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"/>
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.destInsumo}" label="" 
-                                                                     caption="Uso como insumo" disabled="#{not mbDeclaraciones.habilitaOpDrp}"
+                                                                     caption="Uso como insumo" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"
                                                                      onchange="ajax:mbDeclaraciones.habilitarInsumo()">
                                                 <p:ajax event="change" update="txtBarrDetUso"/>
                                             </b:selectBooleanCheckbox>
                                         </b:column>
                                         <b:column span="6" >
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.destRellSanitario}" label="" 
-                                                caption="Relleno sanitario" disabled="#{not mbDeclaraciones.habilitaOpDrp}"/>
+                                                caption="Relleno sanitario" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"/>
                                             <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.destOtros}" label="" 
-                                                                     caption="Otros" disabled="#{not mbDeclaraciones.habilitaOpDrp}" 
+                                                                     caption="Otros" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" 
                                                                      onchange="ajax:mbDeclaraciones.habilitarOtros()">
                                                 <p:ajax event="change" update="txtBarrDetOros"/>
                                             </b:selectBooleanCheckbox>
@@ -394,9 +443,9 @@
                                     <b:row>
                                         <b:column span="12" >
                                             <b:inputText id="txtBarrDetUso" placeholder="Detallar uso de los barros" label="Uso como insumo" 
-                                                         value="#{mbDeclaraciones.barro.usoComoInsumo}" disabled="#{not mbDeclaraciones.usoInsumo}" />
+                                                         value="#{mbDeclaraciones.barro.usoComoInsumo}" disabled="#{not mbDeclaraciones.usoInsumo or mbDeclaraciones.declaracion.firmante ne null}" />
                                             <b:inputText id="txtBarrDetOros" placeholder="Especificar otros destinos" label="Detalle otros" 
-                                                         value="#{mbDeclaraciones.barro.especifOtroDestino}" disabled="#{not mbDeclaraciones.otroDestino}" />
+                                                         value="#{mbDeclaraciones.barro.especifOtroDestino}" disabled="#{not mbDeclaraciones.otroDestino or mbDeclaraciones.declaracion.firmante ne null}" />
                                         </b:column>
                                     </b:row>
                                 </b:column>
@@ -417,12 +466,12 @@
                         <b:panel collapsible="false" look="info">
                             <b:row>
                                 <b:column span="6" >
-                                    <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.contieneElemAnexoD}" label="" 
+                                    <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.contieneElemAnexoD}" label="" disabled="#{mbDeclaraciones.declaracion.firmante ne null}" 
                                                              caption="Indicar si los barros contienen los compuestos o las características de origen listados en las Tablas Nº 1 y Nº 2 del Anexo I de la Resolución MDSMA Nº 097/2001" />
                                 </b:column>
                                 <b:column span="6" >
-                                    <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.adjuntaProtocolo}" label="" 
-                                                             caption="No se retiraron barros durante el período declarado" />
+                                    <b:selectBooleanCheckbox value="#{mbDeclaraciones.barro.adjuntaProtocolo}" label="" disabled="#{mbDeclaraciones.declaracion.firmante ne null}"
+                                                             caption="Indicar si se han producido barros durante el período declarado pero no han sido retirados durante dicho período." />
                                 </b:column>
                             </b:row>
                         </b:panel>

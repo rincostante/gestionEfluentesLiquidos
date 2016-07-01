@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -42,7 +43,13 @@ public class MbCude implements Serializable{
     public MbCude() {
 
     }
-
+    
+    @PostConstruct
+    public void init() {
+        consulta = new ConsultaCude();
+        lstEst = new ArrayList<>();
+    }
+    
     public void iniciar(){
         if(validado){
             validado = false;
@@ -64,8 +71,6 @@ public class MbCude implements Serializable{
             
             resultado = false;
             mostrarResult = false;
-            consulta = new ConsultaCude();
-            lstEst = new ArrayList<>();
         }
     }
 
@@ -146,7 +151,8 @@ public class MbCude implements Serializable{
         boolean valida = true;
         String msgError = "";
         
-        if(consulta.getDniLetra() != null){
+        /*
+        if(!consulta.getDniLetra().equals("")){
             if(consulta.getDniLetra().length() > 1){
                 valida = false;
                 msgError = msgError + "El DNI solo puede contener una letra.";
@@ -158,7 +164,7 @@ public class MbCude implements Serializable{
                 }
             }
         }
-        
+        */
         if(valida){
             lstEst = backendSrv.getEstablecimientosByCuit(consulta.getCuitEstablecimiento());
 

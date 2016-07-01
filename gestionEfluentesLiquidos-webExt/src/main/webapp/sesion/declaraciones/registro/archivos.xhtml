@@ -15,7 +15,41 @@
     <h:body>
         <p:growl id="messages" showDetail="false" />
         <b:modal id="dlgAyudaSubirArchivos" title="Registro de DJ - Adjuntar Archvios" styleClass="modalAyudaSubirArchivos" closable="true" >
-                Ayuda selección y subida de Archivos para adjuntar a la Declaración Jurada
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al finalizar la carga de información, 
+                              hacer click el botón Guardar en Borrador para guardar las rutas de los archivos adjuntados a la Declaración."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al guardar los datos del Formulario se 
+                              actualiza la Declaración en borrador. Los datos podrán actualizarse aún guardados mientras no se haya firmado 
+                              la Declaración. El croquis con la ubicación del Establecimiento es obligatorio."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Balance de masas: Adjuntar sólo en caso de producir efluentes pero no efectuar vuelco por corte de 
+                              desagüe o cualquier otro motivo. Información no obligatoria para establecimientos que no produzcan efluentes o 
+                              posean los permisos de vuelco necesarios. Info Opcional según tipo de establecimiento"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Manifiestos y/o certificados de retiro y disposición de barros : Adjuntar sólo si se han efectuado 
+                              retiros de barros en el periodo declarado. Info Opcional según tipo de establecimiento"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Factibilidad o Permiso de vuelco : Adjuntar en caso de poseer permiso otorgado por Autoridad competente. 
+                              Info Opcional según tipo de establecimiento"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Inicio de trámite de Factibilidad o Permiso de vuelco: Adjuntar en caso de no poseer el permiso 
+                              correspondiente habiendo iniciado el trámite respectivo. Info Opcional según tipo de establecimiento"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Croquis de ubicación del establecimiento: Graficar los límites del establecimiento 
+                              (dibujar la manzana, indicando la ubicación del establecimiento en la misma). Indicar calles, 
+                              rutas y/o cursos de agua perimetral así como cualquier otro elemento de identificación. Señalar 
+                              todas las descargas numerándolas según lo declarado en el “N° de conexión “ del formulario de Descargas. 
+                              Acotar la ubicación de la CTMyMC (para el caso de descargas industriales y combinadas ) y la última 
+                              boca de registro o cámara de inspección ( para el caso de descargas pluviales o cloacales) respecto a 
+                              puntos notables cercanos perfectamente identificables. Información Obligatoria para TODOS"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Certificado de retiro y disposición final de líquidos : Adjuntar sólo si se han efectuado 
+                              retiros de líquidos en el periodo declarado. Info Opcional según tipo de establecimiento "/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Protocolo de caracterización de barros: Adjuntar sólo si el establecimiento generó y 
+                              analizó barros en el periodo declarado. Info Opcional según tipo de establecimiento "/></p>
+            
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
@@ -38,7 +72,7 @@
                         <h:form id="frUpCroquis" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé Croquis de ubicación del Establecimiento con las respectivas descargas documentadas y la/s calles para las cuales se recibió permiso de factibilidad, puede ingresarlo en un único archivo .pdf, jpg, png o gif</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Adjunte aquí el Croquis de ubicación del Establecimiento con las respectivas descargas documentadas y la/s calles para las cuales se recibió permiso de factibilidad, puede ingresarlo en un único archivo .pdf, jpg, png o gif. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -80,7 +114,7 @@
                         <h:form id="frUpBalance" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Puede ingresar por aquí una copia del Balance de Masas en un solo archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Puede ingresar por aquí una copia del Balance de Masas en un solo archivo .pdf, .doc, .docx, rtf o jpg. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -121,7 +155,7 @@
                         <h:form id="frUpManifYCert" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copias de Manifiestos y Certificado Ambiental, puede ingresarlas por aquí, en un solo archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copias de Manifiestos y Certificado Ambiental, puede ingresarlas por aquí, en un solo archivo .pdf, .doc, .docx, rtf o jpg. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -162,7 +196,7 @@
                         <h:form id="frUpPermisoFact" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del Permiso de factibilidad, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del Permiso de factibilidad, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -204,7 +238,7 @@
                         <h:form id="frUpInicoFact" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del comprobante de Inicio de trámite de Factibilidad, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del comprobante de Inicio de trámite de Factibilidad, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -247,7 +281,7 @@
                         <h:form id="frUpCertRetiroYDispFinal" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia de Certificado de retiro y disposición final de las descargas, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia de Certificado de retiro y disposición final de las descargas, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>
@@ -289,7 +323,7 @@
                         <h:form id="frUpProtocolo" enctype="multipart/form-data" prependId="false">
                             <b:row>
                                 <b:column span="12">
-                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del Protocolo de caracterización de barros, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg</p>
+                                    <p style="color: gray; font-weight: normal; font-size: 14px">Si poseé copia del Protocolo de caracterización de barros, puede ingresarlo por aquí en un único archivo .pdf, .doc, .docx, rtf o jpg. El archivo no podrá exeder los 3 Mb.</p>
                                 </b:column>
                             </b:row>
                             <b:row>

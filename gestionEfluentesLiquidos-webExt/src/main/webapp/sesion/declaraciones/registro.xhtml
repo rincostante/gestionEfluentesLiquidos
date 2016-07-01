@@ -18,7 +18,10 @@
             <!-- Tabs -->
             <b:well>
 
-                <h2>Registrar DJ</h2>
+                <p><h:outputText value="Registrar Declaración Jurada" style="font-size: 30px" rendered="#{mbDeclaraciones.declaracion.claveEstado lt 2}" /></p>
+                <p><h:outputText value="Su Declaración Jurada ya ha sido registrada" style="font-size: 30px; color: darkgreen" rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" />
+                    <h:outputText value=" - Los datos son de solo lectura" style="font-size: 20px; color: darkgreen" rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" />
+                </p>
                 <p style="color: gray; font-weight: normal; font-size: 12px">#{bundle.instruccionesGenerales}</p>
 
                 <b:row>
@@ -60,7 +63,7 @@
                     <b:row>
                         <b:column span="12" >
                             <b:commandButton title="Eliminar la Declaración en borrador" action="#{mbDeclaraciones.deleteDeclaracionBorr()}" 
-                                             disabled="#{mbDeclaraciones.declaracion.claveEstado ne 1 or mbDeclaraciones.declaracion.firmante ne null}" 
+                                             disabled="#{not mbDeclaraciones.datosComReg or mbDeclaraciones.declaracion.firmante ne null}" 
                                              icon="glyphicon-ok" update="mess,frBtBorr,frNav"
                                              look="danger"  value="Eliminar la Declaración" 
                                              ajax="true"  />

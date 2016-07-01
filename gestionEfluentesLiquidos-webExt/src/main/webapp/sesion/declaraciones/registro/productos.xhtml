@@ -11,21 +11,56 @@
     <h:body>
         <p:growl id="messages" showDetail="false" />
         <b:modal id="dlgAyudaFrm" title="Registro de DJ - Productos - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
-                Ayuda registro y edición de Productos elaborados
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Por cada Producto se podrán consignar su correspondientes materias primas. 
+                              Estas se podrán registrar duratne la carga o la edición del Producto. Para actualizar 
+                              los datos del Producto o eliminarlo, deberá seleccionarlo del listado correspondiente"/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Descripción: Consignar un producto o servicio originado en la actividad del establecimiento. 
+                              Completar los campos de cantidad y unidad y Guardar el Producto. Repetir la operación para ingresar 
+                              más de un producto o servicio si corresponde. Introducir hasta 5 productos o servicios. Elegir los más 
+                              representativos de la actividad del establecimiento."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Cantidad anual: Consignar la cantidad anual correspondiente al producto o actividad declarado. 
+                              Utilizar punto para introducir decimales."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Unidad: Seleccionar del menú desplegable la unidad de medida que corresponda."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaGestProductos" title="Registro de DJ - Productos" styleClass="modalAyudaGestProductos"
             closable="true" >
-                Ayuda para la gestión general de los Productos elamborados por el Establecimiento
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos. 
+                              Debe consignar al menos un producto elaborado."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Los Productos consignados y guardados se 
+                              muestran en una lista al final del formulario, existiendo la opción de editar o borrar la información 
+                              individualmente. Al finalizar la carga de información, hacer click el botón Guardar Productos para guardar los 
+                              datos del formulario o el botón Limpiar Productos para borrar la lista de Productos registrados y sus datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al guardar los datos del Formulario se 
+                              actualiza la Declaración en borrador. Los datos podrán actualizarse aún guardados mientras no se haya firmado 
+                              la Declaración."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaGestMaterias" title="Registro de DJ - Productos - Materias primas" styleClass="modalAyudaGestMaterias"
             closable="true" >
-                Ayuda para la gestión general de las Materias primas de los Productos elamborados por el Establecimiento
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Podrá consignar las Materias primas del Producto, seleccinando el mismo al editar o durante su carga.
+                              Como en los casos anterior, primero deberán guardarse las Materias primas de un Producto y luego este."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Descripción: Consignar las materias primas o materiales primarios utilizados en la actividad del 
+                              establecimiento. Completar los campos de cantidad y unidad y Guardar la Materia. Repetir la operación para 
+                              ingresar más de una materia si corresponde. Introducir hasta 5 materias. Elegir las más representativos de 
+                              la actividad del establecimiento. Las materias declaradas  y guardadas aparecen en un listado en la parte 
+                              inferior del formulario. Es posible editar o borrar cada materia individualmente o limpiar el formulario 
+                              para comenzar de nuevo en caso de ser necesario, a través de los botones correspondientes."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Cantidad anual: Consignar la cantidad anual utilizada de la materia declarada. Utilizar punto para introducir decimales."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Unidad: Seleccionar del menú desplegable la unidad de medida que corresponda."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>

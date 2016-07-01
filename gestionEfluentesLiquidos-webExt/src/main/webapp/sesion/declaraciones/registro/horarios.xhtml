@@ -11,21 +11,40 @@
     <h:body>
         <p:growl id="messages" showDetail="false" />
         <b:modal id="dlgAyudaFrm" title="Registro de DJ - Horario - Registro/Edición" styleClass="modalAyudaFrm" closable="true" >
-                Ayuda registro y edición de Horario de trabajo
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Elegir el día en el menú desplegable, 
+                                  tiperar los horarios correspondientes (Hora de 1 a 24 y Min de 1 a 59). Si se elige un día, se hace 
+                                  obligatorio poner horario de inicio y fin de actividades. Luego, Guardar la información. Una vez guardado, 
+                                  se podrá editar o eliminar cada día a través de los botones indicados."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Durante la carga de un día o su edición, 
+                              se podrán registrar los diferentes Turnos. Al seleccionar un día del listado se podrá acceder a los respectivos 
+                              Turnos, antes de guardar la actualización o registro de un Día deberán guardarse los Turnos correspondientes, si existieran."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaGestHorario" title="Registro de DJ - Horario" styleClass="modalAyudaGestHorario"
             closable="true" >
-                Ayuda para la gestión general del Horario de trabajo del Establecimiento
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="Hacer click en el botón verde 'Actualizar' antes de iniciar el ingreso de datos. 
+                              Debe consignar los horarios de trabajo."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Los Horarios consignados y guardados se 
+                              muestran en una lista al final del formulario, existiendo la opción de editar o borrar la información 
+                              individualmente. Al finalizar la carga de información, hacer click el botón Guardar Días para guardar los 
+                              datos del formulario o el botón Limpiar Días para borrar la lista de Días registrados y sus datos."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Al guardar los datos del Formulario se 
+                              actualiza la Declaración en borrador. Los datos podrán actualizarse aún guardados mientras no se haya firmado 
+                              la Declaración."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaGestTurnos" title="Registro de DJ - Horario - Turnos" styleClass="modalAyudaGestTurnos"
             closable="true" >
-                Ayuda para la gestión general de los turnos del Horario de trabajo del Establecimiento
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" 
+                              value="En caso de existir más de un turno de trabajo en el establecimiento, indicar cada turno con 
+                              números correlativos, iniciando por 1, y consignar el horario de cada uno (Hora de 1 a 24 y Min de 1 a 59). 
+                              Los turnos declarados y guardados aparecen en el listado de la parte inferior del formulario respectivo 
+                              Como en todos los casos, para eliminar o editar un Turno cargado, deberá seleccionarlo del listado."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>

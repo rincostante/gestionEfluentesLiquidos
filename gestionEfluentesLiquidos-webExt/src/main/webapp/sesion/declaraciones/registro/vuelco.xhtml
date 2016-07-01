@@ -12,20 +12,59 @@
         <p:growl id="messages" showDetail="false" />
         <b:modal id="dlgAyudaVuelcoGral" title="Registro de DJ - Vuelco" styleClass="modalAyudaVuelcoGral"
             closable="true" >
-                Ayuda vuelco, general. 
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Hacer click en el botón verde 'Actualizar' 
+                              antes de iniciar el ingreso de datos."/></p>
+                <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Indicar el nombre del organismo que 
+                                  extiende el permiso, autorización o factibilidad hidráulica de vuelco, según corresponda. El volumen del 
+                                  caudal autorizado que consta en el permiso debe indicarse en m³/día, utilizando un punto en caso de haber 
+                                  decimales. Indicar el nombre completo de la calle por la cual se autoriza el vuelco, según obra en el permiso.
+                                  Si estos campos se dejan sin completar, se entiende que el establecimiento no posee la autorización de vuelco 
+                                  correspondiente, ya sea porque no efectúa vuelcos o por cualquier otro motivo."/></p>
+                Hacer click en el botón verde "Actualizar" antes de iniciar el ingreso de datos. 
+                Los vuelcos declarados y guardados se muestran en una lista al final del formulario. 
+                
+                Una vez consignados los datos podrá guardar los mismos en borrador mediante el botón 
+                azul del inferior del formulario. Una vez guardados, podrá editarlos mientras la Declaración
+                no esté firmada. También podrá eliminar los datos guardados mediante el botón Eliminar Vuelco 
+                Registrado para borrar los datos cargados.
+                Para guardar estos datos, primero deberá guardar los Datos complementarios.
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaVuelcoInscrip" title="Registro de DJ - Vuelco - Datos registrados en DRP" styleClass="modalAyudaVuelcoInscrip"
             closable="true" >
-                Ayuda vuelco, datos registrados en la DRP del MAyDS 
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Descripción del Proceso Productivo: 
+                                  En este apartado se puede tipear la descripción literal de la actividad principal del establecimiento y una 
+                                  breve explicación de la misma."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Selecionar Establecimiento en DRP: 
+                              Al indicar ON se entiende que el establecimiento se encuentra inscripto en el registro de la Dirección de 
+                              Residuos Peligrosos (DRP) del Ministerio de Ambiente y Desarrollo Sustentable de la Nación. En tal caso, 
+                              deberá clickear en el botón Agregar/Editar y validar los datos del registro en la DRP en la ventana emergente. 
+                              Actualizar antes de cargar los datos, a continuación ingresar el usuario DRP (del SIMEL - ej: 45698668741/1) y 
+                              Guardar los datos validados antes de Cerrar la ventana emergente. También se puede borrar esta información 
+                              con el botón Limpiar los datos validados. Actualizar al finalizar la carga. Al indicar OFF se entiende que 
+                              el establecimiento no se encuentra inscripto en el registro de la DRP."/></p>
+            <p><h:outputLabel style="font-size: 14px; color: background; font-weight: lighter" value="Radio de servido cloacas AySA: 
+                              Al indicar ON se entiende que el establecimiento se encuentra ubicado dentro del radio alcanzado por el 
+                              servicio de cloacas de la empresa AySA. Al indicar OFF se entiende que el establecimiento no se encuentra 
+                              ubicado dentro del radio alcanzado por el servicio de cloacas de la empresa AySA."/></p>
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
         </b:modal>
         <b:modal id="dlgAyudaFrmHorarios" title="Registro de DJ - Vuelco - Registro/Edición Horario Descargas" styleClass="modalAyudaFrmHorarios" closable="true" >
-                Ayuda registro y edición de Horario de trabajo
+                Al indicar ON se entiende que el vuelco es de carácter continuo dentro de todo el horario laboral del establecimiento 
+                y no es necesario agregar otro dato. Al indicar OFF se hace obligatorio consignar días y horarios de inicio y finalización 
+                del vuelco.
+                Elegir el día en el menú desplegable, tiperar los horarios correspondientes (Hora de 1 a 24 y Min de 1 a 59). 
+                Si se elige un día, se hace obligatorio poner horario de inicio y fin de la descarga. Luego Guardar la información. 
+                Una vez guardado, se podrá editar o eliminar a través de los botones indicados que aparecerán a la derecha del listado 
+                que se abre en la parte inferior.  El botón Limpiar permite borrar toda la información consignada en el formulario. 
+                El botón Cancelar Selección permite anular la selección efectuada sobre el menú desplegable.
+                En caso de efectuarse más de un vuelco el mismo día, deberá seleccionarse tal día tantas veces como vuelcos se realicen, 
+                y consignar los horarios de inicio y fin de la descarga.
+
             <f:facet name="footer">
                 <b:button value="Cerrar" dismiss="modal" onclick="return false;"/>
             </f:facet>
