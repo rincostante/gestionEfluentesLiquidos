@@ -42,7 +42,7 @@ public class EstablecimientoFacade extends AbstractFacade<Establecimiento> {
         List<Establecimiento> lstEst;
         em = getEntityManager();
         String queryString = "SELECT est FROM Establecimiento est "
-                + "WHERE est.partido.idDpyra = :idPartido "
+                + "WHERE est.partidoGel = :idPartido "
                 + "AND est.numero = :numEst "
                 + "AND est.crs = :crs";
         Query q = em.createQuery(queryString)
