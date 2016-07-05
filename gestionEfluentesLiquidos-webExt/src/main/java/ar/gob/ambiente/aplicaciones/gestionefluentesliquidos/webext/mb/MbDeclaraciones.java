@@ -3388,11 +3388,11 @@ public class MbDeclaraciones implements Serializable{
                         + "Puede imprimir el recibo. ¡Muchas gracias!");
                 decRegistrada = true;
             }catch(Exception ex){
-                JsfUtil.addErrorMessage("Según el último dígito del CUIT del Establecimiento, la Declaración jurada solo podrá "
-                        + "registrarse a partir del 1° de Agosto. Los datos consignados permanecerán en estado provisorio.");
+                JsfUtil.addErrorMessage("Hubo un error regitrando la Declaración Jurada. " + ex.getMessage());
             }
         }else{
-            
+            JsfUtil.addErrorMessage("Según el último dígito del CUIT del Establecimiento, la Declaración jurada solo podrá "
+                        + "registrarse a partir del 1° de Agosto. Los datos consignados permanecerán en estado provisorio.");
         }
     }
     
@@ -5274,8 +5274,7 @@ public class MbDeclaraciones implements Serializable{
         String strCuit = String.valueOf(est.getCuit());
         String ultimo = strCuit.substring(strCuit.length() - 1);
         Integer iUltimo = Integer.valueOf(ultimo);
-        if(iUltimo > 4) return false;
-        else return true;
+        return iUltimo <= 4;
     }
 
     
