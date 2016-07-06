@@ -2730,21 +2730,20 @@ public class MbDeclaraciones implements Serializable{
      * Método para guardar las descargas en el vuelco de la declaración
      */
     public void createDescargas(){
-        if(datosVuelco){
-            resetEdit();
-            if(!lstDescargas.isEmpty()){
-                declaracion.getVuelco().setDescargas(lstDescargas);
-                creatDeclaracionBorr();
-                datosDescargas = true;
-                activeIndex = 4;
-                pulgarDesc = "glyphicon-thumbs-up";
-                JsfUtil.addSuccessMessage("Las descargas confeccionadas se han agregado a las características del vuelco del Establecimiento."); 
-            }else{
-                JsfUtil.addErrorMessage("No hay descargas configuradas para agregar al Vuelco.");
+        resetEdit();
+        if(!lstDescargas.isEmpty()){
+            if(declaracion.getVuelco() == null){
+                Vuelco vuelco = new Vuelco();
+                declaracion.setVuelco(vuelco);
             }
+            declaracion.getVuelco().setDescargas(lstDescargas);
+            creatDeclaracionBorr();
+            datosDescargas = true;
+            activeIndex = 4;
+            pulgarDesc = "glyphicon-thumbs-up";
+            JsfUtil.addSuccessMessage("Las descargas confeccionadas se han agregado a las características del vuelco del Establecimiento."); 
         }else{
-            JsfUtil.addErrorMessage("Antes de guardar una Descarga en la Declaración debe al menos un Calla sobre la cual se halla otorgado la "
-                    + "factibilidad, el caudal autorizado y el Organismo autorizante, en el formulario de Vuelco.");
+            JsfUtil.addErrorMessage("No hay descargas configuradas para agregar al Vuelco.");
         }
     }
     
@@ -3363,12 +3362,15 @@ public class MbDeclaraciones implements Serializable{
 
                     // inserto la Declaración
                     backendSrv.createDeclaracion(declaracion);
+                    histDecNuevo.setDeclaracion(declaracion);
+                    /*
                     // obtengo el id de la Declaración insertada
                     Integer idDecla = backendSrv.obtenerDeclaReciente(usLogueado.getCude());
                     // obtengo la Declaración
                     DeclaracionJurada dc = backendSrv.getDeclaracionByID(Long.valueOf(idDecla));
                     // seteo la Declaración insertada en el historial
                     histDecNuevo.setDeclaracion(dc);
+                    */
                 }
 
                 // para cualquier caso completo el seteo del historial
@@ -4682,24 +4684,17 @@ public class MbDeclaraciones implements Serializable{
         boolean result = true;
         int i = 0;
         
-        if(dia.getHorasInicDesc() > 0 && dia.getHorasFinDesc() > 0){
-            // convierto los enteros a horas
-            horaInicial.set(Calendar.HOUR, dia.getHorasInicDesc());
-            horaInicial.set(Calendar.MINUTE, dia.getMinInicDesc());
-            
-            horaFinal.set(Calendar.HOUR, dia.getHorasFinDesc());
-            horaFinal.set(Calendar.MINUTE, dia.getMinFinDesc());
-            
-            // valido que la hora de finalización sea anterior a la de incicio
-            if(!horaFinal.after(horaInicial)){
-                result = false;
-                JsfUtil.addErrorMessage("La hora de finalización de la jornada laboral debe ser posterior a la de incicio.");
-            }
-        }else{
-            if(dia.getHorasFinDesc() > 0){
-                result = false;
-                JsfUtil.addErrorMessage("Si no hay hora de incio de jornada laboral no puede haber hora de finalización.");
-            }
+        // convierto los enteros a horas
+        horaInicial.set(Calendar.HOUR, dia.getHorasInicDesc());
+        horaInicial.set(Calendar.MINUTE, dia.getMinInicDesc());
+
+        horaFinal.set(Calendar.HOUR, dia.getHorasFinDesc());
+        horaFinal.set(Calendar.MINUTE, dia.getMinFinDesc());
+
+        // valido que la hora de finalización sea anterior a la de incicio
+        if(!horaFinal.after(horaInicial)){
+            result = false;
+            JsfUtil.addErrorMessage("La hora de finalización de la jornada laboral debe ser posterior a la de incicio.");
         }
         
         if(!lstDias.isEmpty()){

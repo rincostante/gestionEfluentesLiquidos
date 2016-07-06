@@ -108,8 +108,7 @@
                     <b:row>
                         <b:column span="3">
                             <b:inputText label="Caudal (m3/día)" value="#{mbDeclaraciones.descarga.caudal}" >
-                                <f:validateDoubleRange />
-                                <f:validateLongRange minimum="1"/>
+                                <f:validateDoubleRange minimum="0.1" />
                             </b:inputText>
                         </b:column>
                         <b:column span="6">

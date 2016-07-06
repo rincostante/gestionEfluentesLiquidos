@@ -60,8 +60,7 @@
                         </b:column>
                         <b:column span="3">
                             <b:inputText label="Profundidad (mts)" value="#{mbDeclaraciones.pozo.profundidad}" >
-                                <f:validateDoubleRange />
-                                <f:validateLongRange minimum="1"/>
+                                <f:validateDoubleRange minimum="0.1" />
                             </b:inputText>
                         </b:column>
                         <b:column span="2">

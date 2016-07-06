@@ -224,7 +224,7 @@
                                        itemLabel="#{tipoSup.value}" itemValue="#{tipoSup.key}" />
                     </b:selectOneMenu>
                     <b:inputText id="txtSup" label="" placeholder="Ingrese los m2" value="#{mbDeclaraciones.supDec.cantidad}" >
-                        <f:validateDoubleRange />
+                        <f:validateDoubleRange minimum="0.1" />
                     </b:inputText>
                     <br></br><br></br>
                     <p:dataTable id="dtSuperficie" value="#{mbDeclaraciones.lstSupDec}" var="sup" 

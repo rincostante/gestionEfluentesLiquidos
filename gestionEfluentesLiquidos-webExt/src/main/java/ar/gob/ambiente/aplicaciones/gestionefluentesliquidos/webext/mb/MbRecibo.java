@@ -42,7 +42,6 @@ public class MbRecibo implements Serializable{
     private List<HistorialDeclaraciones> listHistorial;
     private MbSesion sesion;
     private UsuarioExterno usLogueado;
-    private Establecimiento est;
     private DeclaracionJurada decJurada;
     JasperPrint jasperPrint;
     
@@ -61,69 +60,52 @@ public class MbRecibo implements Serializable{
         
         listHistorial = new ArrayList<>();
         decJurada = backendSrv.getDeclaracionByCude(usLogueado.getCude());
-        
-        historial = backendSrv.getHistorialDecByDec(decJurada);
     }
     
     public void iniciar() throws JRException, IOException{
-        // instancio el recibo si no lo tiene
         String codRecibo;
-        if(decJurada.getRecibo() == null){
-            Recibo recibo = new Recibo();
-            Date date = new Date(System.currentTimeMillis());
-            recibo.setFecha(date);
-            Integer idUltimo = backendSrv.getUltimoIdRecibo();
-            if(idUltimo == null){
-                codRecibo = "1-15"; 
-            }else{
-                codRecibo = String.valueOf(idUltimo + 1) + "-16";
-            }
-            recibo.setCodigo(codRecibo);
-            
-            //seteo admin
-            AdminEntidad admEnt = new AdminEntidad();
-            admEnt.setFechaAlta(date);
-            admEnt.setHabilitado(true);
-            admEnt.setUsExtAlta(usLogueado);
-            recibo.setAdmin(admEnt);
-            
-            try{
-                // inserto
+        try{
+            // instancio el recibo si no lo tiene
+            if(decJurada.getRecibo() == null){
+                Recibo recibo = new Recibo();
+                Date date = new Date(System.currentTimeMillis());
+                recibo.setFecha(date);
+                Integer idUltimo = backendSrv.getUltimoIdRecibo();
+                if(idUltimo == null){
+                    codRecibo = "1-15"; 
+                }else{
+                    codRecibo = String.valueOf(idUltimo + 1) + "-16";
+                }
+                recibo.setCodigo(codRecibo);
+
+                //seteo admin
+                AdminEntidad admEnt = new AdminEntidad();
+                admEnt.setFechaAlta(date);
+                admEnt.setHabilitado(true);
+                admEnt.setUsExtAlta(usLogueado);
+                recibo.setAdmin(admEnt);
+                
+                // inserto el recibo
                 backendSrv.createRecibo(recibo);
+                // actualizo la declaración con el recibo generado
                 decJurada.setRecibo(recibo);
-                // actualizo declaración
-                backendSrv.editDeclaracion(decJurada);
-            }catch(Exception ex){
-                JsfUtil.addErrorMessage("Hubo un error al crear el Recibo de la Declaración. " + ex.getMessage());
+                // actualizo declaración en la base
+                backendSrv.editDeclaracion(decJurada); 
             }
+            historial = backendSrv.getHistorialDecByDec(decJurada);
+            listHistorial.add(historial);
+
+            JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listHistorial);
+            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/Recibo.jasper");
+            jasperPrint =  JasperFillManager.fillReport(reportPath, new HashMap(), beanCollectionDataSource);
+            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.addHeader("Content-disposition", "attachment; filename=reciboDeclaracion.pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+
+            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+        }catch(JRException | IOException ex){
+            JsfUtil.addErrorMessage("Hubo un error al crear el Recibo de la Declaración. " + ex.getMessage());
         }
- 
-        listHistorial.add(historial);
-        
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listHistorial);
-        String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/Recibo.jasper");
-        jasperPrint =  JasperFillManager.fillReport(reportPath, new HashMap(), beanCollectionDataSource);
-        HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reciboDeclaracion.pdf");
-        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-        
-        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-        FacesContext.getCurrentInstance().responseComplete();
-    }
-    
-    public void generarReporte() throws JRException, IOException{
-        /*
-        listHistorial.add(historial);
-        
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(listHistorial);
-        String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/Recibo.jasper");
-        jasperPrint =  JasperFillManager.fillReport(reportPath, new HashMap(), beanCollectionDataSource);
-        HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reciboDeclaracion.pdf");
-        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-        
-        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-        FacesContext.getCurrentInstance().responseComplete();
-        */
     }
 }

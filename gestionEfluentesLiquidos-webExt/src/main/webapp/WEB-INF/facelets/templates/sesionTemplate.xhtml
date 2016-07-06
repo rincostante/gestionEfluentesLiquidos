@@ -157,13 +157,15 @@
                 <b:row>
                     <b:column span="3">
                         <span style="color: #f5f5ed" >Menú principal</span><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Inicio</a><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Declaraciones Juradas</a><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Establecimientos</a><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramiteSesion}principal.xhtml" >Guía de trámite</a><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativaSesion}principal.xhtml" >Normativa</a><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaqSesion}faq.xhtml" >Preguntas frecuentes</a><br/>
-                        <a href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml" >Sesión</a><br/>
+                        <b:navLink value="Inicio" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml"></b:navLink>
+                        <b:navLink value="Registrar/Consultar Declaración" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registro.xhtml"></b:navLink>
+                        <b:navLink rendered="#{mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}" 
+                                   value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml"></b:navLink>
+                        <b:navLink value="Actualizar ubicación" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
+                        <b:navLink value="Guía de trámite" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramiteSesion}principal.xhtml"></b:navLink>
+                        <b:navLink value="Normativa" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizNormativaSesion}principal.xhtml"></b:navLink>
+                        <b:navLink value="Preguntas frecuentes" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizFaqSesion}faq.xhtml"></b:navLink>
+                        <b:navCommandLink action="#{mbSesion.logout()}" value="Cerrar Sesión" />
                     </b:column>
                     <b:column style="color: cadetblue" span="6">
                         <span style="color: #f5f5ed" >Contacto</span><br/>
