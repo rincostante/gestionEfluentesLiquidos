@@ -2,21 +2,27 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb;
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.AdminEntidad;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Firmante;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialFirmantes;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Usuario;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.srv.BackendSrv;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.util.JsfUtil;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -36,6 +42,7 @@ public class MbFirmantes implements Serializable{
     private List<Firmante> listado = null;
     private List<Firmante> listaFilter;       
     private List<Establecimiento> listEstFilter;
+    private List<HistorialFirmantes> listHistFirmFilter;
     
     @EJB
     private BackendSrv backendSrv;    
@@ -46,6 +53,14 @@ public class MbFirmantes implements Serializable{
     /**********************
      * Métodos de acceso **
      **********************/
+    public List<HistorialFirmantes> getListHistFirmFilter() {
+        return listHistFirmFilter;
+    }
+    
+    public void setListHistFirmFilter(List<HistorialFirmantes> listHistFirmFilter) {
+        this.listHistFirmFilter = listHistFirmFilter;
+    }
+
     public List<Establecimiento> getListEstFilter() {
         return listEstFilter;
     }
@@ -81,14 +96,6 @@ public class MbFirmantes implements Serializable{
         this.current = current;
     }
 
-    public Firmante getFirmanteSelected() {
-        return firmanteSelected;
-    }
-
-    public void setFirmanteSelected(Firmante firmanteSelected) {
-        this.firmanteSelected = firmanteSelected;
-    }
-
     public Long getCuit() {
         return cuit;
     }
@@ -96,6 +103,16 @@ public class MbFirmantes implements Serializable{
     public void setCuit(Long cuit) {
         this.cuit = cuit;
     }
+    
+    /**
+     * @return La entidad gestionada
+     */
+    public Firmante getSelected() {
+        if (current == null) {
+            current = new Firmante();
+        }
+        return current;
+    }       
     
 
     /****************************
@@ -124,7 +141,7 @@ public class MbFirmantes implements Serializable{
             while(enume.hasMoreElements()){
                 s = (String)enume.nextElement();
                 if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbUsuario") && !s.equals("mbLogin")){
+                    if(!s.equals("mbLogin")){
                         session.removeAttribute(s);
                     }
                 }
@@ -136,7 +153,7 @@ public class MbFirmantes implements Serializable{
      * @return acción para el listado de entidades a mostrar en el list
      */
     public String prepareList() {
-        //recreateModel();
+        recreateModel();
         return "list";
     }    
     
@@ -160,28 +177,7 @@ public class MbFirmantes implements Serializable{
      */
     public String prepareEdit() {
         return "edit";
-    }    
-    
-    /**
-     * Método que verifica que el Firmante que se quiere eliminar no esté siento utilizado por otra entidad
-     * @return 
-     */
-    public String prepareDestroy(){
-        return "";
-        /*
-        boolean libre = getFacade().noTieneDependencias(current.getId());
-
-        if (libre){
-            // Elimina
-            performDestroy();
-            recreateModel();
-        }else{
-            //No Elimina 
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("TipoEstablecimientoNonDeletable"));
-        }
-        return "view";
-        */
-    }        
+    }          
 
  
     /*************************
@@ -203,18 +199,16 @@ public class MbFirmantes implements Serializable{
      */    
     public void habilitar() {
         update = 2;
-        //update();        
+        update();        
         recreateModel();
     }  
      /**
      */    
     public void deshabilitar() {
-        /*
-        if (getFacade().rolNoTieneDependencias(current.getId())){
+        if(current.getEstablecimientos().isEmpty()){
             update = 1;
-            update();      
+            update();
         }
-        */
         recreateModel();
     }    
     
@@ -225,12 +219,111 @@ public class MbFirmantes implements Serializable{
         listado = null;
     }    
     
+    /**
+     * Método para crear un Firmante
+     * @return 
+     */
+    public String create() {       
+        try {
+            Date date = new Date(System.currentTimeMillis());
+            AdminEntidad admin = new AdminEntidad();
+            admin.setFechaAlta(date);
+            admin.setUsAlta(usLogeado);
+            admin.setHabilitado(true);
+            current.setAdmin(admin);
+            String tempNombre = current.getNombreYApellido();
+            current.setNombreYApellido(tempNombre.toUpperCase());
+            backendSrv.createFirmante(current);
+            JsfUtil.addSuccessMessage("El Firmante se ha registrado con éxito.");
+            return "view";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Hubo un error registrando el Firmante: " + e.getMessage());
+            return null;
+        }
+    }    
+    
+    /**
+     * Método para actualizar un Firmante existente
+     * @return
+     */
+    public String update() {
+        Date date = new Date(System.currentTimeMillis()); 
+        // actualizamos según el valor de update
+        if(update == 1){
+            current.getAdmin().setFechaBaja(date);
+            current.getAdmin().setUsBaja(usLogeado);
+            current.getAdmin().setHabilitado(false);
+        }
+        if(update == 2){
+            current.getAdmin().setFechaModif(date);
+            current.getAdmin().setUsModif(usLogeado);
+            current.getAdmin().setHabilitado(true);
+            current.getAdmin().setFechaBaja(null);
+            current.getAdmin().setUsBaja(usLogeado);
+        }
+        if(update == 0){
+            current.getAdmin().setFechaModif(date);
+            current.getAdmin().setUsModif(usLogeado);
+        }
+
+        // acualizo
+        try {
+            String tempNombre = current.getNombreYApellido();
+            current.setNombreYApellido(tempNombre.toUpperCase());
+            backendSrv.editFirmante(current);
+            switch (update) {
+                case 0:
+                    JsfUtil.addSuccessMessage("El Firmante fue actualizado con éxito");
+                    return "view";
+                case 1:
+                    JsfUtil.addSuccessMessage("El Firmante fue deshabilitado con éxito");
+                    return "view";
+                default:
+                    JsfUtil.addSuccessMessage("El Firmante fue habilitado con éxito");
+                    return "view";
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Hubo un error actualizando el Firmante: " + e.getMessage());
+            return null;
+        }
+    }    
+    
+    /*****************
+     * Validaciones **
+     *****************/
+    /**
+     * Método para validar que no exista ya una entidad con este nombre al momento de crearla
+     * @param arg0: vista jsf que llama al validador
+     * @param arg1: objeto de la vista que hace el llamado
+     * @param arg2: contenido del campo de texto a validar 
+     */
+    public void validarInsert(FacesContext arg0, UIComponent arg1, Object arg2){
+        validarExistente(arg2);
+    }
+    
+    /**
+     * Método para validar que no exista una entidad con este nombre, siempre que dicho nombre no sea el que tenía originalmente
+     * @param arg0: vista jsf que llama al validador
+     * @param arg1: objeto de la vista que hace el llamado
+     * @param arg2: contenido del campo de texto a validar 
+     * @throws ValidatorException 
+     */
+    public void validarUpdate(FacesContext arg0, UIComponent arg1, Object arg2){
+        if(current.getDni() != (Long)arg2){
+            validarExistente(arg2);
+        }
+} 
+    
     
     /*********************
     ** Métodos privados **
     **********************/
- 
 
+    private void validarExistente(Object arg2) throws ValidatorException{
+        if(!backendSrv.firXDniNoExiste((Long)arg2)){
+            throw new ValidatorException(new FacesMessage("Ya existe un Firmante con el DNI que está ingresando, por favor, verifique los datos."));
+        }
+}
     
   /********************************************************************
    ** Converter. Se debe actualizar la entidad y el facade respectivo **

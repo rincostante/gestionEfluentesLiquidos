@@ -28,7 +28,7 @@
                          rowsPerPageTemplate="5,10,15">
 
                 <f:facet name="header">
-                   #{bundle.RolListTitle}  
+                    Listado de Firmantes  
                     <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
                     <p:columnToggler datasource="firmList" trigger="toggler" />
                 </f:facet>
@@ -55,28 +55,28 @@
                             <f:selectItem itemLabel="Inactivos" itemValue="false" />
                         </p:selectOneMenu>
                     </f:facet>
-                    <h:outputText value="#{e.admin.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                    <h:outputText value="#{firm.admin.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                 </p:column>
 
                 <p:column headerText="Acciones" style="width:110px">
-                    <p:growl id="messages" showDetail="true" />                           
+                    <p:growl id="messages" showDetail="false" />                           
                     <p:commandButton icon="ui-icon-zoomin" action="#{mbFirmantes.prepareView}" title="Ver Detalle">
-                        <f:setPropertyActionListener value="#{firm}" target="#{mbFirmantes.firmanteSelected}" />  
+                        <f:setPropertyActionListener value="#{firm}" target="#{mbFirmantes.current}" />  
                     </p:commandButton>
 
                     <p:commandButton icon="ui-icon-pencil" action="#{mbFirmantes.prepareEdit}" title="Editar" >
-                        <f:setPropertyActionListener value="#{firm}" target="#{mbFirmantes.firmanteSelected}" /> 
+                        <f:setPropertyActionListener value="#{firm}" target="#{mbFirmantes.current}" /> 
                     </p:commandButton>
 
                     <p:commandButton icon="ui-icon-close"  action="#{mbFirmantes.deshabilitar}" rendered="#{firm.admin.habilitado == 'true'}"
                                      title="Deshabilitar" update="firmList">
-                        <f:setPropertyActionListener value="#{firm}"  target="#{mbFirmantes.firmanteSelected}" />
+                        <f:setPropertyActionListener value="#{firm}"  target="#{mbFirmantes.current}" />
                         <p:confirm header="Confirmar" message="¿Desea deshabilitar el Firmante?" icon="ui-icon-alert" />
                     </p:commandButton>                
 
                     <p:commandButton icon="ui-icon-check" action="#{mbFirmantes.habilitar}" rendered="#{firm.admin.habilitado == 'false'}" 
                                      title="Habilitar" update="firmList">
-                        <f:setPropertyActionListener value="#{firm}" target="#{mbFirmantes.firmanteSelected}" />
+                        <f:setPropertyActionListener value="#{firm}" target="#{mbFirmantes.current}" />
                         <p:confirm header="Confirmar" message="¿Desea habilitar el Firmante?" icon="ui-icon-alert" />
                     </p:commandButton> 
 

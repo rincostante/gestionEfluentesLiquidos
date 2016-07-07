@@ -15,14 +15,14 @@
         <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/img/favicon.ico"/>
         <f:facet name="first">
             <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-            <title>SAyDS - Aplicaciones</title>
+            <title>MAyDS - Aplicaciones</title>
         </f:facet>
     </h:head>
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit id="top" styleClass="top" position="north" >
                 <h:panelGrid id="topPg" columns="3" styleClass="topPg" >
-                    <img src="../../resources/img/logoCoord80x270.jpg" />
+                    <img src="#{request.contextPath}/resources/img/Log_Presidencia_MinisterioAmbiente.gif" width="339" height="67" style="float: left" />
                     <p:outputLabel id="topOl" value="#{bundle.Aplicacion}" styleClass="topOl" style="font-size: xx-large" />
                 </h:panelGrid>
             </p:layoutUnit>
@@ -36,6 +36,8 @@
                         <p:submenu label="Administración" >
                             <p:menuitem value="Firmantes" 
                                         url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizFirmante}/list.xhtml"/>
+                            <p:menuitem value="Establecimientos" 
+                                        url="#{bundle.Servidor}#{bundle.RutaAplicacion}/#{bundle.RaizEstablecimiento}/list.xhtml"/>
                         </p:submenu>
                         
                         <p:submenu label="Seguridad" rendered="#{mbLogin.ambito == 'Seguridad'}">
@@ -55,7 +57,8 @@
             </p:layoutUnit>
             
             <p:layoutUnit id="botton" styleClass="botton" position="south" >
-                <img src="../../resources/img/BloquePie.jpg" />
+                <img src="#{request.contextPath}/resources/img/BloquePieAzulCorto.jpg" />
+                <img src="#{request.contextPath}/resources/img/Log_Presidencia_MinisterioAmbienteChico.gif" style="margin-bottom:15px" />
             </p:layoutUnit>
         </p:layout>
     </h:body>

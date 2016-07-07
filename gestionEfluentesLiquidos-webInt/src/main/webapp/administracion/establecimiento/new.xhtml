@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="content">
+        <h:form id="frmNew">
+            <p:panel id="pnNew" header="Nuevo Establecimiento" style="margin-bottom:10px;">
+                <p:growl id="messages" showDetail="false" />
+                <h:panelGrid id="pnEstNew" columns="2">
+                    <p:commandButton id="buscarXCuit" icon="ui-icon-newwin" value="Buscar por CUIT" action="#{mbEstablecimientos.prepareBuscarXCuit}" process="@this" />
+                    <p:commandButton action="#{mbEstablecimientos.pruebaActualizar()}" 
+                                     process="@this" update="calle,numero,loc,part" id="act" value="Actualizar" />
+                    
+                    <p:outputLabel value="Calle" for="calle"/>
+                    <p:inputText id="calle" value="#{mbEstablecimientos.current.inmueble.calle}" style="text-transform: uppercase; width: 300px" />
+                    
+                    <p:outputLabel value="Número" for="numero"/>
+                    <p:inputText id="numero" value="#{mbEstablecimientos.current.inmueble.numero}" style="text-transform: uppercase; width: 50px" />    
+                    
+                    <p:outputLabel value="Localidad" for="loc"/>
+                    <p:inputText id="loc" value="#{mbEstablecimientos.current.inmueble.localidad}" style="text-transform: uppercase; width: 300px" />
+                    
+                    <p:outputLabel value="Partido" for="part"/>
+                    <p:inputText id="part" value="#{mbEstablecimientos.current.inmueble.departamento}" style="text-transform: uppercase; width: 300px" />
+                </h:panelGrid>
+            </p:panel>
+            
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbEstablecimientos.create}" update="pnNew"/>
+                    <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: next">
+                        <p:ajax update="pnNew" resetValues="true" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbEstablecimientos.prepareList}" value="Volver" immediate="true"/>
+                </f:facet>
+            </p:toolbar>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

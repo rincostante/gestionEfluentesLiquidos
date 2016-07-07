@@ -13,29 +13,54 @@
                 <p:messages id="messages" />
                 <h:panelGrid columns="2">
                     <h:outputLabel value="Nombre y Apellido: "/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.nombreYApellido}" />
+                    <h:outputText value="#{mbFirmantes.current.nombreYApellido}" />
 
                     <h:outputLabel value="#{bundle.UsuarioAlta}"/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.usAlta.nombreCompleto}" title="#{bundle.UsuarioAlta}"/>                        
+                    <h:outputText value="#{mbFirmantes.current.admin.usAlta.nombreCompleto}" title="#{bundle.UsuarioAlta}"/>                        
 
                     <h:outputLabel value="#{bundle.FechaAlta}"/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.strFechaAlta}" title="#{bundle.FechaAlta}"/>                         
+                    <h:outputText value="#{mbFirmantes.current.admin.strFechaAlta}" title="#{bundle.FechaAlta}"/>                         
 
                     <h:outputLabel value="#{bundle.UsuarioModifica}"/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.usModif}" title="#{bundle.UsuarioModifica}"/>                        
+                    <h:outputText value="#{mbFirmantes.current.admin.usModif.nombreCompleto}" title="#{bundle.UsuarioModifica}"/>                        
 
                     <h:outputLabel value="#{bundle.FechaModifica}"/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.strFechaModif}" title="#{bundle.FechaModifica}"/>                          
+                    <h:outputText value="#{mbFirmantes.current.admin.strFechaModif}" title="#{bundle.FechaModifica}"/>                          
 
                     <h:outputLabel value="#{bundle.UsuarioBaja}"/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.usBaja}" title="#{bundle.UsuarioBaja}"/>                        
+                    <h:outputText value="#{mbFirmantes.current.admin.usBaja.nombreCompleto}" title="#{bundle.UsuarioBaja}"/>                        
 
                     <h:outputLabel value="#{bundle.FechaBaja}"/>
-                    <h:outputText value="#{mbFirmantes.firmanteSelected.admin.strFechaBaja}" title="#{bundle.FechaBaja}"/>  
+                    <h:outputText value="#{mbFirmantes.current.admin.strFechaBaja}" title="#{bundle.FechaBaja}"/>  
 
-                    <h:outputLabel value="Establecimientos representados" />
-                    <p:commandButton value="Ver" type="button" onclick="PF('Est').show();" actionListener="#{mbFirmantes.firmanteSelected.establecimientos}" />      
-                </h:panelGrid>   
+                    <h:outputLabel value="Establecimientos representados actualmente" />
+                    <p:commandButton value="Ver" icon="ui-icon-newwin" type="button" onclick="PF('Est').show();" actionListener="#{mbFirmantes.current.establecimientos}" />  
+                    
+                    <h:outputLabel value="Historial de Establecimientos representados anteriormente" />
+                    <p:commandButton value="Ver" icon="ui-icon-newwin" type="button" onclick="PF('Hist').show();" actionListener="#{mbFirmantes.current.historialEstablecimientos}" /> 
+                </h:panelGrid>  
+                
+                <p:dialog style="font-size: 80%" 
+                          header="Historial de Establecimientos desvinculados" 
+                          widgetVar="Hist" 
+                          showEffect="fade" 
+                          hideEffect="fade" 
+                          width="70%">
+                    <p:dataTable value="#{mbFirmantes.current.historialEstablecimientos}" var="hist" id="hisList" filteredValue="#{mbFirmantes.listHistFirmFilter}" >
+                        <p:column headerText="Fecha desvinc." filterMatchMode="contains" filterBy="#{hist.strFecha}" sortBy="#{hist.strFecha}" >
+                            <p:outputLabel value="#{hist.strFecha}" /> 
+                        </p:column> 
+                        <p:column headerText="CUDE" filterMatchMode="contains" filterBy="#{hist.establecimiento.cude}" sortBy="#{hist.establecimiento.cude}" >
+                            <p:outputLabel value="#{hist.establecimiento.cude}" /> 
+                        </p:column> 
+                        <p:column headerText="Razon soc." filterMatchMode="contains" filterBy="#{hist.establecimiento.razonSocial}" sortBy="#{hist.establecimiento.curazonSocialde}" >
+                            <p:outputLabel value="#{hist.establecimiento.razonSocial}" /> 
+                        </p:column> 
+                        <p:column headerText="Motivo" filterMatchMode="contains" filterBy="#{hist.motivo}" sortBy="#{hist.motivo}" >
+                            <p:outputLabel value="#{hist.motivo}" /> 
+                        </p:column> 
+                    </p:dataTable>          
+                </p:dialog>
                 
                 <p:dialog style="font-size: 80%" 
                           header="Listado de Establecimientos asociados al Firmante" 
@@ -43,7 +68,7 @@
                           showEffect="fade" 
                           hideEffect="fade" 
                           width="70%">
-                    <p:dataTable value="#{mbFirmantes.firmanteSelected.establecimientos}" var="est" id="estList" filteredValue="#{mbFirmantes.listEstFilter}" >
+                    <p:dataTable value="#{mbFirmantes.current.establecimientos}" var="est" id="estList" filteredValue="#{mbFirmantes.listEstFilter}" >
                         <p:column headerText="CUDE" filterMatchMode="contains" filterBy="#{est.cude}" sortBy="#{est.cude}" >
                             <p:outputLabel value="#{est.cude}"/> 
                         </p:column>   
@@ -71,7 +96,7 @@
 
             <p:toolbar>
                 <f:facet name="left">
-                    <p:commandButton icon="ui-icon-refresh" action="#{mbFirmantes.prepareList}" value="Volver" ajax="false"/>
+                    <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbFirmantes.prepareList}" value="Volver" ajax="false"/>
                 </f:facet>
             </p:toolbar>
         </h:form>
