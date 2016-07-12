@@ -2365,21 +2365,31 @@ public class MbDeclaraciones implements Serializable{
     public void addDiaVuelco(){
         if(!edita){
             if(diaVuelco.getCodDia() > 0){
+                /*
                 if(!validarDiaVuelco()){
                     JsfUtil.addErrorMessage("No se pudieron validar los datos del Día del Vuelco a registrar.");
                 }else{
                     lstDiasVuelco.add(diaVuelco);
                     JsfUtil.addSuccessMessage("El Dia se agregó al Horario del Vuelco.");
                 }
+                */
+                lstDiasVuelco.add(diaVuelco);
+                JsfUtil.addSuccessMessage("El Dia se agregó al Horario del Vuelco.");
             }
             if(activeIndex == 2) activeIndex = 3;
         }else{
+            /*
             if(!validarDiaVuelco()){
                 lstDiasVuelco.set(ordenList, diaVuelcoSwap);
             }else{
                 lstDiasVuelco.set(ordenList, diaVuelco);
                 JsfUtil.addSuccessMessage("El Día del Vuelco se actualizó correctamente.");
             }
+            */
+            
+            lstDiasVuelco.set(ordenList, diaVuelco);
+            JsfUtil.addSuccessMessage("El Día del Vuelco se actualizó correctamente.");
+            
             edita = false;
             ordenList = 0;  
         }
@@ -4679,11 +4689,12 @@ public class MbDeclaraciones implements Serializable{
      * Metodo para validar los datos de un Día para su registro en el Horario Laboral
      */
     private boolean validarDia() {
-        Calendar horaInicial = Calendar.getInstance();
-        Calendar horaFinal = Calendar.getInstance();
+        //Calendar horaInicial = Calendar.getInstance();
+        //Calendar horaFinal = Calendar.getInstance();
         boolean result = true;
         int i = 0;
         
+        /*
         // convierto los enteros a horas
         horaInicial.set(Calendar.HOUR, dia.getHorasInicDesc());
         horaInicial.set(Calendar.MINUTE, dia.getMinInicDesc());
@@ -4696,6 +4707,7 @@ public class MbDeclaraciones implements Serializable{
             result = false;
             JsfUtil.addErrorMessage("La hora de finalización de la jornada laboral debe ser posterior a la de incicio.");
         }
+        */
         
         if(!lstDias.isEmpty()){
             for(Dia d : lstDias){
