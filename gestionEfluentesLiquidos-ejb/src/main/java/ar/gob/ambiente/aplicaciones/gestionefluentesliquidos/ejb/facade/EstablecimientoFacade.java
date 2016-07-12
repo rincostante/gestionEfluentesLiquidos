@@ -58,6 +58,20 @@ public class EstablecimientoFacade extends AbstractFacade<Establecimiento> {
     }
     
     /**
+     * Metodo que devuelve verdadero o falso según haya o no un Establecimiento con el idRupEst 
+     * @param idRupEst
+     * @return 
+     */
+    public boolean existeIdRupEst(Long idRupEst){
+        em = getEntityManager();
+        String queryString = "SELECT est FROM Establecimiento est "
+                + "WHERE est.idRupEst = :idRupEst";
+        Query q = em.createQuery(queryString)
+                .setParameter("idRupEst", idRupEst);
+        return q.getResultList().isEmpty();
+    }
+    
+    /**
      * Método que devuelve todos los establecimientos vinculados el CUIT recibido
      * @param cuit
      * @return 

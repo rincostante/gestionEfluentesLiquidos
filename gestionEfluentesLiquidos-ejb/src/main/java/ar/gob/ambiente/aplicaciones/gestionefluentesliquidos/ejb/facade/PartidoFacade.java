@@ -7,6 +7,7 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Partido;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,5 +43,27 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         Query q = em.createQuery(queryString)
                 .setParameter("nombre", nombre);
         return q.getResultList().isEmpty();
-    }     
+    }  
+    
+    /**
+     * Método para obtener el partido según el id de Departamento del Registro territorial
+     * como en la migración se invirtieron los valos migrados entre las id de RT y DPyRA se invierten 
+     * también en su búsqueda provisoriamente hasta que se arregle.
+     * @param idDpyra
+     * @return 
+     */
+    public Partido getXIdRt(Long idDpyra){
+        List<Partido> lstPart;
+        em = getEntityManager();
+        String queryString = "SELECT par FROM Partido par "
+                + "WHERE par.idDpyra = :idDpyra";
+        Query q = em.createQuery(queryString)
+                .setParameter("idDpyra", idDpyra);
+        lstPart = q.getResultList();
+        if(lstPart.isEmpty()){
+            return null;
+        }else{
+            return lstPart.get(0);
+        }
+    }
 }

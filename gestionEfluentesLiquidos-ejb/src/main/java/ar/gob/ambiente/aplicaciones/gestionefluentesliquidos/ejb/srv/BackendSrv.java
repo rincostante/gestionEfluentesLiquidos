@@ -348,6 +348,15 @@ public class BackendSrv {
     }  
     
     /**
+     * Método para obtener el Partido según el id del Registro Territorial
+     * @param idRt
+     * @return 
+     */
+    public Partido getPartidoByIdRt(Long idRt){
+        return partidoFacade.getXIdRt(idRt);
+    }
+    
+    /**
      * Método para obtener todos los Partidos. Se implementa para poder exponerlo como servicio.
      * @return 
      */
@@ -525,6 +534,14 @@ public class BackendSrv {
         return estFacade.find(id);
     }    
     
+    /**
+     * Metodo que valida si existe o no un Establecimiento con el idRupEst enviado
+     * @param idRupEst
+     * @return 
+     */
+    public boolean existeEstByIdRupEst(Long idRupEst){
+        return estFacade.existeIdRupEst(idRupEst);
+    }
     
     /************************************
      * Métodos para los Cursos de agua **
