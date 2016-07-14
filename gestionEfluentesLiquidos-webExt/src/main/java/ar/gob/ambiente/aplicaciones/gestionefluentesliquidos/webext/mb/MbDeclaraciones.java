@@ -5257,10 +5257,12 @@ public class MbDeclaraciones implements Serializable{
             result = false;
             JsfUtil.addErrorMessage("Debe consignar al menos una Descarga - Paso 3.");
         }
+        /* Validación cancelada por pedido de la DPyRA (14/07/2016)
         if(!datosPozos && !datosAbastos){
             result = false;
             JsfUtil.addErrorMessage("Debe consignar algún tipo de Abastecimiento de agua, sea de redo o Pozo - Pasos 4 o 5.");
         }
+        */
         if(!datosHorarios){
             result = false;
             JsfUtil.addErrorMessage("Debe consignar los Horarios de trabajo - Paso 6.");
