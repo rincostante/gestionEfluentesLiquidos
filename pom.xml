@@ -12,5 +12,6 @@
     <module>gestionEfluentesLiquidos-webExt</module>
     <module>gestionEfluentesLiquidos-ejb</module>
     <module>validarCuit</module>
+    <module>../registroUnicoPersonas-ejb</module>
   </modules>
 </project>
