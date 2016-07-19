@@ -42,6 +42,9 @@
                 <p:column headerText="CUIT" filterMatchMode="contains" sortBy="#{est.cuit}" filterBy="#{est.cuit}">
                     <p:outputLabel value="#{est.cuit}"/>
                 </p:column>
+                <p:column headerText="Cod. Recibo" filterMatchMode="contains" sortBy="#{est.codRecibo}" filterBy="#{est.codRecibo}">
+                    <p:outputLabel value="#{est.codRecibo}"/>
+                </p:column>
                 <p:column headerText="Calle" filterMatchMode="contains" sortBy="#{est.inmueble.calle}" filterBy="#{est.inmueble.calle}">
                     <p:outputLabel value="#{est.inmueble.calle}"/>
                 </p:column>
@@ -54,7 +57,9 @@
                 <p:column headerText="Partido" filterMatchMode="contains" sortBy="#{est.inmueble.departamento}" filterBy="#{est.inmueble.departamento}">
                     <p:outputLabel value="#{est.inmueble.departamento}"/>
                 </p:column>
-
+                <p:column headerText="Histórico" filterMatchMode="contains" sortBy="#{est.historico}" filterBy="#{est.historico}">
+                    <p:outputLabel value="#{est.historico}"/>
+                </p:column>
 
                 <p:column filterBy="#{est.admin.habilitado}" headerText="Estado" filterMatchMode="equals">
                     <f:facet name="filter">
@@ -68,7 +73,7 @@
                     <h:outputText value="#{est.admin.habilitado ? 'Habilitado': 'Deshabilitado'}" />
                 </p:column>
 
-                <p:column headerText="Acciones" style="width:110px">
+                <p:column headerText="Acciones" style="width:75px">
                     <p:growl id="messages" showDetail="false" />                           
                     <p:commandButton icon="ui-icon-zoomin" action="#{mbEstablecimientos.prepareView}" title="Ver Detalle">
                         <f:setPropertyActionListener value="#{est}" target="#{mbEstablecimientos.current}" />  
@@ -77,18 +82,6 @@
                     <p:commandButton icon="ui-icon-pencil" action="#{mbEstablecimientos.prepareEdit}" title="Editar" >
                         <f:setPropertyActionListener value="#{est}" target="#{mbEstablecimientos.current}" /> 
                     </p:commandButton>
-
-                    <p:commandButton icon="ui-icon-close"  action="#{mbEstablecimientos.deshabilitar}" rendered="#{est.admin.habilitado == 'true'}"
-                                     title="Deshabilitar" update="estList">
-                        <f:setPropertyActionListener value="#{est}"  target="#{mbEstablecimientos.current}" />
-                        <p:confirm header="Confirmar" message="¿Desea deshabilitar el Firmante?" icon="ui-icon-alert" />
-                    </p:commandButton>                
-
-                    <p:commandButton icon="ui-icon-check" action="#{mbEstablecimientos.habilitar}" rendered="#{est.admin.habilitado == 'false'}" 
-                                     title="Habilitar" update="estList">
-                        <f:setPropertyActionListener value="#{est}" target="#{mbEstablecimientos.current}" />
-                        <p:confirm header="Confirmar" message="¿Desea habilitar el Firmante?" icon="ui-icon-alert" />
-                    </p:commandButton> 
 
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

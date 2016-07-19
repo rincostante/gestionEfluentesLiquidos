@@ -14,9 +14,47 @@
                 <f:event listener="#{mbLogin.iniciar}" type="preRenderView"></f:event>  
            </f:metadata>             
             <h:form>
-                <p:panel header="Detalle de los contenidos de la aplicación" style="position: absolute; top:15%; left:50%; width:800px; margin-left:-400px;">
-                    <h:outputText value="[Página inicial que cuenta la aplicación, resúmen estadístico, gráficos, varios]" /><br></br>
-
+                <p:panel header="Resumen rápido de totales" style="width: 60%; margin-left: 20%; margin-top: 10px" >
+                    <h:panelGrid columns="6" cellspacing="15" >
+                        <h:outputText value="Establecimientos registados: " />
+                        <h:outputText value="#{mbLogin.totalEst}" style="font-size: 22px" />
+                        
+                        <h:outputText value="Firmantes registados: " />
+                        <h:outputText value="#{mbLogin.totalFirm}" style="font-size: 22px" />
+                        
+                        <h:outputText value="DDJJ registadas: " />
+                        <h:outputText value="#{mbLogin.totalDec}" style="font-size: 22px" />
+                        
+                        <h:outputText value="Cuentas de usuarios externos: " />
+                        <h:outputText value="#{mbLogin.totalUsExt}" style="font-size: 22px" />
+                        
+                        <h:outputText value="Inmuebles georreferenciados: " />
+                        <h:outputText value="#{mbLogin.totalInmGeo}" style="font-size: 22px" />
+                        
+                    </h:panelGrid>
+                </p:panel>
+                <p:panel header="Detalle de los contenidos de la aplicación" style="width: 60%; margin-left: 20%; margin-top: 10px">
+                    <h:panelGrid columns="1" >
+                        <h:outputText value="La presente aplicación, en su primera etapa, tiene por objeto gestionar, por parte los usuaios del DPyRA, la información 
+                                      relativa al registro de Declaraciones Juradas de los Establecimientos administrados. A continuación se detallan 
+                                      las funcionalidades incluidas en esta primera etapo. Posteriormente, a medida que se agruegue funcionalidad, será 
+                                      detallada con fecha en orden descendente." />
+                        <h:outputText value="19-07-2016 Funcionalidades a la fecha:" />
+                        <h:panelGrid columns="1" style="font-size: 80%" >
+                            <h:outputText value=" - Firmantes: Desde este menú se puede acceder al listado de todos los firmantes registrados. Desde cada uno de ellos 
+                                          se podrá ver su detalle, incluyendo el listado de los Establecimientos representados. Asimismo, desde cada item listado se 
+                                          podrá editar su contenido. Desde el botón correspondiente sobre el listado se accederá a al formulario de registro 
+                                          de nuevos." />
+                            <h:outputText value=" - Establecimientos: Como en el caso anterior, desde este menú se puede acceder al listado de todos los Establecimientos 
+                                          registrados en condiciones de registrar su Declaración Jurada anual. Desde cada item se podrá acceder al detalle de su contenido 
+                                          y la edición de sus datos. La edición permitrirá, actualizar los datos de la Razón Social vinculada al Establecimiento en el Registro 
+                                          Unico de Persoanas (RUP), permitirá también editar los datos del Establecimiento registrado en el RUP y permitirá cambiar la Razón 
+                                          Social del Establecimiento. Finalmente, permitirá el firmante vinculado, crs y código de recibo, si correspondiera. Asimismo, se podrá 
+                                          registrar Establecimientos nuevos, accediendo al formulario correspondiende desde el listado. Desde el formulario de nuevo Establecimiento 
+                                          se podrá registrar Razones sociales nuevas en el RUP, que luego estarán disponibles para ser asignadas al Establecimiento. Se deberá 
+                                          registrar el Establecimiento en el RUP como paso previo a su registro en la Gestión de Efluentes Líquidos (GEL)." />
+                        </h:panelGrid>
+                    </h:panelGrid>
                 </p:panel>
             </h:form>
         </ui:define> 

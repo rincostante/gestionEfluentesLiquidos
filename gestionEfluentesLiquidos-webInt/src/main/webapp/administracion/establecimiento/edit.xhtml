@@ -7,15 +7,15 @@
      xmlns:p="http://primefaces.org/ui"
      xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:define name="content">
-        <h:form id="frmNew">
-            <p:panel id="pnNew" header="Nuevo Establecimiento" style="margin-bottom:10px;">
+        <h:form id="frmEdit">
+            <p:panel id="pnEdit" header="Actualizar Establecimiento" style="margin-bottom:10px;">
                 <p:growl id="messages" showDetail="false" />
                 <h:panelGrid columns="4" >
-                    <p:commandButton id="buscarXCuit" icon="ui-icon-newwin" value="Buscar por CUIT" action="#{mbEstablecimientos.prepareBuscarXCuit}" process="@this" />
-                    <p:commandButton icon="ui-icon-refresh" action="#{mbEstablecimientos.pruebaActualizar()}" process="@this"
-                                     update="pnNew" id="act" value="Actualizar" />
-                    <p:commandButton id="regRsRup" icon="ui-icon-newwin" value="Registrar Razón Social RUP" action="#{mbEstablecimientos.prepareNewRazonSocial()}" process="@this" />
-                    <p:commandButton id="regEstRup" icon="ui-icon-newwin" value="Registrar Establecimiento RUP" action="#{mbEstablecimientos.prepareNewEstRup()}" process="@this" />
+                    <p:commandButton icon="ui-icon-refresh" action="#{mbEstablecimientos.actualizarEdit()}" process="@this"
+                                     update="pnEdit" id="act" value="Actualizar" />
+                    <p:commandButton id="regRsRup" icon="ui-icon-newwin" value="Actualizar datos de la Razón Social RUP" action="#{mbEstablecimientos.prepareEditRazonSocial()}" process="@this" />
+                    <p:commandButton id="regEstRup" icon="ui-icon-newwin" value="Actualizar datos del Establecimiento RUP" action="#{mbEstablecimientos.prepareEditEstRup()}" process="@this" />
+                    <p:commandButton id="cambioRs" icon="ui-icon-newwin" value="Cambiar Razón Social" action="#{mbEstablecimientos.prepareCambioRazSoc()}" process="@this" />
                 </h:panelGrid>
                 <h:panelGrid columns="1" >
                     <p:panel id="pnRs" header="Razón Social" >
@@ -57,8 +57,8 @@
                             <p:inputText id="estCrs" value="#{mbEstablecimientos.current.crs}" required="true" 
                                          requiredMessage="Debe consignar un número de orden de cambio de Razón Social." />
                             
-                            <p:outputLabel value="Cod. Recibo" for="codRecibo"/>
-                            <p:inputText id="codRecibo" value="#{mbEstablecimientos.current.codRecibo}" required="true" 
+                            <p:outputLabel value="Cod. Recibo" for="codRecibo" />
+                            <p:inputText id="codRecibo" value="#{mbEstablecimientos.current.codRecibo}" required="true"  
                                          requiredMessage="Debe consignar un código temporal para el registro de la Declaración." />
                         </h:panelGrid>
                     </p:panel>
@@ -67,10 +67,10 @@
             
             <p:toolbar>
                 <f:facet name="left">
-                    <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbEstablecimientos.create}" update="pnNew"/>
-                    <p:commandButton icon="ui-icon-cancel" value="Limpiar" process="@this" style="float: next" actionListener="#{mbEstablecimientos.limpiarNew()}" 
-                                     update="pnNew,rzNombre,rzCuit,calle,numero,loc,part">
-                        <p:ajax update="pnNew" resetValues="true" />
+                    <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbEstablecimientos.edit}" update="pnEdit"/>
+                    <p:commandButton icon="ui-icon-cancel" value="Limpiar" process="@this" style="float: next" actionListener="#{mbEstablecimientos.limpiarEdit()}" 
+                                     update="pnEdit,rzNombre,rzCuit,calle,numero,loc,part">
+                        <p:ajax update="pnEdit" resetValues="true" />
                     </p:commandButton>
                     <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbEstablecimientos.prepareList}" value="Volver" immediate="true"/>
                 </f:facet>

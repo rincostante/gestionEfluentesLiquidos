@@ -17,5 +17,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-maven-jaxws._5f_C_5f_AccesoAppWebService>http://localhost:8080/AccesoAppWebService/AccesoAppWebService?WSDL</org-netbeans-modules-maven-jaxws._5f_C_5f_AccesoAppWebService>
         <org-netbeans-modules-projectapi.jsf_2e_language>Facelets</org-netbeans-modules-projectapi.jsf_2e_language>
         <org-netbeans-modules-maven-jaxws._5f_C_5f_PersonasWebService>http://localhost:8080/PersonasWebService/PersonasWebService?WSDL</org-netbeans-modules-maven-jaxws._5f_C_5f_PersonasWebService>
+        <org-netbeans-modules-maven-jaxws._5f_C_5f_CentrosPobladosWebService>http://localhost:8080/CentrosPobladosWebService/CentrosPobladosWebService?WSDL</org-netbeans-modules-maven-jaxws._5f_C_5f_CentrosPobladosWebService>
     </properties>
 </project-shared-configuration>

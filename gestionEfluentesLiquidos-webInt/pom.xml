@@ -163,13 +163,13 @@
                         </goals>
                         <configuration>
                             <wsdlFiles>
-                                <wsdlFile>localhost_8080/PersonasWebService/PersonasWebService.wsdl</wsdlFile>
+                                <wsdlFile>localhost_8080/CentrosPobladosWebService/CentrosPobladosWebService.wsdl</wsdlFile>
                             </wsdlFiles>
-                            <packageName>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.wsExt</packageName>
-                            <wsdlLocation>http://localhost:8080/PersonasWebService/PersonasWebService?WSDL</wsdlLocation>
-                            <staleFile>${project.build.directory}/jaxws/stale/PersonasWebService.stale</staleFile>
+                            <packageName>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.wsClient</packageName>
+                            <wsdlLocation>http://vmdeswebjava.medioambiente.gov.ar:8080/CentrosPobladosWebService/CentrosPobladosWebService?WSDL</wsdlLocation>
+                            <staleFile>${project.build.directory}/jaxws/stale/CentrosPobladosWebService.stale</staleFile>
                         </configuration>
-                        <id>wsimport-generate-PersonasWebService</id>
+                        <id>wsimport-generate-CentrosPobladosWebService</id>
                         <phase>generate-sources</phase>
                     </execution>
                 </executions>

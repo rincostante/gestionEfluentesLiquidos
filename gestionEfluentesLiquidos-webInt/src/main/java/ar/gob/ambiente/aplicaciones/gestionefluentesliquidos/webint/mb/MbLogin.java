@@ -9,6 +9,7 @@ package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.srv.BackendSrv;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Usuario;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.util.CriptPass;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.util.JsfUtil;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -30,6 +31,11 @@ public class MbLogin implements Serializable{
     private boolean logeado = false;   
     private String ambito;
     private Usuario usLogeado;
+    private Long totalEst;
+    private Long totalDec;
+    private Long totalFirm;
+    private Long totalUsExt;
+    private Long totalInmGeo;
 
     @EJB
     private BackendSrv backendSrv;
@@ -39,6 +45,46 @@ public class MbLogin implements Serializable{
      * Creates a new instance of MbLogin
      */
     public MbLogin() {
+    }
+
+    public Long getTotalEst() {
+        return totalEst;
+    }
+
+    public void setTotalEst(Long totalEst) {
+        this.totalEst = totalEst;
+    }
+
+    public Long getTotalDec() {
+        return totalDec;
+    }
+
+    public void setTotalDec(Long totalDec) {
+        this.totalDec = totalDec;
+    }
+
+    public Long getTotalFirm() {
+        return totalFirm;
+    }
+
+    public void setTotalFirm(Long totalFirm) {
+        this.totalFirm = totalFirm;
+    }
+
+    public Long getTotalUsExt() {
+        return totalUsExt;
+    }
+
+    public void setTotalUsExt(Long totalUsExt) {
+        this.totalUsExt = totalUsExt;
+    }
+
+    public Long getTotalInmGeo() {
+        return totalInmGeo;
+    }
+
+    public void setTotalInmGeo(Long totalInmGeo) {
+        this.totalInmGeo = totalInmGeo;
     }
     
     public boolean isLogeado() {
@@ -85,6 +131,15 @@ public class MbLogin implements Serializable{
      * Método que borra de la memoria los MB innecesarios al cargar el listado 
      */
     public void iniciar() throws IOException{
+        try{
+            totalEst = backendSrv.getTotalEstab();
+            totalDec = backendSrv.getTotalDjReg();
+            totalFirm = backendSrv.getTotalFirm();
+            totalUsExt = backendSrv.getTotalUsExt();
+            totalInmGeo = backendSrv.getTotalInmGeo();
+        }catch(Exception ex){
+            JsfUtil.addErrorMessage("Hubo un error obteniendo los totales. " + ex.getMessage());
+        }
         if(iniciado){
             String s;
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance()

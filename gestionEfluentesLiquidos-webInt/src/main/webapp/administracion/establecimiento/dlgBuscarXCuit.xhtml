@@ -46,15 +46,16 @@
                         <p:outputLabel value="#{estRup.correoElectronico}" /> 
                     </p:column>  
                     <p:column headerText="" >
-                        <p:commandButton icon="ui-icon-arrowthickstop-1-s" action="#{mbEstablecimientos.selecRupEst}" title="Seleccionar">
+                        <p:commandButton icon="ui-icon-arrowthickstop-1-s" action="#{mbEstablecimientos.selecRupEst}" onclick="seleccionado()" title="Seleccionar" >
                             <f:setPropertyActionListener value="#{estRup}" target="#{mbEstablecimientos.estRup}" />  
                         </p:commandButton>
                     </p:column>
+                    
                 </p:dataTable>
             </p:panel>
             <p:toolbar>
                 <f:facet name="left">
-                    <p:commandButton icon="ui-icon-check" value="Validar" action="#{mbEstablecimientos.buscarEst}" update="estRupList" />
+                    <p:commandButton icon="ui-icon-check" value="Validar" action="#{mbEstablecimientos.buscarEst}" update="estRupList,pnBusCuit" />
                     <p:commandButton icon="ui-icon-cancel" actionListener="#{mbEstablecimientos.limpiarEst}" update="frmBusCuit" value="Limpiar" style="float: right">
 
                     </p:commandButton>
@@ -62,5 +63,10 @@
             </p:toolbar>
         </h:form>
     </h:body>
+    <script type="text/javascript">
+        function seleccionado() {
+            alert('Ha seleccionado el Establacimiento del RUP, por favor, cierre la ventana de selección y actualice los datos mediante el botón Actualizar.');
+        }
+    </script> 
 </html>
 

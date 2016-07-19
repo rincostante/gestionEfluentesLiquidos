@@ -4,4 +4,8 @@
     <system systemId="http://localhost:8080/AccesoAppWebService/AccesoAppWebService?xsd=1" uri="wsdl/localhost_8080/AccesoAppWebService/AccesoAppWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/PersonasWebService/PersonasWebService?WSDL" uri="wsdl/localhost_8080/PersonasWebService/PersonasWebService.wsdl"/>
     <system systemId="http://localhost:8080/PersonasWebService/PersonasWebService?xsd=1" uri="wsdl/localhost_8080/PersonasWebService/PersonasWebService.xsd_1.xsd"/>
+    <system systemId="http://vmdeswebjava.medioambiente.gov.ar:8080/CentrosPobladosWebService/CentrosPobladosWebService?WSDL" uri="wsdl/vmdeswebjava.medioambiente.gov.ar_8080/CentrosPobladosWebService/CentrosPobladosWebService.wsdl"/>
+    <system systemId="http://vmdeswebjava.medioambiente.gov.ar:8080/CentrosPobladosWebService/CentrosPobladosWebService?xsd=1" uri="wsdl/vmdeswebjava.medioambiente.gov.ar_8080/CentrosPobladosWebService/CentrosPobladosWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/CentrosPobladosWebService/CentrosPobladosWebService?WSDL" uri="wsdl/localhost_8080/CentrosPobladosWebService/CentrosPobladosWebService.wsdl"/>
+    <system systemId="http://localhost:8080/CentrosPobladosWebService/CentrosPobladosWebService?xsd=1" uri="wsdl/localhost_8080/CentrosPobladosWebService/CentrosPobladosWebService.xsd_1.xsd"/>
 </catalog>

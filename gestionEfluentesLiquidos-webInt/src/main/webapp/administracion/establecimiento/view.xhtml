@@ -15,10 +15,38 @@
                     <h:outputLabel value="CUDE: "/>
                     <h:outputText value="#{mbEstablecimientos.current.cude}" />
                     
+                    <h:outputLabel value="CUIT: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.cuit}" />
+                    
+                    <h:outputLabel value="Razón Social: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.razonSocial}" />
+                    
+                    <h:outputLabel value="Calle: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.inmueble.calle}" />
+                    
+                    <h:outputLabel value="N°: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.inmueble.numero}" />
+                    
+                    <h:outputLabel value="Localidad: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.inmueble.localidad}" />
+                    
+                    <h:outputLabel value="Partido: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.inmueble.departamento}" />
+                    
+                    <h:outputLabel value="Histórico: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.historico}" />
+                    
+                    <h:outputLabel value="Habilitado: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.admin.habilitado}" />
                     
                     <h:outputLabel value="Firmante: "/>
                     <h:outputText value="#{mbEstablecimientos.current.firmante.nombreYApellido}" />
                     
+                    <h:outputLabel value="Código de recibo: "/>
+                    <h:outputText value="#{mbEstablecimientos.current.codRecibo}" />
+                    
+                    <h:outputLabel value="Historial de Firmantes: " />
+                    <p:commandButton value="Ver" icon="ui-icon-newwin" type="button" onclick="PF('Firm').show();" actionListener="#{mbEstablecimientos.current.historialFirmantes}" /> 
 
                     <h:outputLabel value="#{bundle.UsuarioAlta}"/>
                     <h:outputText value="#{mbEstablecimientos.current.admin.usAlta.nombreCompleto}" title="#{bundle.UsuarioAlta}"/>                        
@@ -37,10 +65,7 @@
 
                     <h:outputLabel value="#{bundle.FechaBaja}"/>
                     <h:outputText value="#{mbEstablecimientos.current.admin.strFechaBaja}" title="#{bundle.FechaBaja}"/>  
-
-                    <h:outputLabel value="Historial de Firmantes: " />
-                    <p:commandButton value="Ver" icon="ui-icon-newwin" type="button" onclick="PF('Firm').show();" actionListener="#{mbEstablecimientos.current.historialFirmantes}" />  
-
+ 
                 </h:panelGrid>  
                 
                 <p:dialog style="font-size: 80%" 

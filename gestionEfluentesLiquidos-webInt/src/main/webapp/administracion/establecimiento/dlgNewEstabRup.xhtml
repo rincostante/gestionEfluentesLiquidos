@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Ingrese los datos para crear el Establecimiento en el RUP</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 80%;
+            }
+        </style>
+    </h:head>
+    
+    <h:body>
+        <h:form id="frmNewEstRup" style="text-align: left">
+            <p:panel id="pnNewEstRup" style="margin-bottom:10px;">
+                <p:messages id="messages" />
+                <h:panelGrid columns="1" >
+                    <p:panel id="pnDatGrales" header="Datos generales" >
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel for="razSoc" value="Razón Social: " />
+                            <p:selectOneMenu id="razSoc" value="#{mbEstablecimientos.estRup.perJuridica}"  
+                                             requiredMessage="Debe seleccionar la Razón social" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione la Razón social" noSelectionOption="true" />
+                                <f:selectItems value="#{mbEstablecimientos.listPerJur}" var="perJur" itemLabel="#{perJur.razonSocial} - #{perJur.cuit}" itemValue="#{perJur}" />
+                            </p:selectOneMenu> 
+                            
+                            <p:outputLabel for="espec" value="Actividad: " />
+                            <p:selectOneMenu id="espec" value="#{mbEstablecimientos.actRup}"  
+                                             requiredMessage="Debe seleccionar una Actividad" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione una Actividad" noSelectionOption="true" />
+                                <f:selectItems value="#{mbEstablecimientos.listActividades}" var="activ" itemLabel="#{activ.nombre}" itemValue="#{activ}" />
+                            </p:selectOneMenu> 
+                            
+                            <p:outputLabel value="Correo electrónico: " for="email"/>
+                            <p:inputText id="email" value="#{mbEstablecimientos.estRup.correoElectronico}" style="width: 200px" >
+                                <f:validateRegex for="correo" pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+                            </p:inputText>
+                            
+                            <p:outputLabel value="Teléfono: " for="tel"/>
+                            <p:inputMask id="tel" value="#{mbEstablecimientos.estRup.telefono}" mask="(9999) 9999-9999" />
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel id="pnDom" header="Domicilio" >
+                        <h:panelGrid columns="2" >
+                            <p:outputLabel value="Calle: " for="calle"/>
+                            <p:inputText id="calle" value="#{mbEstablecimientos.domicilio.calle}" style="text-transform: uppercase; width: 300px" 
+                                         requiredMessage="El campo Calle es obligatorio" required="true"/>
+
+                            <p:outputLabel value="Número: " for="numero_dom"/>
+                            <p:inputText id="numero_dom" value="#{mbEstablecimientos.domicilio.numero}" 
+                                         requiredMessage="El campo Número es obligatorio" required="true"/>
+
+                            <p:outputLabel value="Piso: " for="piso"/>
+                            <p:inputText id="piso" value="#{mbEstablecimientos.domicilio.piso}" />
+
+                            <p:outputLabel value="Dpto: " for="dpto"/>
+                            <p:inputText id="dpto" value="#{mbEstablecimientos.domicilio.dpto}" />     
+
+                            <p:outputLabel for="provincia" value="Provincia: " />
+                            <p:selectOneMenu id="provincia" value="#{mbEstablecimientos.provSelected}" converter="omnifaces.SelectItemsConverter"  
+                                             requiredMessage="Debe seleccionar la Provincia" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione la Provincia" noSelectionOption="true" />
+                                <f:selectItems value="#{mbEstablecimientos.listProvincias}" var="entity" itemLabel="#{entity.nombre}" itemValue="#{entity}" />
+                                <p:ajax listener="#{mbEstablecimientos.provinciaChangeListener}" update="depto" />
+                            </p:selectOneMenu> 
+
+                            <p:outputLabel for="depto" value="Partido: " />
+                            <p:selectOneMenu id="depto" value="#{mbEstablecimientos.deptoSelected}" converter="omnifaces.SelectItemsConverter"  
+                                             requiredMessage="Debe seleccionar el Partido" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione el Departamento/Partido/Comuna" noSelectionOption="true" />
+                                <f:selectItems value="#{mbEstablecimientos.listDepartamentos}" var="entity" itemLabel="#{entity.nombre}" itemValue="#{entity}" />
+                                <p:ajax listener="#{mbEstablecimientos.deptoChangeListener}" update="local" />
+                            </p:selectOneMenu> 
+
+                            <p:outputLabel for="local" value="Localidad: " />
+                            <p:selectOneMenu id="local" value="#{mbEstablecimientos.localSelected}" converter="omnifaces.SelectItemsConverter"  
+                                             requiredMessage="Debe seleccionar la Localidad" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione la Localidad" noSelectionOption="true" />
+                                <f:selectItems value="#{mbEstablecimientos.listLocalidades}" var="entity" itemLabel="#{entity.nombre}" itemValue="#{entity}" />
+                            </p:selectOneMenu>  
+                        </h:panelGrid>
+                    </p:panel>
+                </h:panelGrid>
+            </p:panel>
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbEstablecimientos.createEstRup}" update="frmNewEstRup,pnNewEstRup" />
+                    <p:commandButton icon="ui-icon-cancel" actionListener="#{mbEstablecimientos.limpiarEstRup}" value="Limpiar" style="float: right">
+                        <p:ajax update="pnNewEstRup" resetValues="true" />
+                    </p:commandButton>
+                </f:facet>
+            </p:toolbar>
+        </h:form>
+    </h:body>
+</html>
+
