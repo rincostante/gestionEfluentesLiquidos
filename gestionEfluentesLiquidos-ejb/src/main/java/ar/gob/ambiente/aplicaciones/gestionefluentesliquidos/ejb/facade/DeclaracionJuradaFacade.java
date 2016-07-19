@@ -85,4 +85,15 @@ public class DeclaracionJuradaFacade extends AbstractFacade<DeclaracionJurada> {
             return lstDec.get(0);
         }
     }
+    
+    /**
+     * Devuelve el total de DDJJ registradas
+     * @return 
+     */
+    public Long getTotalRegistradas(){
+       em = getEntityManager();  
+       String queryString = "SELECT COUNT(id) FROM declaracionjurada WHERE claveestado = 2";
+       Query q = em.createNativeQuery(queryString);
+       return (Long)q.getSingleResult();
+    }    
 }

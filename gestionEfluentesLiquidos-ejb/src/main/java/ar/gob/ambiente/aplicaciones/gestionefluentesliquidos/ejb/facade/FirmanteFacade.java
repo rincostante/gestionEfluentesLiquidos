@@ -6,7 +6,6 @@
 
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade;
 
-import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Firmante;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -134,6 +133,17 @@ public class FirmanteFacade extends AbstractFacade<Firmante> {
                 + "ORDER BY fir.nombreYApellido";
         Query q = em.createQuery(queryString);
         return q.getResultList();
-    }        
+    }  
+    
+    /**
+     * Devuelve el total de Firmantes registrados
+     * @return 
+     */
+    public Long getTotal(){
+       em = getEntityManager();  
+       String queryString = "SELECT COUNT(id) FROM firmante";
+       Query q = em.createNativeQuery(queryString);
+       return (Long)q.getSingleResult();
+    }    
 }
 

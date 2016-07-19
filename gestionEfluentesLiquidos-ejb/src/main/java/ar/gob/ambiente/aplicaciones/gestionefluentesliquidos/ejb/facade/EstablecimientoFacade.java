@@ -96,4 +96,26 @@ public class EstablecimientoFacade extends AbstractFacade<Establecimiento> {
         Query q = em.createQuery(queryString);
         return q.getResultList();
     }    
+    
+    /**
+     * Método que de devuelve el máximo número asignado a un Establecimiento
+     * @return 
+     */
+    public Long getMaxNumero(){    
+        em = getEntityManager();    
+        String queryString = "SELECT MAX(numero) FROM establecimiento"; 
+        Query q = em.createNativeQuery(queryString);
+        return (Long)q.getSingleResult();
+    } 
+    
+    /**
+     * Método que devuelve la cantidad de Establecimientos registrados
+     * @return 
+     */
+    public Long getTotal(){
+       em = getEntityManager();  
+       String queryString = "SELECT COUNT(id) FROM establecimiento";
+       Query q = em.createNativeQuery(queryString);
+       return (Long)q.getSingleResult();
+    }
 }

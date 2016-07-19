@@ -37,7 +37,7 @@ public class Establecimiento implements Serializable {
     /**
      * Referencia al identificador del Establecimiento del RUP
      */
-    @Column (nullable=false, unique=true)
+    @Column (nullable=false)
     @NotNull(message = "El campo idRupEst no puede ser nulo")
     private Long idRupEst;
     
@@ -80,8 +80,10 @@ public class Establecimiento implements Serializable {
     /**
      * Guarda el inmueble en el que está emplazado el establecimiento
      * El inmueble está comprendido en el establecimiento y se persiste en cascada
+     * A raíz de modificaciones surgidas debido al manejo de cambios de razón social
+     * que implementa la DPyRA se desacoplo la actaulización en cascada (15/07/2016)
      */
-    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="inmueble_id")
     private Inmueble inmueble;
     
@@ -147,6 +149,12 @@ public class Establecimiento implements Serializable {
     private int partidoGel;
     
     /**
+     * Guarda true para los establecimientos que tienen un crs antiguo
+     */
+    private boolean historico;
+    
+    
+    /**
      * Guardará solo los recibos de la DJ del 2014
      */
     private String codRecibo;
@@ -156,6 +164,14 @@ public class Establecimiento implements Serializable {
         historialFirmantes = new ArrayList();
         historialDeclaraciones = new ArrayList();
     }      
+
+    public boolean isHistorico() {
+        return historico;
+    }
+
+    public void setHistorico(boolean historico) {
+        this.historico = historico;
+    }
 
     public String getCodRecibo() {
         return codRecibo;

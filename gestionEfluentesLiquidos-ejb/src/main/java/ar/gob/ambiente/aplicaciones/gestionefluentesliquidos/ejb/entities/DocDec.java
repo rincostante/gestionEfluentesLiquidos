@@ -61,6 +61,8 @@ public class DocDec implements Serializable {
        MP_VISADOS.put(2, "DOC. TEC. DE OBRA A EJECUTAR");
        MP_VISADOS.put(3, "ESTABLECIMIENTO SIN VUELCO");
        MP_VISADOS.put(4, "CALIDAD DE VERTIDO");
+       MP_VISADOS.put(5, "NO PRESENTADA");
+       MP_VISADOS.put(6, "EN ESTUDIO");
     }    
 
     public int getTipoVisado() {

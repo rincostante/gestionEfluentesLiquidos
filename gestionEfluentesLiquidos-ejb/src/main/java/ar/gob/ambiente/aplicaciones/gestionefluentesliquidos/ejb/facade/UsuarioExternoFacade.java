@@ -97,11 +97,13 @@ public class UsuarioExternoFacade extends AbstractFacade<UsuarioExterno> {
     }
     
     /**
-     * Método a implementar según las características de la aplicación
-     * @param id
+     * Método que devuelve el total de Cuentas de Establecimientos registrados
      * @return 
      */
-    public boolean noTieneDependencias(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }        
+    public Long getTotal(){
+       em = getEntityManager();  
+       String queryString = "SELECT COUNT(id) FROM usuarioexterno";
+       Query q = em.createNativeQuery(queryString);
+       return (Long)q.getSingleResult();
+    }     
 }

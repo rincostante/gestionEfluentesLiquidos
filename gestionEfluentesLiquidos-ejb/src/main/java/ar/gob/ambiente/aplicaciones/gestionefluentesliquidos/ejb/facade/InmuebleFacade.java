@@ -10,6 +10,7 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Inmueb
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +30,14 @@ public class InmuebleFacade extends AbstractFacade<Inmueble> {
         super(Inmueble.class);
     }
     
+    /**
+     * Devuelve el total de Establecimientos georereferenciados por el usuario
+     * @return 
+     */
+    public Long getTotalGeo(){
+       em = getEntityManager();  
+       String queryString = "SELECT COUNT(id) FROM inmueble WHERE latitud <> 0";
+       Query q = em.createNativeQuery(queryString);
+       return (Long)q.getSingleResult();
+    }       
 }

@@ -14,6 +14,7 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establ
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Firmante;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialDeclaraciones;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialFirmantes;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Inmueble;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Operador;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Partido;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Recibo;
@@ -31,6 +32,7 @@ import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.Establec
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.FirmanteFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.HistorialDeclaracionesFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.HistorialFirmantesFacade;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.InmuebleFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.OperadorFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.RolFacade;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.facade.UsuarioExternoFacade;
@@ -85,7 +87,8 @@ public class BackendSrv {
     private HistorialFirmantesFacade historialFirmFacade;
     @EJB
     private HistorialDeclaracionesFacade historialDeclaFacade;
-    
+    @EJB
+    private InmuebleFacade inmuebleFacade;
     @EJB
     private ReciboFacade reciboFacade;
 
@@ -200,15 +203,6 @@ public class BackendSrv {
      */
     public UsuarioExterno validarUsuarioExt(String cude, String clave){
         return usExtFacade.validar(cude, clave);
-    }
-    
-    /**
-     * Método para saber si el usuario externo está afectado a transacciones
-     * @param id
-     * @return 
-     */
-    public boolean usrExtNoTieneDependencias(Long id) {
-        return usExtFacade.noTieneDependencias(id);
     }
     
     /**
@@ -463,7 +457,15 @@ public class BackendSrv {
      */
     public void editHisFirmante(HistorialFirmantes hisFir){
         historialFirmFacade.edit(hisFir);
-    }    
+    } 
+    
+    /**
+     * Método para remover un historial de firmante si hubo un error en la edición del Establecimiento mientras se cambió de firmante.
+     * @param hisFir 
+     */
+    public void deleteHisFirmante(HistorialFirmantes hisFir){
+        historialFirmFacade.remove(hisFir);
+    }
     
     /**
      * Método para editar un firmante existente. Se implementa para poder exponerlo como servicio.
@@ -541,6 +543,38 @@ public class BackendSrv {
      */
     public boolean existeEstByIdRupEst(Long idRupEst){
         return estFacade.existeIdRupEst(idRupEst);
+    }
+    
+    /**
+     * Método que devuelve el máximo número asignado a un Establecimiento.
+     * @return 
+     */
+    public Long getMaxNumEstablecimiento(){
+        return estFacade.getMaxNumero();
+    }
+    
+    /**
+     * Método para crear un inmueble
+     * @param inmueble 
+     */
+    public void createInmueble(Inmueble inmueble){
+        inmuebleFacade.create(inmueble);
+    }
+    
+    /**
+     * Método para editar un inmueble
+     * @param inmueble 
+     */
+    public void editInmueble(Inmueble inmueble){
+        inmuebleFacade.edit(inmueble);
+    }
+    
+    /**
+     * Método para eliminar un inmueble si hubo un error al insertar el establecimiento
+     * @param inmueble 
+     */
+    public void deleteInmueble(Inmueble inmueble){
+        inmuebleFacade.remove(inmueble);
     }
     
     /************************************
@@ -928,5 +962,28 @@ public class BackendSrv {
     
     public void createRecibo(Recibo rec){
         reciboFacade.create(rec);
+    }
+    
+    /**********************************
+     * Métodos para levantar totales **
+     **********************************/
+    public Long getTotalEstab(){
+        return estFacade.getTotal();
+    }
+    
+    public Long getTotalDjReg(){
+        return decFacade.getTotalRegistradas();
+    }
+    
+    public Long getTotalFirm(){
+        return firmanteFacade.getTotal();
+    }
+    
+    public Long getTotalUsExt(){
+        return usExtFacade.getTotal();
+    }
+    
+    public Long getTotalInmGeo(){
+        return inmuebleFacade.getTotalGeo();
     }
 }
