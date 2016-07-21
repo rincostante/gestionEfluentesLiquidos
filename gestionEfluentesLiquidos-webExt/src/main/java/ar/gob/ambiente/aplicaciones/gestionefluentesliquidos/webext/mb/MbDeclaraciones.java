@@ -318,6 +318,11 @@ public class MbDeclaraciones implements Serializable{
         sesion = (MbSesion)ctx.getSessionMap().get("mbSesion");
         usLogueado = sesion.getUsuario();
         
+        HttpSession session = (HttpSession) ctx.getSession(true);
+        //Enumeration enume = session.getAttributeNames();
+        session.removeAttribute("mbEstablecimiento");
+        session.removeAttribute("mbRecibo");
+        
         // botones
         gralRegistrar = "Registrar Declaración";
         gralLimpiar = "Limpiar todo";
@@ -453,18 +458,6 @@ public class MbDeclaraciones implements Serializable{
     public void iniciar(){
         if(lstActividades == null) lstActividades = backendSrv.getActividadAll();
         prepareDatosComp();
-        String s;
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-        .getExternalContext().getSession(true);
-        Enumeration enume = session.getAttributeNames();
-        while(enume.hasMoreElements()){
-            s = (String)enume.nextElement();
-            if(s.substring(0, 2).equals("mb")){
-                if(!s.equals("mbDeclaraciones")&& !s.equals("mbSesion")){ 
-                    session.removeAttribute(s);
-                }
-            }
-        }
     }
 
     

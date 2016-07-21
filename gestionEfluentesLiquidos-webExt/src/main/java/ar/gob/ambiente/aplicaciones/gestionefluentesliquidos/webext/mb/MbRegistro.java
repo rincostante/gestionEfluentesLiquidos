@@ -80,21 +80,12 @@ public class MbRegistro implements Serializable{
             cmbValidar = "Validar";
             cmbLimpiar = "Limpiar";            
         }
-        
-        if(!iniciado){
-            String s;
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-            .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbRegistro")&& !s.equals("mbSesion")){ 
-                        session.removeAttribute(s);
-                    }
-                }
-            }
-        }
+
+        String s;
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+        .getExternalContext().getSession(true);
+        //Enumeration enume = session.getAttributeNames();
+        session.removeAttribute("mbCude");
     }    
 
     /**********************

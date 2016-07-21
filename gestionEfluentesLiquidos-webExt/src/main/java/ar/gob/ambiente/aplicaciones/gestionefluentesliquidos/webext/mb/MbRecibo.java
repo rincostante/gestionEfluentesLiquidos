@@ -8,7 +8,6 @@ package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb;
 
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.AdminEntidad;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
-import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialDeclaraciones;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Recibo;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.UsuarioExterno;
@@ -26,6 +25,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -64,6 +64,11 @@ public class MbRecibo implements Serializable{
     
     public void iniciar() throws JRException, IOException{
         String codRecibo;
+        
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+        .getExternalContext().getSession(true);
+        session.removeAttribute("mbDeclaraciones");
+        session.removeAttribute("mbEstablecimiento");
         try{
             // instancio el recibo si no lo tiene
             if(decJurada.getRecibo() == null){

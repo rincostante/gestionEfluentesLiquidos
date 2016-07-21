@@ -62,4 +62,10 @@
         <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb.MbRecibo</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean para limpiar sesión</description>
+        <managed-bean-name>mbClear</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb.MbClear</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

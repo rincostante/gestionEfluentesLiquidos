@@ -13,6 +13,9 @@
         <title><ui:insert name="title"/></title>
     </h:head>
     <h:body style="background-color: #f5f5ed">
+        <f:metadata>  
+            <f:event listener="#{mbSesion.actualizarEstadoDec()}" type="preRenderView"></f:event>  
+        </f:metadata> 
         <h:outputStylesheet library="css" name="sesion.css"  />
         <b:container style="background-color: #e0e4de; border-radius: 0px 0px 10px 10px;
                         -moz-border-radius: 0px 0px 10px 10px;
@@ -109,7 +112,7 @@
                 <b:navbarLinks >
                     <b:dropMenu value="Declaraciones Juradas">
                         <b:navLink value="Registrar" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registro.xhtml"></b:navLink>
-                        <b:navLink rendered="#{mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}" value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml"></b:navLink>
+                        <b:navLink rendered="#{mbSesion.estadoDec eq 2}" value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml"></b:navLink>
                     </b:dropMenu>
                     
                     <b:navLink value="Ubicación" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
@@ -160,7 +163,7 @@
                         <span style="color: #f5f5ed" >Menú principal</span><br/>
                         <b:navLink value="Inicio" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.RutaInicio}iniciado.xhtml"></b:navLink>
                         <b:navLink value="Registrar/Consultar Declaración" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}registro.xhtml"></b:navLink>
-                        <b:navLink rendered="#{mbDeclaraciones.decRegistrada or mbDeclaraciones.declaracion.claveEstado eq 2}" 
+                        <b:navLink rendered="#{mbSesion.estadoDec eq 2}" 
                                    value="Imprimir recibo" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizDeclaraciones}imprimirRecibo.xhtml"></b:navLink>
                         <b:navLink value="Actualizar ubicación" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizEstablecimientos}actualizar.xhtml"></b:navLink>
                         <b:navLink value="Guía de trámite" href="#{bundle.Servidor}#{bundle.RutaAplicacion}#{bundle.raizGuiaTramiteSesion}principal.xhtml"></b:navLink>
@@ -190,15 +193,6 @@
                 <br/>
             </b:container>
         </b:container>
-    </h:body>
-    <script type="text/javascript">
-        //<![CDATA[
-        function logout(xhr, status, args){
-            setTimeout(function(){
-                window.location = '/gestionEfluentesLiquidos-webExt/faces/libre/iniciar.xhtml';
-            }, 500);
-        }
-        //]]>
-    </script>      
+    </h:body>    
 </html>
 

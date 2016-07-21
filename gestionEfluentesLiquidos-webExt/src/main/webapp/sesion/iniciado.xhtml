@@ -11,8 +11,10 @@
             <h:outputText value="Control de Efluentes líquidos" />
         </ui:define>
         <ui:define name="content">    
+            <f:metadata>  
+                <f:event listener="#{mbClear.limpiarConSesion()}" type="preRenderView"></f:event>  
+            </f:metadata> 
             <h:form>
-
                 <b:row>
                     <b:column span="3">
                         <h1>Registrar DDJJ</h1>

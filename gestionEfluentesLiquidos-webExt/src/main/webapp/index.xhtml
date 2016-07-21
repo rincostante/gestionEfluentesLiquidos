@@ -11,6 +11,9 @@
             <h:outputText value="Control de Efluentes líquidos" />
         </ui:define>
         <ui:define name="content">    
+            <f:metadata>  
+                <f:event listener="#{mbClear.limpiarSinSesion()}" type="preRenderView"></f:event>  
+            </f:metadata> 
             <b:modal id="principal" title="Control de Efluentes Líquidos" styleClass="modalPrincipal"
                      closable="false" backdrop="false">
                 <p>#{bundle.modalPrincipal}</p>

@@ -69,19 +69,13 @@ public class MbEstablecimiento implements Serializable{
     
     public void iniciar(){
 
-        if(!marcado && !marcado){
+        if(!marcado){
             String s;
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
             .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbEstablecimiento")&& !s.equals("mbSesion")){ 
-                        session.removeAttribute(s);
-                    }
-                }
-            }
+            //Enumeration enume = session.getAttributeNames();
+            session.removeAttribute("mbDeclaraciones");
+            session.removeAttribute("mbRecibo");
         }
         LatLng coord;
         

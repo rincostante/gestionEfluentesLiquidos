@@ -57,15 +57,9 @@ public class MbCude implements Serializable{
             String s;
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
             .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbCude") && !s.equals("mbSesion")){
-                        session.removeAttribute(s);
-                    }
-                }
-            }
+            //Enumeration enume = session.getAttributeNames();
+            session.removeAttribute("mbRegistro");
+            
             cmbValidar = "Validar";
             cmbLimpiar = "Limpiar";
             

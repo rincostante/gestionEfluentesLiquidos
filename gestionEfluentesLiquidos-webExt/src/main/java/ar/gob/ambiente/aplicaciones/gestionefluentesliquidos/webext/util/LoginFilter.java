@@ -123,7 +123,7 @@ public class LoginFilter implements Filter {
 
             //El usuario no está logueado
             if (mbSesion == null || !mbSesion.isLogeado()) {
-              res.sendRedirect(req.getContextPath() + "/faces/libre/iniciar.xhtml");
+              res.sendRedirect(req.getContextPath() + "/faces/index.xhtml");
               return;
             }
 

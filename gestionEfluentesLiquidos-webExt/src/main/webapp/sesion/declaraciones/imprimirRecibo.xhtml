@@ -17,10 +17,10 @@
             
             <b:well>
                 <h2>Imprimir Recibo</h2>
-                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado lt 2}" style="color: gray; font-weight: normal; font-size: 12px" value="El Establecimiento aún no ha registrado su Declaración Jurada. De realizar el registro correspondiente para poder imprimir el comprobante." /></p>
-                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" style="color: gray; font-weight: normal; font-size: 12px" value="#{bundle.instruccionesReciboDj}" /></p>
-                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" style="font-size: 25px" value="La presente Declaración ha sido registrada y firmada por #{mbDeclaraciones.declaracion.firmante.nombreYApellido} - DNI: #{mbDeclaraciones.declaracion.firmante.dni}" /></p>
-                <p><h:outputText rendered="#{mbDeclaraciones.declaracion.claveEstado eq 2}" style="color: gray; font-weight: normal; font-size: 12px" value="Los datos correspondientes deberán ser validados posteriormente ante personal de la DPyRA" /></p>
+                <p><h:outputText rendered="#{mbSesion.estadoDec lt 2}" style="color: gray; font-weight: normal; font-size: 12px" value="El Establecimiento aún no ha registrado su Declaración Jurada. De realizar el registro correspondiente para poder imprimir el comprobante." /></p>
+                <p><h:outputText rendered="#{mbSesion.estadoDec eq 2}" style="color: gray; font-weight: normal; font-size: 12px" value="#{bundle.instruccionesReciboDj}" /></p>
+                <p><h:outputText rendered="#{mbSesion.estadoDec eq 2}" style="font-size: 25px" value="La presente Declaración ha sido registrada y firmada por #{mbSesion.histDec.declaracion.firmante.nombreYApellido} - DNI: #{mbSesion.histDec.declaracion.firmante.dni}" /></p>
+                <p><h:outputText rendered="#{mbSesion.estadoDec eq 2}" style="color: gray; font-weight: normal; font-size: 12px" value="Los datos correspondientes deberán ser validados posteriormente ante personal de la DPyRA" /></p>
             </b:well>
         </ui:define> 
     </ui:composition>

@@ -11,6 +11,9 @@
             <h:outputText value="Control de Efluentes líquidos" />
         </ui:define>
         <ui:define name="content">    
+            <f:metadata>  
+                <f:event listener="#{mbClear.limpiarSinSesion()}" type="preRenderView"></f:event>  
+            </f:metadata>
             <br/>
             <b:well>
                 <h3>Normativa</h3>

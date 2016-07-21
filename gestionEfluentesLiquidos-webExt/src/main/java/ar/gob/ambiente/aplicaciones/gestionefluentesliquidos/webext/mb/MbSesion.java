@@ -3,7 +3,9 @@
 package ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.mb;
 
 
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.DeclaracionJurada;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.Establecimiento;
+import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.HistorialDeclaraciones;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.entities.UsuarioExterno;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.ejb.srv.BackendSrv;
 import ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webext.modelo.Sesion;
@@ -49,6 +51,8 @@ public class MbSesion implements Serializable{
     private boolean recupEnviado;
     private String clave;
     private boolean iniciado;
+    private HistorialDeclaraciones histDec;
+    private int estadoDec;
     
     // botonos
     private String cmbValidar;
@@ -69,21 +73,21 @@ public class MbSesion implements Serializable{
     public MbSesion(){
     }
     
+    public void actualizarEstadoDec(){
+        DeclaracionJurada dec;
+        if(histDec == null) histDec = backendSrv.getUltimaDeclaracion(establecimiento);
+        dec = histDec.getDeclaracion();
+        estadoDec = dec.getClaveEstado();
+    }
+    
     public void iniciar(){
-
         if(!iniciado){
             String s;
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
             .getExternalContext().getSession(true);
-            Enumeration enume = session.getAttributeNames();
-            while(enume.hasMoreElements()){
-                s = (String)enume.nextElement();
-                if(s.substring(0, 2).equals("mb")){
-                    if(!s.equals("mbSesion")){ 
-                        session.removeAttribute(s);
-                    }
-                }
-            }
+            //Enumeration enume = session.getAttributeNames();
+            session.removeAttribute("mbCude");
+            session.removeAttribute("mbRegistro");
         }
         
         cmbValidar = "Iniciar Sesión";
@@ -101,6 +105,22 @@ public class MbSesion implements Serializable{
     /**********************
      * Métodos de acceso **
      **********************/
+    public HistorialDeclaraciones getHistDec() {
+        return histDec;
+    }
+
+    public void setHistDec(HistorialDeclaraciones histDec) {
+        this.histDec = histDec;
+    }
+
+    public int getEstadoDec() {
+        return estadoDec;
+    }
+
+    public void setEstadoDec(int estadoDec) {
+        this.estadoDec = estadoDec;
+    }
+
     public String getCmbEnviar() {
         return cmbEnviar;
     }
@@ -364,17 +384,22 @@ public class MbSesion implements Serializable{
     }
     
     public void logout(){
-
-        ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
+        String s;
         
-        // obtengo el path completo con el contexto del servlet
-        String ctxPath = ((ServletContext) ctx.getContext()).getContextPath();
-
         try {
-          ((HttpSession) ctx.getSession(false)).invalidate();
-          ctx.redirect(ctxPath + "/faces/libre/iniciar.xhtml");
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+            .getExternalContext().getSession(true);
+            Enumeration enume = session.getAttributeNames();
+            while(enume.hasMoreElements()){
+                s = (String)enume.nextElement();
+                session.removeAttribute(s);
+            }
+
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/gestionEfluentesLiquidos-webExt/faces/index.xhtml");
+
         } catch (IOException ex) {
-            System.out.println("Hubo un error cerrando la sesión.");
+            System.out.println("Hubo un error cerrando la sesión. " + ex.getMessage());
         }        
     }      
     
