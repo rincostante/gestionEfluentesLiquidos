@@ -55,14 +55,37 @@ public class DeclaracionJuradaFacade extends AbstractFacade<DeclaracionJurada> {
         em = getEntityManager();
         String queryString = "SELECT dec FROM DeclaracionJurada dec "
                 + "WHERE dec.cude = :cude "
-                + "AND dec.claveEstado = 1";
+                + "AND dec.claveEstado = 1 "
+                + "ORDER BY dec.id";
         Query q = em.createQuery(queryString)
                 .setParameter("cude", cude);
         lstDec = q.getResultList();
         if(lstDec.isEmpty()){
             return null;
         }else{
-            return lstDec.get(0);
+            return lstDec.get(lstDec.size() - 1);
+        }
+    }
+    
+    /**
+     * Método para obtener la Declaración registrada según el cude
+     * @param cude
+     * @return 
+     */
+    public DeclaracionJurada getRegistrada(String cude){
+        List<DeclaracionJurada> lstDec;
+        em = getEntityManager();
+        String queryString = "SELECT dec FROM DeclaracionJurada dec "
+                + "WHERE dec.cude = :cude "
+                + "AND dec.claveEstado = 2 "
+                + "ORDER BY dec.id";
+        Query q = em.createQuery(queryString)
+                .setParameter("cude", cude);
+        lstDec = q.getResultList();
+        if(lstDec.isEmpty()){
+            return null;
+        }else{
+            return lstDec.get(lstDec.size() - 1);
         }
     }
     
@@ -75,14 +98,15 @@ public class DeclaracionJuradaFacade extends AbstractFacade<DeclaracionJurada> {
         List<DeclaracionJurada> lstDec;
         em = getEntityManager();
         String queryString = "SELECT dec FROM DeclaracionJurada dec "
-                + "WHERE dec.cude = :cude";
+                + "WHERE dec.cude = :cude "
+                + "ORDER BY dec.id";
         Query q = em.createQuery(queryString)
                 .setParameter("cude", cude);
         lstDec = q.getResultList();
         if(lstDec.isEmpty()){
             return null;
         }else{
-            return lstDec.get(0);
+            return lstDec.get(lstDec.size() - 1);
         }
     }
     

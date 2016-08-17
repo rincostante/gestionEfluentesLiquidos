@@ -242,7 +242,7 @@ public class UsuarioExterno implements Serializable {
     }
 
     public String getStrCuit() {
-        return String.valueOf(cuit).substring(0, 2) + "-" + String.valueOf(cuit).substring(2, 9) + "-" + String.valueOf(cuit).charAt(10);
+        return String.valueOf(cuit).substring(0, 2) + "-" + String.valueOf(cuit).substring(2, 10) + "-" + String.valueOf(cuit).charAt(10);
     }
 
     public void setStrCuit(String strCuit) {

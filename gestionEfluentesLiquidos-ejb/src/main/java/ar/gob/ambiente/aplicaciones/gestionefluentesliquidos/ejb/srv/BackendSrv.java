@@ -351,6 +351,15 @@ public class BackendSrv {
     }
     
     /**
+     * Método para obtener el Partido según el código DPyRA
+     * @param IdDpyra
+     * @return 
+     */
+    public Partido getPartidoByIdDpyra(Long IdDpyra){
+        return partidoFacade.getXIdDpyra(IdDpyra);
+    }
+    
+    /**
      * Método para obtener todos los Partidos. Se implementa para poder exponerlo como servicio.
      * @return 
      */
@@ -894,6 +903,10 @@ public class BackendSrv {
      */
     public DeclaracionJurada getDeclaracionByCude(String cude){
         return decFacade.getByCude(cude);
+    }
+    
+    public DeclaracionJurada getDeclaracionCompleta(String cude){
+        return decFacade.getRegistrada(cude);
     }
     
     /**

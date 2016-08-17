@@ -66,4 +66,25 @@ public class PartidoFacade extends AbstractFacade<Partido> {
             return lstPart.get(0);
         }
     }
+    /**
+     * Método para obtener el partido según el código de partido de la DPyRA
+     * como en la migración se invirtieron los valos migrados entre las id de RT y DPyRA se invierten 
+     * también en su búsqueda provisoriamente hasta que se arregle.
+     * @param idRt
+     * @return 
+     */
+    public Partido getXIdDpyra(Long idRt){
+        List<Partido> lstPart;
+        em = getEntityManager();
+        String queryString = "SELECT par FROM Partido par "
+                + "WHERE par.idRt = :idRt";
+        Query q = em.createQuery(queryString)
+                .setParameter("idRt", idRt);
+        lstPart = q.getResultList();
+        if(lstPart.isEmpty()){
+            return null;
+        }else{
+            return lstPart.get(0);
+        }
+    }
 }
