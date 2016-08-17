@@ -428,7 +428,7 @@ public class MbEstablecimientos implements Serializable{
         estRup = rupBachendSrv.getEstablecimientoPorId(current.getIdRupEst());
         actRup = estRup.getActividades().get(0);
         domicilio = estRup.getDomicilio();
-        cargarLocalidadesEdit();
+        cargarEntidadesSrv();
         Map<String,Object> options = new HashMap<>();
         options.put("contentWidth", 900);
         RequestContext.getCurrentInstance().openDialog("dlgEditEstabRup", options, null);  
@@ -608,9 +608,11 @@ public class MbEstablecimientos implements Serializable{
         // valido que el cuit no esté registrado ya
         boolean valida = true;
         PerJuridica pj = rupBachendSrv.getPerJuridicasPorCuit(perJuridica.getCuit());
-        if(!pj.equals(perJuridica)){
-            valida = false;
-            JsfUtil.addErrorMessage("Ya existe una Razón social con el CUIT que ha actualizado");
+        if(pj != null){
+            if(!pj.equals(perJuridica)){
+                valida = false;
+                JsfUtil.addErrorMessage("Ya existe una Razón social con el CUIT que ha actualizado");
+            }
         }
         
         // obtengo el usuario homonimo del RUP
@@ -748,9 +750,11 @@ public class MbEstablecimientos implements Serializable{
                 List<ar.gob.ambiente.servicios.registrounicopersonas.ejb.entities.Actividad> listActTemp = new ArrayList<>();
                 listActTemp.add(actRup);
                 estRup.setActividades(listActTemp);
-                
-                // actualizo el domicilio
-                estRup.setDomicilio(domicilio); 
+
+                // completo el domicilio
+                domicilio.setIdLocalidad(localSelected.getId());
+                domicilio.setLocalidad(localSelected.getNombre());
+                estRup.setDomicilio(domicilio);
                 
                 // verifico si hay otros Establecimientos del mismo tipo en el mismo domicilio. En cuyo caso seteo un alerta
                 List<ar.gob.ambiente.servicios.registrounicopersonas.ejb.entities.Establecimiento> listEstTemp;
@@ -1040,7 +1044,8 @@ public class MbEstablecimientos implements Serializable{
                     insertoNuevoFirm = true;
                 }
                 
-                // actualizo
+                // actualizo inmueble y establecimiento
+                backendSrv.editInmueble(current.getInmueble());
                 backendSrv.editEstablecimiento(current);
                 JsfUtil.addSuccessMessage("El Establecimiento se ha actualizado correctamente.");
                 return "view";

@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="content">
+        <f:metadata>  
+            <f:event listener="#{mbUsuarioExterno.iniciar()}" type="preRenderView"></f:event>  
+        </f:metadata>
+        <h:form>
+            <p:panel id="usExtForm" header="Listado de Usuarios Externos" style="margin-bottom:10px;">
+                <h:panelGrid columns="6">
+                    <p:commandButton icon="ui-icon-refresh" value="Refrescar Listado" action="#{mbUsuarioExterno.prepareList}" update="usExtList"/>
+                </h:panelGrid>
+            </p:panel>
+            <p:dataTable value="#{mbUsuarioExterno.listado}" 
+                         filteredValue="#{mbUsuarioExterno.listaFilter}"
+                         var="usExt" 
+                         id="usExtList" 
+                         rows="5"
+                         paginator="true"
+                         widgetVar="usExtTable"                             
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+
+                <f:facet name="header">
+                    Listado de Usuarios Externos  
+                    <p:commandButton id="toggler" type="button" value="Columnas" icon="ui-icon-calculator" style="margin-left: 10px" />
+                    <p:columnToggler datasource="usExtList" trigger="toggler" />
+                </f:facet>
+
+                <p:column headerText="CUDE" filterMatchMode="contains" sortBy="#{usExt.cude}" filterBy="#{usExt.cude}">
+                    <p:outputLabel value="#{usExt.cude}"/>
+                </p:column>
+                
+                <p:column headerText="Razón Social" filterMatchMode="contains" sortBy="#{usExt.razonSocial}" filterBy="#{usExt.razonSocial}">
+                    <p:outputLabel value="#{usExt.razonSocial}"/>
+                </p:column>
+                
+                <p:column headerText="CUIT" filterMatchMode="contains" sortBy="#{usExt.cuit}" filterBy="#{usExt.cuit}">
+                    <p:outputLabel value="#{usExt.cuit}"/>
+                </p:column>
+                
+                <p:column headerText="Calle" filterMatchMode="contains" sortBy="#{usExt.domCalle}" filterBy="#{usExt.domCalle}">
+                    <p:outputLabel value="#{usExt.domCalle}"/>
+                </p:column>
+                
+                <p:column headerText="N°" filterMatchMode="contains" sortBy="#{usExt.numero}" filterBy="#{usExt.numero}">
+                    <p:outputLabel value="#{usExt.numero}"/>
+                </p:column>
+                
+                <p:column headerText="Localidad" filterMatchMode="contains" sortBy="#{usExt.localidad}" filterBy="#{usExt.localidad}">
+                    <p:outputLabel value="#{usExt.localidad}"/>
+                </p:column>
+                
+                <p:column headerText="e-mail" filterMatchMode="contains" sortBy="#{usExt.email}" filterBy="#{usExt.email}">
+                    <p:outputLabel value="#{usExt.email}"/>
+                </p:column>
+                
+                <p:column headerText="Primera vez" filterMatchMode="contains" sortBy="#{usExt.primeraVez}" filterBy="#{usExt.primeraVez}">
+                    <p:outputLabel value="#{usExt.primeraVez}"/>
+                </p:column>
+
+
+                <p:column filterBy="#{usExt.admin.habilitado}" headerText="Estado" filterMatchMode="equals">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('usExtTable').filter()" style="font-size: 80%;">
+                            <f:converter converterId="javax.faces.Boolean" />
+                            <f:selectItem itemLabel="Todos" itemValue="" />
+                            <f:selectItem itemLabel="Activos" itemValue="true" />
+                            <f:selectItem itemLabel="Inactivos" itemValue="false" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{usExt.admin.habilitado ? 'Habilitado': 'Deshabilitado'}" />
+                </p:column>
+
+                <p:column headerText="Acciones" style="width:110px">
+                    <p:growl id="messages" showDetail="false" />                           
+                    <p:commandButton icon="ui-icon-zoomin" action="#{mbUsuarioExterno.prepareView}" title="Ver Detalle">
+                        <f:setPropertyActionListener value="#{usExt}" target="#{mbUsuarioExterno.current}" />  
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-pencil" action="#{mbUsuarioExterno.prepareEdit}" title="Editar" >
+                        <f:setPropertyActionListener value="#{usExt}" target="#{mbUsuarioExterno.current}" /> 
+                    </p:commandButton>
+     
+                </p:column>                
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

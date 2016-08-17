@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/WEB-INF/facelets/templates/entidadTemplate.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+     xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="content">
+        <h:form id="frmEdit">
+            <p:panel id="pnEdit" header="Actualizar Usuario Externo" style="margin-bottom:10px;">
+                <p:growl id="messages" showDetail="false" />
+                <h:panelGrid columns="2">
+                    
+                    <h:outputLabel value="CUDE: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.cude}" />
+
+                    <h:outputLabel value="Razón Social: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.razonSocial}" />
+                    
+                    <h:outputLabel value="CUIT: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.cuit}" />
+                    
+                    <h:outputLabel value="Calle: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.domCalle}" />
+                    
+                    <h:outputLabel value="N°: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.numero}" />
+                    
+                    <h:outputLabel value="Localidad: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.localidad}" />
+                    
+                    <p:outputLabel value="E-mail" for="email"/>
+                    <p:inputText id="email" value="#{mbUsuarioExterno.current.email}" style="width: 300px" 
+                                 requiredMessage="Debe ingresar el E-mail del Usuario Externo" required="true"/>
+                    
+                    <h:outputLabel value="Primera vez: "/>
+                    <h:outputText value="#{mbUsuarioExterno.current.primeraVez}" />
+                    
+                    <p:outputLabel value="Clave" for="clave"/>
+                    <p:inputText id="clave" value="#{mbUsuarioExterno.current.clave}" style="width: 300px" 
+                                 requiredMessage="Debe ingresar la clave del Usuario Externo" required="true"/>
+
+                </h:panelGrid>
+            </p:panel>
+
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton icon="ui-icon-check" value="Guardar" action="#{mbUsuarioExterno.update}" update="pnEdit"/>
+                    <p:commandButton icon="ui-icon-cancel" value="Limpiar" style="float: next">
+                        <p:ajax update="pnEdit" resetValues="true" />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-arrowreturnthick-1-w" action="#{mbUsuarioExterno.prepareList}" value="Volver" immediate="true"/>
+                </f:facet>
+            </p:toolbar>
+        </h:form>
+    </ui:define>
+</ui:composition>

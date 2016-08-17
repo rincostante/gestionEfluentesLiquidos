@@ -4,17 +4,17 @@
 <xsd:import namespace="http://ws.gestionterritorial.servicios.ambiente.gob.ar/" schemaLocation="http://localhost:8080/CentrosPobladosWebService/CentrosPobladosWebService?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="verProvincias">
+<part name="parameters" element="tns:verProvincias"/>
+</message>
+<message name="verProvinciasResponse">
+<part name="parameters" element="tns:verProvinciasResponse"/>
+</message>
 <message name="buscarCentrosPorDeptoYTipo">
 <part name="parameters" element="tns:buscarCentrosPorDeptoYTipo"/>
 </message>
 <message name="buscarCentrosPorDeptoYTipoResponse">
 <part name="parameters" element="tns:buscarCentrosPorDeptoYTipoResponse"/>
-</message>
-<message name="buscarRegionesPorProvincia">
-<part name="parameters" element="tns:buscarRegionesPorProvincia"/>
-</message>
-<message name="buscarRegionesPorProvinciaResponse">
-<part name="parameters" element="tns:buscarRegionesPorProvinciaResponse"/>
 </message>
 <message name="buscarCentrosPorProvYTipo">
 <part name="parameters" element="tns:buscarCentrosPorProvYTipo"/>
@@ -34,17 +34,23 @@
 <message name="buscarMunicipiosPorProvinciaResponse">
 <part name="parameters" element="tns:buscarMunicipiosPorProvinciaResponse"/>
 </message>
+<message name="buscarRegionesPorProvincia">
+<part name="parameters" element="tns:buscarRegionesPorProvincia"/>
+</message>
+<message name="buscarRegionesPorProvinciaResponse">
+<part name="parameters" element="tns:buscarRegionesPorProvinciaResponse"/>
+</message>
 <message name="buscarProvinciasPorRegion">
 <part name="parameters" element="tns:buscarProvinciasPorRegion"/>
 </message>
 <message name="buscarProvinciasPorRegionResponse">
 <part name="parameters" element="tns:buscarProvinciasPorRegionResponse"/>
 </message>
-<message name="verProvincias">
-<part name="parameters" element="tns:verProvincias"/>
+<message name="buscarCentrosPorNomCpNomDto">
+<part name="parameters" element="tns:buscarCentrosPorNomCpNomDto"/>
 </message>
-<message name="verProvinciasResponse">
-<part name="parameters" element="tns:verProvinciasResponse"/>
+<message name="buscarCentrosPorNomCpNomDtoResponse">
+<part name="parameters" element="tns:buscarCentrosPorNomCpNomDtoResponse"/>
 </message>
 <message name="verEspecifRegion">
 <part name="parameters" element="tns:verEspecifRegion"/>
@@ -89,13 +95,13 @@
 <part name="parameters" element="tns:buscarCentroPobladoResponse"/>
 </message>
 <portType name="CentrosPobladosWebService">
+<operation name="verProvincias">
+<input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/verProvinciasRequest" message="tns:verProvincias"/>
+<output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/verProvinciasResponse" message="tns:verProvinciasResponse"/>
+</operation>
 <operation name="buscarCentrosPorDeptoYTipo">
 <input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarCentrosPorDeptoYTipoRequest" message="tns:buscarCentrosPorDeptoYTipo"/>
 <output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarCentrosPorDeptoYTipoResponse" message="tns:buscarCentrosPorDeptoYTipoResponse"/>
-</operation>
-<operation name="buscarRegionesPorProvincia">
-<input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarRegionesPorProvinciaRequest" message="tns:buscarRegionesPorProvincia"/>
-<output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarRegionesPorProvinciaResponse" message="tns:buscarRegionesPorProvinciaResponse"/>
 </operation>
 <operation name="buscarCentrosPorProvYTipo">
 <input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarCentrosPorProvYTipoRequest" message="tns:buscarCentrosPorProvYTipo"/>
@@ -109,13 +115,17 @@
 <input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarMunicipiosPorProvinciaRequest" message="tns:buscarMunicipiosPorProvincia"/>
 <output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarMunicipiosPorProvinciaResponse" message="tns:buscarMunicipiosPorProvinciaResponse"/>
 </operation>
+<operation name="buscarRegionesPorProvincia">
+<input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarRegionesPorProvinciaRequest" message="tns:buscarRegionesPorProvincia"/>
+<output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarRegionesPorProvinciaResponse" message="tns:buscarRegionesPorProvinciaResponse"/>
+</operation>
 <operation name="buscarProvinciasPorRegion">
 <input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarProvinciasPorRegionRequest" message="tns:buscarProvinciasPorRegion"/>
 <output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarProvinciasPorRegionResponse" message="tns:buscarProvinciasPorRegionResponse"/>
 </operation>
-<operation name="verProvincias">
-<input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/verProvinciasRequest" message="tns:verProvincias"/>
-<output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/verProvinciasResponse" message="tns:verProvinciasResponse"/>
+<operation name="buscarCentrosPorNomCpNomDto">
+<input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarCentrosPorNomCpNomDtoRequest" message="tns:buscarCentrosPorNomCpNomDto"/>
+<output wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/buscarCentrosPorNomCpNomDtoResponse" message="tns:buscarCentrosPorNomCpNomDtoResponse"/>
 </operation>
 <operation name="verEspecifRegion">
 <input wsam:Action="http://ws.gestionterritorial.servicios.ambiente.gob.ar/CentrosPobladosWebService/verEspecifRegionRequest" message="tns:verEspecifRegion"/>
@@ -148,7 +158,7 @@
 </portType>
 <binding name="CentrosPobladosWebServicePortBinding" type="tns:CentrosPobladosWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="buscarCentrosPorDeptoYTipo">
+<operation name="verProvincias">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -157,7 +167,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="buscarRegionesPorProvincia">
+<operation name="buscarCentrosPorDeptoYTipo">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -193,6 +203,15 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="buscarRegionesPorProvincia">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="buscarProvinciasPorRegion">
 <soap:operation soapAction=""/>
 <input>
@@ -202,7 +221,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="verProvincias">
+<operation name="buscarCentrosPorNomCpNomDto">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

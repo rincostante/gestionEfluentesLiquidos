@@ -45,4 +45,15 @@
         <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb.MbEstablecimientos</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <description>Bean para leer archvos excel con Establecimientos a importar</description>
+        <managed-bean-name>mbImport</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb.MbImport</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>mbUsuarioExterno</managed-bean-name>
+        <managed-bean-class>ar.gob.ambiente.aplicaciones.gestionefluentesliquidos.webint.mb.MbUsuarioExterno</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 </faces-config>

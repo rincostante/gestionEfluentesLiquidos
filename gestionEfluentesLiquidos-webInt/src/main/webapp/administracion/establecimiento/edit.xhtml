@@ -59,7 +59,10 @@
                             
                             <p:outputLabel value="Cod. Recibo" for="codRecibo" />
                             <p:inputText id="codRecibo" value="#{mbEstablecimientos.current.codRecibo}" required="true"  
-                                         requiredMessage="Debe consignar un código temporal para el registro de la Declaración." />
+                                         requiredMessage="Debe consignar un código de recibo para guardar el Establecimiento." />
+                            
+                            <p:outputLabel value="Partida inmobiliaria" for="partInmob" />
+                            <p:inputText id="partInmob" value="#{mbEstablecimientos.current.inmueble.partInmob}" />
                         </h:panelGrid>
                     </p:panel>
                 </h:panelGrid>      

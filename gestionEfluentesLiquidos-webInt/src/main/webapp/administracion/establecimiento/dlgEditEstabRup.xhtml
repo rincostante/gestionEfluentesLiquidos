@@ -36,11 +36,6 @@
                                 <f:selectItems value="#{mbEstablecimientos.listActividades}" var="activ" itemLabel="#{activ.nombre}" itemValue="#{activ}" />
                             </p:selectOneMenu> 
                             
-                            <p:outputLabel value="Correo electrónico: " for="email"/>
-                            <p:inputText id="email" value="#{mbEstablecimientos.estRup.correoElectronico}" style="width: 200px" >
-                                <f:validateRegex for="correo" pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
-                            </p:inputText>
-                            
                             <p:outputLabel value="Teléfono: " for="tel"/>
                             <p:inputMask id="tel" value="#{mbEstablecimientos.estRup.telefono}" mask="(9999) 9999-9999" />
                         </h:panelGrid>
@@ -59,13 +54,25 @@
                             <p:inputText id="piso" value="#{mbEstablecimientos.domicilio.piso}" />
 
                             <p:outputLabel value="Dpto: " for="dpto"/>
-                            <p:inputText id="dpto" value="#{mbEstablecimientos.domicilio.dpto}" />     
+                            <p:inputText id="dpto" value="#{mbEstablecimientos.domicilio.dpto}" />  
+                            
+                            <p:outputLabel for="provincia" value="Provincia: " />
+                            <p:selectOneMenu id="provincia" value="#{mbEstablecimientos.provSelected}" converter="omnifaces.SelectItemsConverter"  
+                                             requiredMessage="Debe seleccionar la Provincia" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione la Provincia" noSelectionOption="true" />
+                                <f:selectItems value="#{mbEstablecimientos.listProvincias}" var="entity" itemLabel="#{entity.nombre}" itemValue="#{entity}" />
+                                <p:ajax listener="#{mbEstablecimientos.provinciaChangeListener}" update="depto" />
+                            </p:selectOneMenu> 
                             
                             <p:outputLabel for="depto" value="Partido: " />
-                            <p:selectOneMenu id="depto" value="#{mbEstablecimientos.deptoSelected}" converter="omnifaces.SelectItemsConverter" disabled="true" style="width: 300px" >
-                                <f:selectItem itemLabel="#{mbEstablecimientos.deptoSelected.nombre}" noSelectionOption="true" />
+                            <p:selectOneMenu id="depto" value="#{mbEstablecimientos.deptoSelected}" converter="omnifaces.SelectItemsConverter"  
+                                             requiredMessage="Debe seleccionar el Partido" 
+                                             required="true" >
+                                <f:selectItem itemLabel="Seleccione el Departamento/Partido/Comuna" noSelectionOption="true" />
                                 <f:selectItems value="#{mbEstablecimientos.listDepartamentos}" var="entity" itemLabel="#{entity.nombre}" itemValue="#{entity}" />
-                            </p:selectOneMenu> 
+                                <p:ajax listener="#{mbEstablecimientos.deptoChangeListener}" update="local" />
+                            </p:selectOneMenu>
 
                             <p:outputLabel for="local" value="Localidad: " />
                             <p:selectOneMenu id="local" value="#{mbEstablecimientos.localSelected}" converter="omnifaces.SelectItemsConverter"  
