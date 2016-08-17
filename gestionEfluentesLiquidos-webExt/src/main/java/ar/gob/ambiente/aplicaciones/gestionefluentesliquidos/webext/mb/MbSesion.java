@@ -74,10 +74,16 @@ public class MbSesion implements Serializable{
     }
     
     public void actualizarEstadoDec(){
-        DeclaracionJurada dec;
-        if(histDec == null) histDec = backendSrv.getUltimaDeclaracion(establecimiento);
-        dec = histDec.getDeclaracion();
-        estadoDec = dec.getClaveEstado();
+        if(histDec == null){
+            histDec = backendSrv.getUltimaDeclaracion(establecimiento);
+            if(histDec != null){
+                DeclaracionJurada dec;
+                dec = histDec.getDeclaracion();
+                estadoDec = dec.getClaveEstado();
+            }else{
+                estadoDec = 0;
+            }
+        }
     }
     
     public void iniciar(){

@@ -1702,6 +1702,13 @@ public class MbDeclaraciones implements Serializable{
         if(!edita){
             if(fechaDec != null){
                 if(fechaDec.getFecha() != null){
+                    /*
+                    // se reportó un error (10/08/2016): recibe la fecha con un día menos. Compensamos acá
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(fechaDec.getFecha());
+                    calendar.add(Calendar.DAY_OF_YEAR, 1); 
+                    fechaDec.setFecha(calendar.getTime());
+                    */
                     lstFechaDec.add(fechaDec);
                 }
 
@@ -1714,6 +1721,13 @@ public class MbDeclaraciones implements Serializable{
         }else{
             lstFechaDec.remove(ordenList);
             //fechaDec.setDescripcion(FechaDec.getLST_FECHA().get(itemFecha));
+            /*
+            // se reportó un error: recibe la fecha con un día menos. Compensamos acá
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fechaDec.getFecha());
+            calendar.add(Calendar.DAY_OF_YEAR, 1); 
+            fechaDec.setFecha(calendar.getTime());
+            */
             lstFechaDec.add(fechaDec);
             fechaDec = null;
             edita = false;
@@ -4807,12 +4821,12 @@ public class MbDeclaraciones implements Serializable{
      * @return 
      */
     private boolean validarTurno() {
-        Calendar horaInicial = Calendar.getInstance();
-        Calendar horaFinal = Calendar.getInstance();
+        //Calendar horaInicial = Calendar.getInstance();
+        //Calendar horaFinal = Calendar.getInstance();
         boolean result = true;
         int i = 0;
  
-        
+        /*
         if(turno.getHorasInicio() > 0 && turno.getHorasFin() > 0){
             // convierto los enteros a horas
             horaInicial.set(Calendar.HOUR, turno.getHorasInicio());
@@ -4832,7 +4846,7 @@ public class MbDeclaraciones implements Serializable{
                 JsfUtil.addErrorMessage("Si no hay hora de incio del Turno no puede haber hora de finalización.");
             }
         }
-        
+        */
         if(!dia.getTurnos().isEmpty()){
             for(Turno trn : dia.getTurnos()){
                 if(trn.getNumOrden() == turno.getNumOrden()){
@@ -5078,12 +5092,17 @@ public class MbDeclaraciones implements Serializable{
     private void instanciarDeclaracion() {
         // verifico si no tiene una Declaración en borrador
         DeclaracionJurada dec = backendSrv.getDeclaracionByCude(est.getCude());
+        DeclaracionJurada dec_1 = backendSrv.getDeclaracionByCude(usLogueado.getCude()); 
+        if(dec == null) dec = dec_1;
         if(dec != null){
             declaracion = dec;
             // seteo datos complementarios
             datosComReg = true;
             pulgarComp = "glyphicon-thumbs-up";
             docDec = declaracion.getDocumentacion();
+            if(docDec == null){
+                docDec = new DocDec();
+            }
             lstActDec = declaracion.getActividades();
             lstFechaDec = declaracion.getFechasDeclaracion();
             lstCantPers = declaracion.getCantPersonal();
@@ -5114,6 +5133,7 @@ public class MbDeclaraciones implements Serializable{
                 lstDescargas = new ArrayList<>(); 
             }
             if(declaracion.getAbastecimiento() != null){
+                abastecimiento = declaracion.getAbastecimiento();
                 if(!declaracion.getAbastecimiento().getPozos().isEmpty()){
                     lstPozos = declaracion.getAbastecimiento().getPozos();
                     datosPozos = true;
@@ -5248,7 +5268,7 @@ public class MbDeclaraciones implements Serializable{
         }
         if(!datosDescargas){
             result = false;
-            JsfUtil.addErrorMessage("Debe consignar al menos una Descarga - Paso 3.");
+            JsfUtil.addErrorMessage("Debe consignar al menos una Descarga Cloacal - Paso 3.");
         }
         /* Validación cancelada por pedido de la DPyRA (14/07/2016)
         if(!datosPozos && !datosAbastos){
@@ -5276,7 +5296,11 @@ public class MbDeclaraciones implements Serializable{
         String strCuit = String.valueOf(est.getCuit());
         String ultimo = strCuit.substring(strCuit.length() - 1);
         Integer iUltimo = Integer.valueOf(ultimo);
-        return iUltimo <= 4;
+        //return iUltimo <= 4;
+        //A partir del 01/07/2016 permito registrar al los cuit mayores que 4 (ult. dig.)
+        // Debido a la prórroga también permito registrar a los cuit hasta 4
+        // Rubén Incostante 29/07/2016
+        return true;
     }
 
     

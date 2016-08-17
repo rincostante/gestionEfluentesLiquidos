@@ -214,7 +214,7 @@ public class MbEstablecimiento implements Serializable{
             try{
                 est.getInmueble().setLatitud((float)latSelected);
                 est.getInmueble().setLongitud((float)lngSelected);
-                backendSrv.editEstablecimiento(est);
+                backendSrv.editInmueble(est.getInmueble());
                 marcado = true;
                 JsfUtil.addSuccessMessage("Ubicación agregada: Lat: " + latSelected + ", Long: " + lngSelected);
                 

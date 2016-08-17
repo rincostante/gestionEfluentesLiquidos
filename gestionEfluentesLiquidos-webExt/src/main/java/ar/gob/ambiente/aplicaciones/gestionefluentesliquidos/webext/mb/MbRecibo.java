@@ -59,7 +59,7 @@ public class MbRecibo implements Serializable{
         usLogueado = sesion.getUsuario();   
         
         listHistorial = new ArrayList<>();
-        decJurada = backendSrv.getDeclaracionByCude(usLogueado.getCude());
+        decJurada = backendSrv.getDeclaracionCompleta(usLogueado.getCude());
     }
     
     public void iniciar() throws JRException, IOException{

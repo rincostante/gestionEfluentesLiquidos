@@ -59,6 +59,7 @@ public class MbCude implements Serializable{
             .getExternalContext().getSession(true);
             //Enumeration enume = session.getAttributeNames();
             session.removeAttribute("mbRegistro");
+            session.removeAttribute("mbSesion");
             
             cmbValidar = "Validar";
             cmbLimpiar = "Limpiar";

@@ -37,5 +37,6 @@ public class MbClear implements Serializable{
         //Enumeration enume = session.getAttributeNames();
         session.removeAttribute("mbCude");
         session.removeAttribute("mbRegistro");
+        session.removeAttribute("mbSesion");
     }
 }

@@ -86,6 +86,7 @@ public class MbRegistro implements Serializable{
         .getExternalContext().getSession(true);
         //Enumeration enume = session.getAttributeNames();
         session.removeAttribute("mbCude");
+        session.removeAttribute("mbSesion");
     }    
 
     /**********************
@@ -240,6 +241,7 @@ public class MbRegistro implements Serializable{
 
                     // inserto
                     backendSrv.createUsuarioExterno(usExt);
+
 
                     if(!enviarCorreo(usExt.getEmail(), usExt.getCude(), usExt.getRazonSocial())){
                         JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("envioCorreoUsError"));
