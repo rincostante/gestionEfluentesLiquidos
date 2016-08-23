@@ -2468,7 +2468,7 @@ public class MbDeclaraciones implements Serializable{
         resetEdit();
         datosComReg = validarDatosComp();
         if(datosComReg){
-            agregarDatosComp();
+            agregarDatosComp(false);
             creatDeclaracionBorr();
             activeIndex = 2;
             pulgarComp = "glyphicon-thumbs-up";
@@ -2485,7 +2485,7 @@ public class MbDeclaraciones implements Serializable{
     public void editDatosComplementarios(){
         resetEdit();
         if(validarDatosComp()){
-            agregarDatosComp();
+            agregarDatosComp(true);
             JsfUtil.addSuccessMessage("Los Datos Complementarios se actualizaron correctamente.");
             creatDeclaracionBorr();
         }else{
@@ -4475,12 +4475,27 @@ public class MbDeclaraciones implements Serializable{
         return registra;
     }
     
-    private void agregarDatosComp(){
+    private void agregarDatosComp(boolean edit){
         declaracion.setDocumentacion(docDec);
-        declaracion.setActividades(lstActDec);
-        declaracion.setSuperficies(lstSupDec);
-        declaracion.setCantPersonal(lstCantPers);
-        declaracion.setFechasDeclaracion(lstFechaDec);
+        if(edit){
+            for(ActividadDec ad : lstActDec){
+                if(!declaracion.getActividades().contains(ad)) declaracion.getActividades().add(ad);
+            }
+            for(SuperficieDec sd : lstSupDec){
+                if(!declaracion.getSuperficies().contains(sd)) declaracion.getSuperficies().add(sd);
+            }
+            for(CantPersonalDec cd : lstCantPers){
+                if(!declaracion.getCantPersonal().contains(cd)) declaracion.getCantPersonal().add(cd);
+            }
+            for(FechaDec fd : lstFechaDec){
+                if(!declaracion.getFechasDeclaracion().contains(fd)) declaracion.getFechasDeclaracion().add(fd);
+            }
+        }else{
+            declaracion.setActividades(lstActDec);
+            declaracion.setSuperficies(lstSupDec);
+            declaracion.setCantPersonal(lstCantPers);
+            declaracion.setFechasDeclaracion(lstFechaDec);
+        }
     }
     
     /**
