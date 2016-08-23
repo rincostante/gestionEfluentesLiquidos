@@ -2603,11 +2603,11 @@ public class MbDeclaraciones implements Serializable{
             for(DiaVuelco d : lstDiasVuelco){
                 if(d.getNombre().equals(diaVuelco.getNombre())){
                     ordenList = i;
-                    diaVuelcoSwap.setCodDia(dia.getCodDia());
-                    diaVuelcoSwap.setHorasInicDesc(dia.getHorasInicDesc());
-                    diaVuelcoSwap.setMinInicDesc(dia.getMinInicDesc());
-                    diaVuelcoSwap.setHorasFinDesc(dia.getHorasFinDesc());
-                    diaVuelcoSwap.setMinFinDesc(dia.getMinFinDesc());
+                    diaVuelcoSwap.setCodDia(diaVuelco.getCodDia());
+                    diaVuelcoSwap.setHorasInicDesc(diaVuelco.getHorasInicDesc());
+                    diaVuelcoSwap.setMinInicDesc(diaVuelco.getMinInicDesc());
+                    diaVuelcoSwap.setHorasFinDesc(diaVuelco.getHorasFinDesc());
+                    diaVuelcoSwap.setMinFinDesc(diaVuelco.getMinFinDesc());
                 }
                 i += 1;
             }
