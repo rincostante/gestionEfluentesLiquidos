@@ -21,14 +21,17 @@
                     <h:outputLabel value="CUIT: "/>
                     <h:outputText value="#{mbUsuarioExterno.current.cuit}" />
                     
-                    <h:outputLabel value="Calle: "/>
-                    <h:outputText value="#{mbUsuarioExterno.current.domCalle}" />
+                    <p:outputLabel value="Calle:" for="calle"/>
+                    <p:inputText id="calle" value="#{mbUsuarioExterno.current.domCalle}" style="width: 300px" 
+                                 requiredMessage="Debe ingresar la Calle" required="true"/> 
                     
-                    <h:outputLabel value="N°: "/>
-                    <h:outputText value="#{mbUsuarioExterno.current.numero}" />
+                    <p:outputLabel value="N°: " for="num"/>
+                    <p:inputText id="num" value="#{mbUsuarioExterno.current.numero}" style="width: 300px" 
+                                 requiredMessage="Debe ingresar el N°" required="true"/>      
                     
-                    <h:outputLabel value="Localidad: "/>
-                    <h:outputText value="#{mbUsuarioExterno.current.localidad}" />
+                    <p:outputLabel value="Localidad: " for="local"/>
+                    <p:inputText id="local" value="#{mbUsuarioExterno.current.localidad}" style="width: 300px" 
+                                 requiredMessage="Debe ingresar la Calle" required="true"/> 
                     
                     <p:outputLabel value="E-mail" for="email"/>
                     <p:inputText id="email" value="#{mbUsuarioExterno.current.email}" style="width: 300px" 
